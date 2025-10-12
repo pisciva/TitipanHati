@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 
     return (
         <html lang="en" className={font.className}>
-            <body className="min-h-screen w-full bg-gradient-to-b from-[#A0CAE8] to-[#F8FAFC] bg-svg">
+            <body className="min-h-screen w-full">
                 <AuthProvider>
                     {!hideNavbar && <Navbar />}
                     {children}
