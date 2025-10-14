@@ -113,7 +113,7 @@ export default function LoginPage() {
 
                     {serverError && <Toast message={serverError} type="error" onClose={() => setServerError('')} />}
 
-                    <button type="submit" className="bg-[#FF4400] hover:bg-[#EB3F00] px-12 py-3 rounded-full text-white text-lg font-semibold mt-8 mb-4 cursor-pointer">Sign In</button>
+                    <button type="submit" className="bg-[#FF4400] hover:bg-[#EB3F00] px-12 py-3 rounded-full text-white text-lg font-semibold mt-8 mb-4 cursor-pointer">Daftar</button>
                 </form>
 
                 <OAuth />
