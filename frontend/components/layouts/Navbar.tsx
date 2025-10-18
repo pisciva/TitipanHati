@@ -15,12 +15,13 @@ export default function Navbar() {
         <nav className="fixed top-7 inset-x-20 flex justify-between items-center z-50 text-lg">
             <img src="/Logo.svg" alt="" className='w-48'/>
 
-            <div className="gap-12 flex justify-between font-medium text-xl">
-                <Link href="/login" className="">Beranda</Link>
-                <Link href="/login" className="">Campaign</Link>
-                <Link href="/login" className="">Cara Kerja</Link> 
-                <Link href="/login" className="">Tentang Kami</Link>
-            </div>
+<div className="gap-12 flex justify-between font-medium text-xl">
+  <Link href="/">Beranda</Link>
+  <Link href="/campaign">Campaign</Link>
+  <Link href="/cara-kerja">Cara Kerja</Link>
+  <Link href="/tentang-kami">Tentang Kami</Link>
+</div>
+
 
             {!loading && (
                 user ? (
