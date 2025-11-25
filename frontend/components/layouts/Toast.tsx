@@ -39,7 +39,7 @@ export default function Toast({ message, type = 'success', onClose }: ToastProps
     return (
         <div
             className={`
-        fixed left-1/2 transform -translate-x-1/2 flex items-center gap-2 pl-3 pr-4 py-3 rounded-lg shadow-lg text-white text-sm
+        fixed left-1/2 transform -translate-x-1/2 flex items-center gap-2 pl-3 pr-4 py-3 rounded-lg shadow-lg text-white text-sm 
         transition-all duration-500 ease-in-out
         ${bgColor}
         ${show ? 'translate-y-0 opacity-100 top-5' : '-translate-y-10 opacity-0 top-0'}

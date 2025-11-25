@@ -10,7 +10,7 @@ import RightCol from '@/components/auth/RightCol'
 import OAuth from '@/components/auth/OAuth'
 import '@/components/auth/auth.css'
 import '@/app/globals.css'
-
+    
 type FormValues = { email: string; password: string }
 
 export default function LoginPage() {
