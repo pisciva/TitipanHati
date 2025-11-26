@@ -1,0 +1,207 @@
+graph TD
+    Start([User Membuka TitipanHati]) --> CheckAuth{User Sudah Login?}
+    
+    %% AUTHENTICATION FLOW
+    CheckAuth -->|Belum| LandingPage[Landing Page]
+    CheckAuth -->|Sudah| CheckRole{Role User?}
+    
+    LandingPage --> ViewLP[Lihat:<br/>- Hero Section<br/>- Campaign Grid<br/>- Cara Kerja<br/>- Tentang Kami<br/>- Statistik<br/>- Testimoni]
+    ViewLP --> NeedLogin{Ingin Donasi<br/>atau Akses Fitur?}
+    
+    NeedLogin -->|Ya| ClickSignIn[Klik Sign In]
+    NeedLogin -->|Tidak| BrowseCampaign[Browse Campaign<br/>Tanpa Login]
+    
+    ClickSignIn --> LoginChoice{Pilih Method Login}
+    
+    %% LOGIN OPTIONS
+    LoginChoice -->|Email & Password| LoginManual[Form Login Manual]
+    LoginChoice -->|Google OAuth| LoginGoogle[Login with Google]
+    LoginChoice -->|Belum Punya Akun| SignUp[Form Register]
+    
+    LoginManual --> ValidateLogin{Credentials Valid?}
+    ValidateLogin -->|Tidak| ErrorLogin[Tampilkan Error]
+    ErrorLogin --> LoginManual
+    ValidateLogin -->|Ya| CreateSession[Create Session/JWT]
+    
+    LoginGoogle --> GoogleAuth[Google OAuth 2.0]
+    GoogleAuth --> CheckGoogleEmail{Email Terdaftar?}
+    CheckGoogleEmail -->|Ya| CreateSession
+    CheckGoogleEmail -->|Tidak| AutoRegister[Auto Register<br/>dengan Data Google]
+    AutoRegister --> CreateSession
+    
+    SignUp --> FormRegister[Isi Form:<br/>- Email<br/>- Password<br/>- Konfirmasi Password]
+    FormRegister --> ValidateRegister{Data Valid?}
+    ValidateRegister -->|Tidak| ErrorRegister[Tampilkan Error]
+    ErrorRegister --> FormRegister
+    ValidateRegister -->|Ya| HashPassword[Hash Password]
+    HashPassword --> SaveUser[Simpan ke Database]
+    SaveUser --> SendVerifEmail[Kirim Email Verifikasi<br/>opsional]
+    SendVerifEmail --> CreateSession
+    
+    CreateSession --> CheckRole
+    
+    %% ROLE ROUTING
+    CheckRole -->|Admin| AdminDashboard[Dashboard Admin]
+    CheckRole -->|Donatur| DonorDashboard[Dashboard Donatur]
+    
+    %% ADMIN FLOW
+    AdminDashboard --> AdminMenu{Pilih Menu Admin}
+    
+    AdminMenu -->|Overview| ViewStats[Lihat Statistik:<br/>- Total Campaign<br/>- Total Donasi<br/>- Total Barang Terkumpul]
+    ViewStats --> AdminMenu
+    
+    AdminMenu -->|Manajemen Campaign| CampaignList[Lihat Daftar Campaign]
+    CampaignList --> AdminCampaignAction{Pilih Aksi}
+    
+    AdminCampaignAction -->|Buat Baru| CreateCampaign[Form Buat Campaign:<br/>- Pilih Yayasan<br/>- Judul & Deskripsi<br/>- Upload Banner<br/>- Provinsi & Kota<br/>- Target Quantity<br/>- Deadline<br/>- Pilih Kategori]
+    CreateCampaign --> ValidateCampaign{Data Valid?}
+    ValidateCampaign -->|Tidak| ErrorCampaign[Tampilkan Error]
+    ErrorCampaign --> CreateCampaign
+    ValidateCampaign -->|Ya| SaveCampaign[Simpan Campaign<br/>ke Database]
+    SaveCampaign --> SuccessCampaign[Tampilkan Pesan Sukses]
+    SuccessCampaign --> CampaignList
+    
+    AdminCampaignAction -->|Edit| EditCampaign[Edit Data Campaign]
+    EditCampaign --> SaveCampaign
+    
+    AdminCampaignAction -->|Lihat Detail| ViewCampaignDetail[Lihat Detail:<br/>- Info Campaign<br/>- Progress<br/>- List Donasi<br/>- Statistik]
+    ViewCampaignDetail --> AdminCampaignAction
+    
+    AdminCampaignAction -->|Kembali| AdminMenu
+    
+    AdminMenu -->|Manajemen Donasi| DonationListAdmin[Lihat Semua Donasi]
+    DonationListAdmin --> AdminDonationAction{Pilih Aksi}
+    
+    AdminDonationAction -->|Lihat Detail| ViewDonationDetail[Lihat Detail Donasi:<br/>- Info Donor<br/>- Alamat Pickup<br/>- Items<br/>- Status Tracking]
+    ViewDonationDetail --> AdminDonationAction
+    
+    AdminDonationAction -->|Update Status| UpdateStatus[Update Status:<br/>- Menunggu → Dalam Perjalanan<br/>- Dalam Perjalanan → Selesai<br/>- Batalkan]
+    UpdateStatus --> SaveTracking[Simpan ke<br/>Donation Tracking]
+    SaveTracking --> SendNotifEmail[Kirim Email<br/>Notifikasi ke Donor]
+    SendNotifEmail --> UpdateCampaignQty[Update Collected Quantity<br/>di Campaign]
+    UpdateCampaignQty --> DonationListAdmin
+    
+    AdminDonationAction -->|Kalender Penjemputan| ViewCalendar[Lihat Kalender<br/>Jadwal Penjemputan]
+    ViewCalendar --> ClickDate{Klik Tanggal}
+    ClickDate --> ShowPickupList[Tampilkan List<br/>Donasi yang Dijemput<br/>pada Tanggal Tersebut]
+    ShowPickupList --> ViewCalendar
+    
+    AdminDonationAction -->|Kembali| AdminMenu
+    
+    AdminMenu -->|Logout| DoLogout[Logout]
+    DoLogout --> Start
+    
+    %% DONOR FLOW
+    DonorDashboard --> DonorMenu{Pilih Menu Donatur}
+    
+    DonorMenu -->|Lihat Campaign| BrowsePage[Campaign Page]
+    BrowsePage --> FilterCampaign[Filter & Search:<br/>- Keyword<br/>- Kategori Pakaian<br/>- Lokasi<br/>- Status<br/>- Sort by Trending/Terbaru]
+    FilterCampaign --> DisplayCampaign[Tampilkan Grid Campaign]
+    DisplayCampaign --> SelectCampaign{Pilih Campaign}
+    
+    SelectCampaign -->|Detail| CampaignDetail[Campaign Detail Page:<br/>- Banner<br/>- Judul & Deskripsi<br/>- Nama Yayasan<br/>- Progress Bar<br/>- Target vs Terkumpul<br/>- Lokasi<br/>- Deadline<br/>- Kategori]
+    
+    CampaignDetail --> IncrementView[Increment View Count<br/>untuk Trending]
+    IncrementView --> DecideDonate{Ingin Donasi?}
+    
+    DecideDonate -->|Ya| ClickDonateBtn[Klik Tombol Donasi]
+    DecideDonate -->|Tidak| BrowsePage
+    
+    ClickDonateBtn --> CheckProfile{Profile Lengkap?}
+    CheckProfile -->|Tidak| FillProfile[Form Profil:<br/>- Nama Lengkap<br/>- No HP<br/>- Email<br/>- Alamat Default]
+    FillProfile --> SaveProfile[Simpan Profile]
+    SaveProfile --> DonationForm
+    
+    CheckProfile -->|Ya| DonationForm[Form Donasi:<br/>AUTO FILL dari Profile]
+    
+    DonationForm --> FillDonation[Isi Form Donasi:<br/><br/>DATA DONOR:<br/>- Nama sudah terisi<br/>- No HP sudah terisi<br/>- Email sudah terisi<br/><br/>DETAIL BARANG:<br/>Loop: Tambah Item<br/>- Gender dropdown<br/>- Kategori dropdown<br/>- Jumlah pcs<br/>- Kondisi dropdown<br/>- Upload foto optional<br/><br/>ALAMAT PICKUP:<br/>- Alamat lengkap sudah terisi<br/>- Kota/Kecamatan<br/>- Kode Pos<br/>- Catatan tambahan<br/><br/>JADWAL PICKUP:<br/>- Pilih Tanggal min +3 hari<br/>- Pilih Slot Jam]
+    
+    FillDonation --> ValidateDonation{Form Valid?}
+    ValidateDonation -->|Tidak| ErrorDonation[Tampilkan Error]
+    ErrorDonation --> FillDonation
+    
+    ValidateDonation -->|Ya| SaveDonation[Simpan Donation<br/>ke Database]
+    SaveDonation --> SaveDonationItems[Simpan Donation Items<br/>ke Database]
+    SaveDonationItems --> CreateTrackingInit[Create Initial Tracking:<br/>Status = Menunggu Penjemputan]
+    CreateTrackingInit --> SendConfirmEmail[Kirim Email Konfirmasi<br/>dengan Detail Donasi]
+    SendConfirmEmail --> LogEmail[Simpan ke Email Logs]
+    LogEmail --> ShowSuccessPage[Tampilkan Halaman<br/>Sukses Donasi]
+    
+    ShowSuccessPage --> DonorMenu
+    
+    DonorMenu -->|Profil Saya| ViewProfile[Lihat Profil:<br/>- Nama<br/>- No HP<br/>- Email<br/>- Alamat Default]
+    ViewProfile --> EditProfileChoice{Edit Profil?}
+    EditProfileChoice -->|Ya| EditProfile[Edit Data Profil]
+    EditProfile --> SaveProfile
+    EditProfileChoice -->|Tidak| DonorMenu
+    
+    DonorMenu -->|Riwayat Donasi| ViewHistory[Lihat Daftar<br/>Riwayat Donasi]
+    ViewHistory --> SelectHistory{Pilih Donasi}
+    
+    SelectHistory -->|Detail| ViewHistoryDetail[Lihat Detail:<br/>- Campaign<br/>- Items yang Didonasikan<br/>- Alamat Pickup<br/>- Jadwal<br/>- Status Tracking:<br/>  🟡 Menunggu<br/>  🟠 Dalam Perjalanan<br/>  🟢 Selesai<br/>  🔴 Dibatalkan]
+    ViewHistoryDetail --> ViewHistory
+    
+    SelectHistory -->|Kembali| DonorMenu
+    
+    DonorMenu -->|Logout| DoLogout
+    
+    %% BACKEND AUTOMATED PROCESS
+    SaveDonation -.Trigger.-> BackendProcess[Background Process]
+    
+    BackendProcess --> CheckPickupDate{Pickup Date<br/>= Hari Ini?}
+    CheckPickupDate -->|Ya| NotifyAdmin[Notifikasi Admin<br/>via Dashboard/Email]
+    NotifyAdmin --> AdminPickup[Admin Jadwalkan<br/>Kurir Pickup]
+    
+    AdminPickup --> KurirPickup[Kurir Jemput Barang]
+    KurirPickup --> AdminUpdateStatus1[Admin Update Status:<br/>Dalam Perjalanan]
+    AdminUpdateStatus1 --> SaveTracking
+    
+    CheckPickupDate -->|Belum| WaitPickupDate[Tunggu Jadwal Pickup]
+    WaitPickupDate --> CheckPickupDate
+    
+    SendNotifEmail --> KurirDeliver[Kurir Antarkan<br/>ke Yayasan]
+    KurirDeliver --> YayasanReceive[Yayasan Terima<br/>& Verifikasi Barang]
+    YayasanReceive --> AdminUpdateStatus2[Admin Update Status:<br/>Selesai Disalurkan]
+    AdminUpdateStatus2 --> SaveTracking
+    
+    UpdateCampaignQty --> CheckTarget{Collected >= Target?}
+    CheckTarget -->|Ya| AutoCloseCampaign[Auto Update<br/>Status = Selesai]
+    CheckTarget -->|Tidak| KeepActive[Campaign Tetap Aktif]
+    
+    AutoCloseCampaign --> EndFlow([Selesai])
+    KeepActive --> EndFlow
+    
+    %% FORGOT PASSWORD FLOW
+    LoginManual -.Lupa Password.-> ForgotPassword[Klik Forgot Password]
+    ForgotPassword --> EnterEmail[Masukkan Email]
+    EnterEmail --> ValidateEmail{Email Terdaftar?}
+    ValidateEmail -->|Tidak| ErrorEmail[Email Tidak Ditemukan]
+    ErrorEmail --> EnterEmail
+    ValidateEmail -->|Ya| GenerateToken[Generate Reset Token<br/>Expired 15-30 menit]
+    GenerateToken --> SaveTokenDB[Simpan ke<br/>password_resets]
+    SaveTokenDB --> SendResetEmail[Kirim Email<br/>Reset Password Link]
+    SendResetEmail --> CheckEmailLink[User Klik Link<br/>di Email]
+    CheckEmailLink --> ValidateToken{Token Valid<br/>& Belum Expired?}
+    ValidateToken -->|Tidak| ErrorToken[Token Invalid/Expired]
+    ErrorToken --> ForgotPassword
+    ValidateToken -->|Ya| ResetPasswordForm[Form Reset Password:<br/>- Password Baru<br/>- Konfirmasi Password]
+    ResetPasswordForm --> ValidateNewPass{Password Valid?}
+    ValidateNewPass -->|Tidak| ErrorNewPass[Error Validation]
+    ErrorNewPass --> ResetPasswordForm
+    ValidateNewPass -->|Ya| HashNewPassword[Hash Password Baru]
+    HashNewPassword --> UpdatePassword[Update Password<br/>di Database]
+    UpdatePassword --> DeleteToken[Hapus Token<br/>dari Database]
+    DeleteToken --> SuccessReset[Tampilkan Pesan Sukses]
+    SuccessReset --> LoginManual
+    
+    style Start fill:#e1f5e1
+    style EndFlow fill:#ffe1e1
+    style CheckAuth fill:#fff4e1
+    style CheckRole fill:#fff4e1
+    style AdminDashboard fill:#e1f0ff
+    style DonorDashboard fill:#f0e1ff
+    style SaveDonation fill:#90EE90
+    style SendConfirmEmail fill:#FFD700
+    style KurirPickup fill:#FFA500
+    style YayasanReceive fill:#90EE90
+    style AutoCloseCampaign fill:#98FB98

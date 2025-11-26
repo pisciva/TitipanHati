@@ -1,0 +1,237 @@
+// TitipanHati - Platform Donasi Pakaian
+
+// USERS & AUTHENTICATION
+
+Table users {
+  id integer [primary key, increment]
+  email varchar(255) [unique, not null]
+  password_hash varchar(255) [note: 'Hashed password using bcrypt']
+  role varchar(20) [not null, default: 'donatur', note: 'donatur or admin']
+  google_id varchar(255) [unique, null, note: 'Google OAuth ID']
+  is_verified boolean [default: false]
+  email_verified_at timestamp [null]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    email [unique]
+    google_id [unique]
+  }
+}
+
+Table user_profiles {
+  id integer [primary key, increment]
+  user_id integer [unique, not null]
+  full_name varchar(255) [not null]
+  phone_number varchar(20) [not null]
+  default_address text [null]
+  default_city varchar(100) [null]
+  default_district varchar(100) [null]
+  default_postal_code varchar(10) [null]
+  default_notes text [null]
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+Table password_resets {
+  id integer [primary key, increment]
+  email varchar(255) [not null]
+  token varchar(255) [unique, not null]
+  expires_at timestamp [not null, note: 'Token valid for 15-30 minutes']
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    token [unique]
+    email
+  }
+}
+
+// ORGANIZATIONS
+
+Table organizations {
+  id integer [primary key, increment]
+  name varchar(255) [not null]
+  description text [null]
+  contact_email varchar(255) [null]
+  contact_phone varchar(20) [null]
+  address text [null]
+  logo_url varchar(500) [null]
+  is_verified boolean [default: false, note: 'Verified by admin']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+}
+
+// CAMPAIGNS
+
+Table campaigns {
+  id integer [primary key, increment]
+  organization_id integer [not null]
+  title varchar(255) [not null]
+  description text [not null]
+  banner_url varchar(500) [null]
+  province varchar(100) [not null]
+  city varchar(100) [not null]
+  target_quantity integer [not null, note: 'Target dalam pieces (pcs)']
+  collected_quantity integer [default: 0, note: 'Jumlah terkumpul (pcs)']
+  deadline date [not null]
+  status varchar(20) [not null, default: 'aktif', note: 'aktif or selesai']
+  view_count integer [default: 0, note: 'Untuk menentukan trending']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    organization_id
+    status
+    (view_count, created_at) [note: 'For trending and newest sorting']
+  }
+}
+
+// CATEGORIES
+
+Table categories {
+  id integer [primary key, increment]
+  name varchar(100) [not null, note: 'Anak Laki-laki, Anak Perempuan, Laki-laki, Perempuan, Atasan, Bawahan, Other']
+  type varchar(20) [not null, note: 'gender or item_type']
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    type
+  }
+}
+
+Table campaign_categories {
+  id integer [primary key, increment]
+  campaign_id integer [not null]
+  category_id integer [not null]
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    (campaign_id, category_id) [unique]
+  }
+}
+
+// DONATIONS
+
+Table donations {
+  id integer [primary key, increment]
+  user_id integer [not null]
+  campaign_id integer [not null]
+  donor_name varchar(255) [not null]
+  donor_phone varchar(20) [not null]
+  donor_email varchar(255) [not null]
+  pickup_address text [not null]
+  pickup_city varchar(100) [not null]
+  pickup_district varchar(100) [not null]
+  pickup_postal_code varchar(10) [not null]
+  pickup_notes text [null]
+  pickup_date date [not null, note: 'Minimal 3 hari dari created_at']
+  pickup_time_slot varchar(20) [not null, note: '09:00-13:00 or 13:00-17:00']
+  status varchar(30) [not null, default: 'menunggu_penjemputan', note: 'menunggu_penjemputan, dalam_perjalanan, selesai, dibatalkan']
+  created_at timestamp [default: `now()`]
+  updated_at timestamp [default: `now()`]
+  
+  indexes {
+    user_id
+    campaign_id
+    status
+    pickup_date
+  }
+}
+
+Table donation_items {
+  id integer [primary key, increment]
+  donation_id integer [not null]
+  gender varchar(50) [not null, note: 'Anak Laki-laki, Anak Perempuan, Laki-laki, Perempuan']
+  item_category varchar(50) [not null, note: 'Atasan, Bawahan, Other']
+  quantity integer [not null, note: 'Jumlah dalam pieces (pcs)']
+  condition varchar(20) [not null, note: 'Baru, Layak pakai, Tidak layak']
+  photo_url varchar(500) [null, note: 'Optional photo upload']
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    donation_id
+  }
+}
+
+Table donation_tracking {
+  id integer [primary key, increment]
+  donation_id integer [not null]
+  status varchar(30) [not null, note: 'menunggu_penjemputan, dalam_perjalanan, selesai, dibatalkan']
+  notes text [null]
+  status_changed_at timestamp [default: `now()`]
+  
+  indexes {
+    donation_id
+    status_changed_at
+  }
+}
+
+// STATISTICS & SUPPORTING TABLES
+
+Table statistics {
+  id integer [primary key, increment]
+  total_campaigns integer [default: 0]
+  total_donations integer [default: 0]
+  total_items_collected integer [default: 0, note: 'Total pieces terkumpul']
+  total_organizations integer [default: 0]
+  recorded_date date [not null, unique]
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    recorded_date [unique]
+  }
+}
+
+Table testimonials {
+  id integer [primary key, increment]
+  name varchar(255) [not null]
+  type varchar(20) [not null, note: 'donatur or yayasan']
+  content text [not null]
+  rating integer [note: '1-5 stars']
+  is_active boolean [default: true, note: 'Show/hide testimonial']
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    is_active
+    type
+  }
+}
+
+Table email_logs {
+  id integer [primary key, increment]
+  donation_id integer [null]
+  user_id integer [null]
+  email_to varchar(255) [not null]
+  email_type varchar(50) [not null, note: 'konfirmasi_donasi, reset_password, verifikasi_email']
+  email_content text [not null]
+  is_sent boolean [default: false]
+  sent_at timestamp [null]
+  created_at timestamp [default: `now()`]
+  
+  indexes {
+    donation_id
+    user_id
+    email_type
+    is_sent
+  }
+}
+
+// RELATIONSHIPS
+
+// Users relationships
+Ref: user_profiles.user_id - users.id [delete: cascade]
+
+// Campaigns relationships
+Ref: campaigns.organization_id > organizations.id [delete: restrict]
+Ref: campaign_categories.campaign_id > campaigns.id [delete: cascade]
+Ref: campaign_categories.category_id > categories.id [delete: restrict]
+
+// Donations relationships
+Ref: donations.user_id > users.id [delete: restrict]
+Ref: donations.campaign_id > campaigns.id [delete: restrict]
+Ref: donation_items.donation_id > donations.id [delete: cascade]
+Ref: donation_tracking.donation_id > donations.id [delete: cascade]
+
+// Email logs relationships
+Ref: email_logs.donation_id > donations.id [delete: set null]
+Ref: email_logs.user_id > users.id [delete: set null]

@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Campaign extends Model
+{
+    protected $fillable = [
+        'organization_id',
+        'title',
+        'description',
+        'banner_url',
+        'province',
+        'city',
+        'target_quantity',
+        'collected_quantity',
+        'deadline',
+        'status',
+        'view_count',
+    ];
+
+    protected $casts = [
+        'deadline' => 'date',
+        'target_quantity' => 'integer',
+        'collected_quantity' => 'integer',
+        'view_count' => 'integer',
+    ];
+
+    // Relasi belongs to Organization
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
+    // Relasi Many-to-Many dengan Categories
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'campaign_categories');
+    }
+
+    // Relasi One-to-Many dengan Donations
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    // Helper: Check if campaign is active
+    public function isActive()
+    {
+        return $this->status === 'aktif';
+    }
+
+    // Helper: Calculate progress percentage
+    public function progressPercentage()
+    {
+        if ($this->target_quantity == 0) return 0;
+        return min(100, round(($this->collected_quantity / $this->target_quantity) * 100));
+    }
+}
