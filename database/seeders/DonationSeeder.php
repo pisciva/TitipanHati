@@ -17,7 +17,7 @@ class DonationSeeder extends Seeder
         $users = User::where('role', 'donatur')->get();
         $campaigns = Campaign::where('status', 'aktif')->get();
 
-        // Donation 1: Selesai
+
         $donation1 = Donation::create([
             'user_id' => $users[0]->id,
             'campaign_id' => $campaigns[0]->id,
@@ -72,7 +72,7 @@ class DonationSeeder extends Seeder
             'status_changed_at' => Carbon::now()->subDays(3),
         ]);
 
-        // Donation 2: Dalam Perjalanan
+
         $donation2 = Donation::create([
             'user_id' => $users[1]->id,
             'campaign_id' => $campaigns[1]->id,
@@ -111,7 +111,7 @@ class DonationSeeder extends Seeder
             'status_changed_at' => Carbon::now()->subDays(1),
         ]);
 
-        // Donation 3: Menunggu Penjemputan
+
         $donation3 = Donation::create([
             'user_id' => $users[2]->id,
             'campaign_id' => $campaigns[2]->id,
@@ -152,7 +152,7 @@ class DonationSeeder extends Seeder
             'status_changed_at' => Carbon::now(),
         ]);
 
-        // Donation 4: Menunggu Penjemputan (besok)
+
         $donation4 = Donation::create([
             'user_id' => $users[3]->id,
             'campaign_id' => $campaigns[3]->id,

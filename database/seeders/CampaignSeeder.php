@@ -124,7 +124,7 @@ class CampaignSeeder extends Seeder
             
             $campaign = Campaign::create($campaignData);
             
-            // Attach categories
+
             $campaign->categories()->attach($categories);
         }
         

@@ -11,7 +11,7 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
+
         $admin = User::create([
             'email' => 'admin@titipanhati.com',
             'password' => Hash::make('admin123'),
@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        // Create admin profile
+
         UserProfile::create([
             'user_id' => $admin->id,
             'full_name' => 'Admin TitipanHati',

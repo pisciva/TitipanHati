@@ -11,7 +11,7 @@ class Category extends Model
         'type',
     ];
 
-    // Relasi Many-to-Many dengan Campaigns
+
     public function campaigns()
     {
         return $this->belongsToMany(Campaign::class, 'campaign_categories');

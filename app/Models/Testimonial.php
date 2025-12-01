@@ -19,7 +19,7 @@ class Testimonial extends Model
         'rating' => 'integer',
     ];
 
-    // Scope untuk testimonial aktif
+
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

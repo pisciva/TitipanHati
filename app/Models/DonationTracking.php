@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class DonationTracking extends Model
 {
-    public $timestamps = false; // Karena hanya pakai status_changed_at
+
+    protected $table = 'donation_tracking';
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'donation_id',
@@ -19,7 +22,6 @@ class DonationTracking extends Model
         'status_changed_at' => 'datetime',
     ];
 
-    // Relasi belongs to Donation
     public function donation()
     {
         return $this->belongsTo(Donation::class);

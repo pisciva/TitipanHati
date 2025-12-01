@@ -21,13 +21,13 @@ class EmailLog extends Model
         'sent_at' => 'datetime',
     ];
 
-    // Relasi belongs to Donation
+
     public function donation()
     {
         return $this->belongsTo(Donation::class);
     }
 
-    // Relasi belongs to User
+
     public function user()
     {
         return $this->belongsTo(User::class);

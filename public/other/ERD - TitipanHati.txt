@@ -1,6 +1,6 @@
-// TitipanHati - Platform Donasi Pakaian
 
-// USERS & AUTHENTICATION
+
+
 
 Table users {
   id integer [primary key, increment]
@@ -46,7 +46,7 @@ Table password_resets {
   }
 }
 
-// ORGANIZATIONS
+
 
 Table organizations {
   id integer [primary key, increment]
@@ -61,7 +61,7 @@ Table organizations {
   updated_at timestamp [default: `now()`]
 }
 
-// CAMPAIGNS
+
 
 Table campaigns {
   id integer [primary key, increment]
@@ -86,7 +86,7 @@ Table campaigns {
   }
 }
 
-// CATEGORIES
+
 
 Table categories {
   id integer [primary key, increment]
@@ -110,7 +110,7 @@ Table campaign_categories {
   }
 }
 
-// DONATIONS
+
 
 Table donations {
   id integer [primary key, increment]
@@ -166,7 +166,7 @@ Table donation_tracking {
   }
 }
 
-// STATISTICS & SUPPORTING TABLES
+
 
 Table statistics {
   id integer [primary key, increment]
@@ -216,22 +216,22 @@ Table email_logs {
   }
 }
 
-// RELATIONSHIPS
 
-// Users relationships
+
+
 Ref: user_profiles.user_id - users.id [delete: cascade]
 
-// Campaigns relationships
+
 Ref: campaigns.organization_id > organizations.id [delete: restrict]
 Ref: campaign_categories.campaign_id > campaigns.id [delete: cascade]
 Ref: campaign_categories.category_id > categories.id [delete: restrict]
 
-// Donations relationships
+
 Ref: donations.user_id > users.id [delete: restrict]
 Ref: donations.campaign_id > campaigns.id [delete: restrict]
 Ref: donation_items.donation_id > donations.id [delete: cascade]
 Ref: donation_tracking.donation_id > donations.id [delete: cascade]
 
-// Email logs relationships
+
 Ref: email_logs.donation_id > donations.id [delete: set null]
 Ref: email_logs.user_id > users.id [delete: set null]

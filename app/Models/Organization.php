@@ -20,7 +20,7 @@ class Organization extends Model
         'is_verified' => 'boolean',
     ];
 
-    // Relasi One-to-Many dengan Campaigns
+
     public function campaigns()
     {
         return $this->hasMany(Campaign::class);

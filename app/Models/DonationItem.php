@@ -19,7 +19,7 @@ class DonationItem extends Model
         'quantity' => 'integer',
     ];
 
-    // Relasi belongs to Donation
+
     public function donation()
     {
         return $this->belongsTo(Donation::class);

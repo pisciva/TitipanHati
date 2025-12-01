@@ -17,7 +17,7 @@ class UserProfile extends Model
         'default_notes',
     ];
 
-    // Relasi belongs to User
+
     public function user()
     {
         return $this->belongsTo(User::class);

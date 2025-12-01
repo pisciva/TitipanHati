@@ -27,19 +27,19 @@ class User extends Authenticatable
         'is_verified' => 'boolean',
     ];
 
-    // Relasi One-to-One dengan UserProfile
+
     public function profile()
     {
         return $this->hasOne(UserProfile::class);
     }
 
-    // Relasi One-to-Many dengan Donations
+
     public function donations()
     {
         return $this->hasMany(Donation::class);
     }
 
-    // Relasi One-to-Many dengan EmailLogs
+
     public function emailLogs()
     {
         return $this->hasMany(EmailLog::class);
