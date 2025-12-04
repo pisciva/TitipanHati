@@ -37,7 +37,7 @@ class AdminCampaignController extends Controller
 
         $campaigns = $query->orderBy('created_at', 'desc')->paginate(15);
 
-        return view('admin.campaigns.index', compact('campaigns'));
+        return view('dashboard.admin.campaigns.index', compact('campaigns'));
     }
 
 
@@ -46,7 +46,7 @@ class AdminCampaignController extends Controller
         $organizations = Organization::where('is_verified', true)->get();
         $categories = Category::all();
 
-        return view('admin.campaigns.create', compact('organizations', 'categories'));
+        return view('dashboard.admin.campaigns.create', compact('organizations', 'categories'));
     }
 
 
@@ -97,7 +97,7 @@ class AdminCampaignController extends Controller
         $campaign = Campaign::with(['organization', 'categories', 'donations.items'])
             ->findOrFail($id);
 
-        return view('admin.campaigns.show', compact('campaign'));
+        return view('dashboard.admin.campaigns.show', compact('campaign'));
     }
 
 
@@ -107,7 +107,7 @@ class AdminCampaignController extends Controller
         $organizations = Organization::where('is_verified', true)->get();
         $categories = Category::all();
 
-        return view('admin.campaigns.edit', compact('campaign', 'organizations', 'categories'));
+        return view('dashboard.admin.campaigns.edit', compact('campaign', 'organizations', 'categories'));
     }
 
 
@@ -174,7 +174,7 @@ class AdminCampaignController extends Controller
 
         $campaign->delete();
 
-        return redirect()->route('admin.campaigns.index')
+        return redirect()->route('dashboard.admin.campaigns.index')
             ->with('success', 'Campaign berhasil dihapus!');
     }
 }

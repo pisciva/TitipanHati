@@ -63,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.password');
     
+    Route::get('/profile/riwayat', [ProfileController::class, 'riwayat'])->name('profile.riwayat');
 
     Route::get('/campaigns/{campaign}/donate', [DonationController::class, 'create'])->name('donations.create');
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
@@ -84,7 +85,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     
 
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
-    Route::get('/donations/{id}', [AdminDonationController::class, 'show'])->name('donations.show');
+    
     Route::put('/donations/{id}/status', [AdminDonationController::class, 'updateStatus'])->name('donations.updateStatus');
     
 
@@ -93,4 +94,5 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     
 
     Route::get('/donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
+    Route::get('/donations/{id}', [AdminDonationController::class, 'show'])->name('donations.show');
 });

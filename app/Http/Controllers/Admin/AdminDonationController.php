@@ -33,16 +33,20 @@ class AdminDonationController extends Controller
 
 
         if ($request->filled('date_from')) {
+            // Filter berdasarkan tanggal dibuat (created_at)
             $query->whereDate('created_at', '>=', $request->date_from);
         }
         if ($request->filled('date_to')) {
+            // Filter berdasarkan tanggal dibuat (created_at)
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
-        $donations = $query->orderBy('created_at', 'desc')->paginate(20);
+        // PERBAIKAN: Mengganti urutan default dari 'created_at' menjadi 'pickup_date'
+        // untuk memprioritaskan jadwal penjemputan yang akan datang di halaman utama.
+        $donations = $query->orderBy('pickup_date', 'desc')->paginate(20);
         $campaigns = Campaign::all();
 
-        return view('admin.donations.index', compact('donations', 'campaigns'));
+        return view('dashboard.admin.donation.index', compact('donations', 'campaigns'));
     }
 
 
@@ -51,7 +55,7 @@ class AdminDonationController extends Controller
         $donation = Donation::with(['user', 'campaign', 'items', 'tracking'])
             ->findOrFail($id);
 
-        return view('admin.donations.show', compact('donation'));
+        return view('dashboard.admin.donation.show', compact('donation'));
     }
 
 
@@ -109,7 +113,7 @@ class AdminDonationController extends Controller
                 return $donation->pickup_date->format('Y-m-d');
             });
 
-        return view('admin.donations.calendar', compact('donations', 'month', 'year'));
+        return view('dashboard.admin.donation.calendar', compact('donations', 'month', 'year'));
     }
 
 

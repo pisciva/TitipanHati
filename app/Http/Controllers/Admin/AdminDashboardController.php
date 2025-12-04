@@ -39,6 +39,6 @@ class AdminDashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentDonations', 'urgentCampaigns'));
+        return view('dashboard.admin.index', compact('stats', 'recentDonations', 'urgentCampaigns'));
     }
 }

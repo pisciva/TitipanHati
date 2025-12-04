@@ -145,6 +145,6 @@ class DonationController extends Controller
             abort(403);
         }
 
-        return view('donations.show', compact('donation'));
+        return view('dashboard.user.donationsHistory', compact('donation'));
     }
 }

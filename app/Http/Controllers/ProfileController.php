@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Donation;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,5 +75,24 @@ class ProfileController extends Controller
         ]);
 
         return back()->with('success', 'Password berhasil diubah!');
+    }
+
+    public function riwayat(Request $request)
+    {
+        $user = Auth::user();
+
+        $status = $request->get('status');
+
+        $query = Donation::with(['campaign', 'items'])
+            ->where('user_id', $user->id)
+            ->orderBy('created_at', 'desc');
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $donations = $query->paginate(5);
+
+        return view('dashboard.user.riwayat', compact('donations', 'status'));
     }
 }
