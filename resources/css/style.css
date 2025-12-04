@@ -1,0 +1,101 @@
+/* ---------------------------------------------------
+   TAILWIND (required)
+--------------------------------------------------- */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------
+   CUSTOM STYLES UNTUK CAMPAIGN PAGE
+--------------------------------------------------- */
+
+/* Gradient progress bar (orange) */
+.progress-bar-orange {
+    background: linear-gradient(90deg, #ff7a18, #ff4b00);
+}
+
+/* Badge umum */
+.badge {
+    @apply text-xs px-2 py-1 rounded font-medium;
+}
+
+/* Badge putih transparan (days left, participants) */
+.badge-white {
+    @apply bg-white/90 text-gray-800 shadow-sm;
+}
+
+/* Badge FEATURED */
+.badge-featured {
+    @apply bg-orange-500 text-white flex items-center gap-1;
+}
+
+/* Badge TARGET TERCAPAI */
+.badge-target {
+    @apply bg-orange-600 text-white;
+}
+
+/* Badge COMPLETED */
+.badge-completed {
+    @apply bg-green-600 text-white;
+}
+
+/* Card shadow + rounded */
+.campaign-card {
+    @apply bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300;
+}
+
+.campaign-card:hover {
+    @apply shadow-lg scale-[1.01];
+}
+
+/* CTA button (Bantu Sekarang) */
+.btn-orange {
+    @apply bg-orange-500 hover:bg-orange-600 text-white py-2 rounded w-full text-center font-medium;
+}
+
+/* Completed button */
+.btn-gray {
+    @apply bg-gray-300 text-gray-700 py-2 rounded w-full text-center font-medium;
+}
+
+/* Numbers (Didapatkan, Target) */
+.number-label {
+    @apply text-xs text-gray-500;
+}
+
+.number-value {
+    @apply font-medium text-gray-800;
+}
+
+/* Divider bar between 'Didapatkan' & 'Target' */
+.num-divider {
+    @apply text-center text-gray-400;
+}
+
+/* Filter buttons */
+.filter-btn {
+    @apply px-3 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300 cursor-pointer;
+}
+
+/* Toggle switch (Tanggal Buka / Progres) */
+.toggle-container {
+    @apply bg-gray-100 rounded p-1 flex items-center;
+}
+
+.toggle-item {
+    @apply px-3 py-1 rounded text-sm cursor-pointer;
+}
+
+.toggle-item-active {
+    @apply bg-white shadow-sm;
+}
+
+/* Search bar */
+.search-input {
+    @apply border rounded-full pl-4 pr-10 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-orange-300;
+}
+
+/* Add campaign button */
+.add-campaign-btn {
+    @apply bg-orange-500 text-white px-4 py-2 rounded shadow-sm hover:bg-orange-600;
+}
