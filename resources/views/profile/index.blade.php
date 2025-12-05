@@ -1,120 +1,238 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-3xl mx-auto mt-10 bg-white shadow-md rounded-xl p-6">
+<div class="w-full flex">
 
-    <h2 class="text-2xl font-bold mb-6">Profil Saya</h2>
+    <!-- Sidebar kiri -->
+    <div class="w-1/4 border-r min-h-screen p-8 flex flex-col justify-between">
 
-    {{-- SUCCESS MESSAGE --}}
-    @if(session('success'))
-        <div class="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
-            {{ session('success') }}
+        <!-- Bagian atas -->
+        <div>
+            <div class="flex flex-col items-center mt-10">
+                <!-- Placeholder untuk Foto Profil -->
+                <div class="w-28 h-28 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-gray-400 text-sm">
+                    <!-- Anda bisa menambahkan gambar profil di sini -->
+                    <i class="fa-solid fa-camera text-2xl"></i>
+                </div>
+
+                <h2 class="text-xl font-semibold text-[#1d1d1d]">Halo, {{ Auth::user()->profile?->full_name ?? Auth::user()->name ?? 'Pengguna' }}</h2>
+                <p class="text-gray-500 text-base mt-1">{{ Auth::user()->email }}</p>
+            </div>
+
+        <div class="w-full flex justify-center mt-16">
+            <div class="space-y-4">
+                <!-- Link Baru: Dashboard -->
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
+                    <span class="w-6 flex justify-center">
+                        <i class="fa-solid fa-house text-[20px] leading-none"></i>
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+                
+                <!-- Link Aktif: Profil (tetap aktif karena ini halaman profil) -->
+                <a href="#" class="flex items-center gap-3 text-orange-600 font-semibold text-lg">
+                    <span class="w-6 flex justify-center">
+                        <i class="fa-solid fa-user text-[20px] leading-none"></i>
+                    </span>
+                    <span>Profil</span>
+                </a>
+
+                <!-- Link Non-aktif: Riwayat -->
+                <a href="{{ route('profile.riwayat') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
+                    <span class="w-6 flex justify-center">
+                        <i class="fa-solid fa-clock-rotate-left text-[20px] leading-none"></i>
+                    </span>
+                    <span>Riwayat</span>
+                </a>
+            </div>
         </div>
-    @endif
-
-    {{-- ERROR MESSAGE --}}
-    @if($errors->any())
-        <div class="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
-            <ul class="list-disc pl-5">
-                @foreach($errors->all() as $e)
-                    <li>{{ $e }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    {{-- USER INFO --}}
-    <div class="mb-8">
-        <p><strong>Email:</strong> {{ $user->email }}</p>
-        <p><strong>Role:</strong> {{ ucfirst($user->role) }}</p>
-        <p><strong>Google Account:</strong> {{ $user->google_id ? 'Ya' : 'Tidak' }}</p>
     </div>
 
-    <hr class="my-6">
-
-    {{-- PROFILE FORM --}}
-    <h3 class="text-xl font-semibold mb-4">Informasi Profil</h3>
-
-    <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
-        @csrf
-        @method('PUT')
-
-        <div>
-            <label class="block font-medium">Nama Lengkap</label>
-            <input type="text" name="full_name" class="w-full border rounded-lg p-2"
-                   value="{{ old('full_name', $profile->full_name ?? '') }}" required>
+        <!-- Bagian bawah (Logout) -->
+        <div class="mt-10 flex justify-center">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="px-4 py-2 w-40 border border-orange-500 text-orange-500 rounded-2xl hover:bg-orange-50">
+                    Keluar Akun
+                </button>
+            </form>
         </div>
+    </div>
 
-        <div>
-            <label class="block font-medium">Nomor Telepon</label>
-            <input type="text" name="phone_number" class="w-full border rounded-lg p-2"
-                   value="{{ old('phone_number', $profile->phone_number ?? '') }}" required>
-        </div>
+    <!-- Konten kanan -->
+    <div class="w-3/4 p-10">
+        {{-- FLASH MESSAGE GLOBAL (Update Profil & Password) --}}
+        @if(session('success'))
+            <div id="flash-message" class="fixed bottom-6 right-6 bg-[#E6F9EC] border border-[#A8E4B8] text-[#1D7A41] px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 opacity-0 transition-opacity duration-300">
 
-        <div>
-            <label class="block font-medium">Alamat</label>
-            <textarea name="default_address" class="w-full border rounded-lg p-2">{{ old('default_address', $profile->default_address ?? '') }}</textarea>
-        </div>
+                <!-- Icon hijau dalam lingkaran -->
+                <div class="w-6 h-6 rounded-full bg-[#1D7A41] flex items-center justify-center">
+                    <i class="fa-solid fa-check text-white text-sm"></i>
+                </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-                <label class="block font-medium">Kota</label>
-                <input type="text" name="default_city" class="w-full border rounded-lg p-2"
-                       value="{{ old('default_city', $profile->default_city ?? '') }}">
+                <!-- Text -->
+                <span class="font-medium">
+                    {{ session('success') }}
+                </span>
             </div>
 
-            <div>
-                <label class="block font-medium">Kecamatan</label>
-                <input type="text" name="default_district" class="w-full border rounded-lg p-2"
-                       value="{{ old('default_district', $profile->default_district ?? '') }}">
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const flashMessage = document.getElementById('flash-message');
+                    if (flashMessage) {
+                        // Fade in
+                        setTimeout(() => flashMessage.classList.remove('opacity-0'), 100);
+
+                        // Fade out and remove after 5 seconds
+                        setTimeout(() => {
+                            flashMessage.classList.add('opacity-0');
+                            setTimeout(() => flashMessage.remove(), 300); // Remove after transition
+                        }, 5000);
+                    }
+                });
+            </script>
+        @endif
+
+
+        {{-- FORM UPDATE PROFIL --}}
+        <form action="{{ route('profile.update') }}" method="POST" class="space-y-8">
+            @csrf
+            @method('PUT') <!-- Menggunakan metode PUT/PATCH untuk update -->
+
+            <!-- Informasi Pribadi -->
+            <div class="border p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Informasi Pribadi</h3>
+
+                <!-- Nama Lengkap -->
+                <div class="mb-4">
+                    <label for="full_name" class="block mb-2 text-sm font-regular text-[#FF4400]">Nama Lengkap</label>
+                    <input type="text" id="full_name" name="full_name" value="{{ old('full_name', $profile->full_name ?? '') }}"
+                        class="w-full p-3 border rounded-2xl @error('full_name') border-red-500 @enderror"
+                        placeholder="Masukkan Nama Lengkap Kamu">
+                    @error('full_name')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Nomor Telepon -->
+                <div class="mb-4">
+                    <label for="phone_number" class="block mb-2 text-sm font-regular text-[#FF4400]">Nomor Telepon</label>
+                    <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number', $profile->phone_number ?? '') }}"
+                        class="w-full p-3 border rounded-2xl @error('phone_number') border-red-500 @enderror"
+                        placeholder="(62) Nomor Telepon Anda">
+                    @error('phone_number')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Alamat Email (Non-editable) -->
+                <div>
+                    <label class="block mb-2 text-sm font-regular text-[#FF4400]">Alamat Email</label>
+                    <input disabled
+                           class="w-full p-3 border rounded-2xl bg-gray-100 text-gray-500"
+                           value="{{ Auth::user()->email }}">
+                </div>
             </div>
 
-            <div>
-                <label class="block font-medium">Kode Pos</label>
-                <input type="text" name="default_postal_code" class="w-full border rounded-lg p-2"
-                       value="{{ old('default_postal_code', $profile->default_postal_code ?? '') }}">
+            <!-- Alamat Default -->
+            <div class="border p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Alamat Default</h3>
+
+                <!-- Alamat Lengkap -->
+                <div class="mb-4">
+                    <label for="default_address" class="block mb-2 text-sm font-regular text-[#FF4400]">Alamat Lengkap</label>
+                    <input type="text" id="default_address" name="default_address" value="{{ old('default_address', $profile->default_address ?? '') }}"
+                        class="w-full p-3 border rounded-2xl @error('default_address') border-red-500 @enderror"
+                        placeholder="Masukkan Alamat Default Kamu">
+                    @error('default_address')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- Kota -->
+                    <div>
+                        <label for="default_city" class="block mb-2 text-sm font-regular text-[#FF4400]">Kota</label>
+                        <input type="text" id="default_city" name="default_city" value="{{ old('default_city', $profile->default_city ?? '') }}"
+                               class="w-full p-3 border rounded-2xl @error('default_city') border-red-500 @enderror">
+                        @error('default_city')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Kecamatan -->
+                    <div>
+                        <label for="default_district" class="block mb-2 text-sm font-regular text-[#FF4400]">Kecamatan</label>
+                        <input type="text" id="default_district" name="default_district" value="{{ old('default_district', $profile->default_district ?? '') }}"
+                               class="w-full p-3 border rounded-2xl @error('default_district') border-red-500 @enderror">
+                        @error('default_district')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Kode Pos -->
+                    <div>
+                        <label for="default_postal_code" class="block mb-2 text-sm font-regular text-[#FF4400]">Kode Pos</label>
+                        <input type="text" id="default_postal_code" name="default_postal_code" value="{{ old('default_postal_code', $profile->default_postal_code ?? '') }}"
+                               class="w-full p-3 border rounded-2xl @error('default_postal_code') border-red-500 @enderror">
+                        @error('default_postal_code')
+                            <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                </div>
             </div>
-        </div>
 
-        <div>
-            <label class="block font-medium">Catatan</label>
-            <textarea name="default_notes" class="w-full border rounded-lg p-2">{{ old('default_notes', $profile->default_notes ?? '') }}</textarea>
-        </div>
+            <button type="submit" class="px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition duration-150">
+                Simpan
+            </button>
+        </form>
 
-        <button type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-            Simpan Perubahan
-        </button>
-    </form>
+        <!-- Ubah Password -->
+        <form action="{{ route('profile.password') }}" method="POST" class="mt-12">
+            @csrf
+            @method('PUT') <!-- Menggunakan metode PUT/PATCH untuk update password -->
 
-    <hr class="my-10">
+            <div class="border p-6 rounded-xl shadow-sm">
+                <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Ubah Password</h3>
 
-    {{-- CHANGE PASSWORD --}}
-    <h3 class="text-xl font-semibold mb-4">Ganti Password</h3>
+                <!-- Password Lama -->
+                <div class="mb-4">
+                    <label for="current_password" class="block mb-2 text-sm font-regular text-[#FF4400]">Password Lama</label>
+                    <input type="password" id="current_password" name="current_password"
+                           class="w-full p-3 border rounded-2xl @error('current_password') border-red-500 @enderror"
+                           placeholder="Masukkan Password Lama">
+                    @error('current_password')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-    <form action="{{ route('profile.password') }}" method="POST" class="space-y-4">
-        @csrf
+                <!-- Password Baru -->
+                <div class="mb-4">
+                    <label for="password" class="block mb-2 text-sm font-regular text-[#FF4400]">Password Baru</label>
+                    <input type="password" id="password" name="password"
+                           class="w-full p-3 border rounded-2xl @error('password') border-red-500 @enderror"
+                           placeholder="Masukkan Password Baru">
+                    @error('password')
+                        <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-        <div>
-            <label class="block font-medium">Password Saat Ini</label>
-            <input type="password" name="current_password" class="w-full border rounded-lg p-2" required>
-        </div>
+                <!-- Konfirmasi Password Baru -->
+                <div class="mb-4">
+                    <label for="password_confirmation" class="block mb-2 text-sm font-regular text-[#FF4400]">Konfirmasi Password Baru</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation"
+                           class="w-full p-3 border rounded-2xl"
+                           placeholder="Konfirmasi Password Baru">
+                </div>
+            </div>
 
-        <div>
-            <label class="block font-medium">Password Baru</label>
-            <input type="password" name="password" class="w-full border rounded-lg p-2" required>
-        </div>
+            <button type="submit" class="mt-4 px-8 py-3 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition duration-150">
+                Ubah Password
+            </button>
+        </form>
 
-        <div>
-            <label class="block font-medium">Konfirmasi Password Baru</label>
-            <input type="password" name="password_confirmation" class="w-full border rounded-lg p-2" required>
-        </div>
-
-        <button type="submit"
-                class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg">
-            Ubah Password
-        </button>
-    </form>
+    </div>
 
 </div>
 @endsection

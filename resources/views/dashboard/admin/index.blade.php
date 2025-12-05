@@ -5,37 +5,44 @@
 
 @section('content')
 
-    <!-- Header Section (Halo, Admin & Date) -->
+    <!-- Header Section -->
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Halo, Admin</h1>
         {{-- Menggunakan Carbon untuk menampilkan tanggal lokal, cocok dengan format gambar --}}
         <p class="text-sm text-gray-500 mt-1">Today is {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
-    <!-- Search and Button Bar -->
+    <!-- Search and Button Bar - BAGIAN INI DIPERBAIKI -->
     <div class="mb-10 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-        <div class="flex-1 w-full sm:w-auto">
+        
+        <!-- Formulir Pencarian (Diperbaiki: Mengarahkan ke daftar Campaign untuk pencarian yang relevan) -->
+        <form method="GET" action="{{ route('admin.campaigns.index') }}" class="flex-1 w-full sm:w-auto">
             <div class="relative">
-                {{-- Input Pencarian - Styling disesuaikan: border-none, bg-gray-200 --}}
-                <input type="text" placeholder="Cari" 
+                {{-- Input Pencarian - Tambahkan name="search" dan value lama --}}
+                <input type="text" name="search" placeholder="Cari Campaign" 
+                       value="{{ request('search') }}" 
                        class="w-full pl-10 pr-4 py-3 border-none bg-gray-200 rounded-xl focus:ring-red-600 focus:border-red-600 text-base transition shadow-none" />
-                <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600"></i>
+                <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 p-0 m-0 border-none bg-transparent">
+                    <i class="fas fa-search w-4 h-4"></i>
+                </button>
             </div>
-        </div>
+        </form>
+        <!-- Akhir Formulir Pencarian -->
+        
         <a href="{{ route('admin.campaigns.create') }}" 
            class="w-full sm:w-auto px-6 py-3 bg-[#FF4400] text-white font-semibold rounded-xl hover:bg-[#EB3F00] transition duration-150 shadow-md flex items-center justify-center">
             <span>Tambah Campaign</span>
         </a>
     </div>
 
-    <!-- Stats Grid (Kartu Ringkasan) -->
+    <!-- Stats Grid Ringkasan -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         
         {{-- Card 1: Campaign Aktif --}}
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
-                    <i class="fas fa-hand-holding-heart w-6 h-6 text-gray-800"></i> {{-- Icon lebih gelap --}}
+                    <i class="fas fa-hand-holding-heart w-6 h-6 text-gray-800"></i>
                 </div>
                 <h2 class="text-base font-semibold text-[#FF4400]">Campaign Aktif</h2>
             </div>
@@ -98,7 +105,7 @@
 
     </section>
 
-    <!-- Recent Data Section (Tetap dipertahankan untuk memanfaatkan data dari controller) -->
+    <!-- Recent Data Section -->
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {{-- Recent Donations (2/3 width) --}}

@@ -24,22 +24,22 @@
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
                 <div class="flex items-center space-x-2">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-blue-600">
+                    <a href="{{ route('home') }}" class="text-2xl font-bold text-[#FF4400]">
                         TitipanHati
                     </a>
                 </div>
 
                 {{-- Navigation Links (Desktop) --}}
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-blue-600 transition">Beranda</a>
-                    <a href="{{ route('campaigns.index') }}" class="text-gray-700 hover:text-blue-600 transition">Campaign</a>
+                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-[#EB3F00] transition">Beranda</a>
+                    <a href="{{ route('campaigns.index') }}" class="text-gray-700 hover:text-[#EB3F00] transition">Campaign</a>
                 </div>
 
                 {{-- Auth Buttons --}}
                 <div class="flex items-center space-x-4">
                     @auth
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                            <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-[#EB3F00]">
                                 <i class="fas fa-user-circle text-2xl"></i>
                                 <span>{{ Auth::user()->profile->full_name ?? Auth::user()->email }}</span>
                                 <i class="fas fa-chevron-down text-sm"></i>
@@ -65,7 +65,7 @@
                                 <hr class="my-2">
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-[#FF4400] hover:bg-orange-50">
                                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
                                     </button>
                                 </form>

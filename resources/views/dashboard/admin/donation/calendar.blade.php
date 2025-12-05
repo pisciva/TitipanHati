@@ -201,12 +201,12 @@
     <!-- MODAL DETAIL DONASI (Tetap dipertahankan untuk tampilan harian spesifik) -->
     <div id="donation-details-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <h3 id="modal-title" class="text-xl font-bold mb-4 text-gray-800 border-b pb-2">Aktivitas Penjemputan Tanggal</h3>
+            <h3 id="modal-title" class="text-xl font-bold mb-4 text-[#1D1D1D] border-b pb-2">Aktivitas Penjemputan Tanggal: </h3>
             <div id="modal-content" class="space-y-4 max-h-96 overflow-y-auto pr-2">
                 <p class="text-gray-500">Memuat data...</p>
             </div>
             <button onclick="document.getElementById('donation-details-modal').classList.add('hidden')"
-                    class="mt-6 w-full py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition shadow-lg">
+                    class="mt-6 w-full py-2 bg-[#FF4400] text-white font-medium rounded-xl hover:bg-[#EB3F00] transition shadow-lg">
                 Tutup
             </button>
         </div>

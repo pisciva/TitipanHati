@@ -143,8 +143,7 @@ class DonationController extends Controller
 
         if ($donation->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
-        }
-
+        }        
         return view('dashboard.user.donationsHistory', compact('donation'));
     }
 }

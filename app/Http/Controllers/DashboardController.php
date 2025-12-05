@@ -35,6 +35,6 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('dashboard.user.index', compact('stats', 'recentDonations'));
+        return view('dashboard.user.dashboard', compact('stats', 'recentDonations'));
     }
 }

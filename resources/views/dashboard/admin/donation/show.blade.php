@@ -127,9 +127,9 @@
                     <div class="flex justify-between items-center p-3 border border-gray-100 rounded-xl bg-gray-50">
                         <div>
                             <p class="font-medium text-gray-900">{{ $item->name }}</p>
-                            <p class="text-xs text-gray-500 italic">Keterangan: {{ $item->notes ?? 'Tidak ada' }}</p>
+                            <p class="text-lg text-[#1D1D1D]">{{ $item->item_category ?? 'Tidak ada' }}</p>
                         </div>
-                        <span class="text-lg font-bold text-[#FF4400]">{{ $item->quantity }}x</span>
+                        <span class="text-lg font-bold text-[#FF4400]">{{ $item->quantity }} pcs</span>
                     </div>
                 @empty
                     <p class="text-gray-500 text-center py-4">Tidak ada barang yang terdaftar untuk donasi ini.</p>

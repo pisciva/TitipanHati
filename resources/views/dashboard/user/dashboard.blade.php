@@ -20,8 +20,8 @@
 
             <div class="w-full flex justify-center mt-16">
                 <div class="space-y-4">
-                    <!-- Link Non-aktif: Dashboard -->
-                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
+                    <!-- Link Aktif: Dashboard -->
+                    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 text-orange-600 font-semibold text-lg">
                         <span class="w-6 flex justify-center">
                             <i class="fa-solid fa-house text-[20px] leading-none"></i>
                         </span>
@@ -36,8 +36,8 @@
                         <span>Profil</span>
                     </a>
 
-                    <!-- Link Aktif: Riwayat (Halaman ini) -->
-                    <a href="{{ route('profile.riwayat') }}" class="flex items-center gap-3 text-orange-600 font-semibold text-lg">
+                    <!-- Link Non-aktif: Riwayat -->
+                    <a href="{{ route('profile.riwayat') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
                         <span class="w-6 flex justify-center">
                             <i class="fa-solid fa-clock-rotate-left text-[20px] leading-none"></i>
                         </span>
@@ -58,20 +58,58 @@
         </div>
     </div>
 
-    <!-- Konten kanan (Riwayat Donasi) -->
+    <!-- Konten kanan (Dashboard) -->
     <div class="w-3/4 p-10">
-        <!-- DIPERBAIKI: Judul sesuai dengan halaman Riwayat -->
-        <h1 class="text-3xl font-semibold text-[#1D1D1D] mb-8">Riwayat Donasi</h1>
+        <h1 class="text-3xl font-semibold text-[#1D1D1D] mb-8">Ringkasan Aktivitas</h1>
 
-        <!-- DIPERBAIKI: Menampilkan daftar lengkap riwayat donasi ($donations) -->
+        <!-- Statistik Donasi -->
+        <div class="grid grid-cols-3 gap-6 mb-12">
+
+            <!-- Total Donasi -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-orange-500">
+                <p class="text-sm font-medium text-gray-500">Total Donasi Anda</p>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="text-4xl font-bold text-[#1D1D1D]">{{ $stats['total_donations'] ?? 0 }}</span>
+                    <i class="fa-solid fa-hand-holding-heart text-orange-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Jumlah keseluruhan donasi yang tercatat.</p>
+            </div>
+
+            <!-- Total Barang -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-red-500">
+                <p class="text-sm font-medium text-gray-500">Total Barang Didonasikan</p>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="text-4xl font-bold text-[#1D1D1D]">{{ $stats['total_items'] ?? 0 }}</span>
+                    <i class="fa-solid fa-box-open text-red-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Total unit barang yang Anda berikan.</p>
+            </div>
+
+            <!-- Donasi Aktif -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-green-500">
+                <p class="text-sm font-medium text-gray-500">Donasi Menunggu Dijemput</p>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="text-4xl font-bold text-[#1D1D1D]">{{ $stats['active_donations'] ?? 0 }}</span>
+                    <i class="fa-solid fa-truck-ramp-box text-green-500 text-2xl"></i>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Donasi yang sedang dalam proses penjemputan.</p>
+            </div>
+        </div>
+
+        <!-- Donasi Terbaru -->
+        <!-- DIPERBAIKI: Menghapus angka '5' agar dinamis -->
+        <h2 class="text-2xl font-semibold text-[#1D1D1D] mb-4">Donasi Terbaru</h2>
+
         <div class="bg-white p-6 rounded-xl shadow-lg overflow-x-auto">
-            @if(isset($donations) && $donations->isNotEmpty())
+            @if(isset($recentDonations) && $recentDonations->isEmpty())
+                <div class="text-center py-10 text-gray-500">
+                    <i class="fa-solid fa-sack-dollar text-4xl mb-3"></i>
+                    <p>Anda belum memiliki riwayat donasi.</p>
+                </div>
+            @else
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                ID Donasi
-                            </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Tanggal
                             </th>
@@ -79,28 +117,22 @@
                                 Kampanye
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Barang (Total)
+                                Status
                             </th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status
+                                Detail Barang
                             </th>
                             <th scope="col" class="px-6 py-3"></th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($donations as $donation)
+                        @foreach($recentDonations as $donation)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-700">
-                                #{{ $donation->id }}
-                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                 {{ $donation->created_at->format('d M Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                 {{ $donation->campaign->title ?? 'N/A' }}
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                {{ $donation->items->sum('quantity') }} unit
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @php
@@ -116,20 +148,18 @@
                                     {{ str_replace('_', ' ', ucfirst($donation->status)) }}
                                 </span>
                             </td>
+                            <td class="px-6 py-4 text-sm text-gray-500">
+                                @foreach($donation->items as $item)
+                                    {{ $item->quantity }}x {{ $item->item_category }}@if(!$loop->last), @endif
+                                @endforeach
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <!-- Link ini sudah mengarah ke route donations.show, yang memicu error view di controller Anda -->
-                                <a href="{{ route('donations.show', $donation->id) }}" class="text-orange-600 hover:text-orange-900">Lihat Detail</a>
+                                <a href="{{ route('donations.show', $donation->id) }}" class="text-orange-600 hover:text-orange-900">Lihat</a>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-            @else
-                <div class="text-center py-10 text-gray-500">
-                    <i class="fa-solid fa-box-open text-4xl mb-3"></i>
-                    <p class="text-lg font-medium">Belum ada riwayat donasi.</p>
-                    <p class="text-sm mt-1">Saatnya berdonasi dan melihat jejak kebaikan Anda di sini!</p>
-                </div>
             @endif
         </div>
     </div>
