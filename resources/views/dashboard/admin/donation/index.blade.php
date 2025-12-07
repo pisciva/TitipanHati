@@ -83,7 +83,7 @@
             <div class="col-span-full md:col-span-4 flex space-x-2 mt-2">
                 <button type="submit" 
                         class="flex-shrink-0 px-4 py-2 bg-[#FF4400] text-white font-medium rounded-xl hover:bg-[#EB3F00] transition duration-150">
-                    <i class="fas fa-search mr-1"></i> Terapkan Filter
+                    <i class="fas fa-filter mr-1"></i> Terapkan Filter
                 </button>
                 <a href="{{ route('admin.donations.index') }}" 
                    class="flex-shrink-0 px-4 py-2 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-100 transition duration-150">
@@ -117,11 +117,11 @@
                         <tr class="group hover:bg-gray-50 cursor-pointer relative">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('admin.donations.show', $donation->id) }}" class="absolute inset-0"></a>
-                                <div class="text-sm font-medium text-gray-900 group-hover:text-red-600 transition">#{{ $donation->id }}</div>
+                                <div class="text-sm font-medium text-gray-900 group-hover:text-[#EB3F00] transition">#{{ $donation->id }}</div>
                                 <div class="text-xs text-gray-500">Pick-up: {{ $donation->pickup_date->format('d M Y') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                <div class="font-medium">{{ $donation->user->name ?? 'Anonim' }}</div>
+                                <div class="font-medium">{{ $donation->donor_name ?? 'Anonim' }}</div>
                                 <div class="text-xs text-gray-500">{{ $donation->contact_phone }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -172,5 +172,34 @@
     <div class="mt-6">
         {{ $donations->links() }}
     </div>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateFrom = document.getElementById('date_from');
+            const dateTo = document.getElementById('date_to');
+
+            const setMinDateTo = (fromValue) => {
+                dateTo.min = fromValue;
+                
+                if (dateTo.value && fromValue && dateTo.value < fromValue) {
+                    dateTo.value = fromValue; 
+                }
+            };
+            
+            dateFrom.addEventListener('change', function() {
+                setMinDateTo(this.value);
+            });
+            
+            dateTo.addEventListener('change', function() {
+                if (dateFrom.value && this.value < dateFrom.value) {
+                    alert('Kesalahan Filter: "Sampai Tanggal" tidak boleh sebelum "Dari Tanggal". Nilai akan disesuaikan.');
+                    this.value = dateFrom.value;
+                }
+            });
+
+            if (dateFrom.value) {
+                setMinDateTo(dateFrom.value);
+            }
+        });
+    </script>
 
 @endsection

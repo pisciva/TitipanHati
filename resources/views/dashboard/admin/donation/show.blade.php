@@ -66,23 +66,27 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
                     <p class="text-gray-500 font-medium">Tanggal Dibuat:</p>
-                    <p class="text-gray-900 font-semibold">{{ $donation->created_at->translatedFormat('d F Y H:i') }}</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->created_at->translatedFormat('d F Y H:i') }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Campaign Tujuan:</p>
-                    <p class="text-[#FF4400] font-semibold">{{ $donation->campaign->title ?? 'N/A' }}</p>
+                    <p class="text-[#FF4400] font-medium">{{ $donation->campaign->title ?? 'N/A' }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Tanggal Penjemputan:</p>
-                    <p class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($donation->pickup_date)->translatedFormat('l, d F Y') }}</p>
+                    <p class="text-gray-900 font-medium">{{ \Carbon\Carbon::parse($donation->pickup_date)->translatedFormat('l, d F Y') }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Waktu Penjemputan:</p>
-                    <p class="text-gray-900 font-semibold">{{ $donation->pickup_time }}</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->pickup_time_slot }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Tipe Pengiriman:</p>
-                    <p class="text-gray-900 font-semibold">{{ $donation->delivery_type == 'pickup' ? 'Penjemputan' : 'Kirim Sendiri' }}</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->delivery_type == 'pickup' ? 'Penjemputan' : 'Kirim Sendiri' }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500 font-medium">Catatan Penjemputan:</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->pickup_notes ?? 'Tidak ada catatan' }}</p>
                 </div>
                 <div class="md:col-span-2">
                     <p class="text-gray-500 font-medium">Alamat Penjemputan:</p>
@@ -101,7 +105,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                 <div>
                     <p class="text-gray-500 font-medium">Nama Donatur:</p>
-                    <p class="text-gray-900 font-semibold">{{ $donation->user->name ?? 'Anonim' }}</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->donor_name ?? 'Anonim' }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Email:</p>
@@ -109,11 +113,11 @@
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Nomor Telepon:</p>
-                    <p class="text-gray-900 font-semibold">{{ $donation->contact_phone }}</p>
+                    <p class="text-gray-900 font-medium">{{ $donation->donor_phone }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 font-medium">Kode Pos:</p>
-                    <p class="text-gray-900">{{ $donation->postal_code }}</p>
+                    <p class="text-gray-900">{{ $donation->pickup_postal_code }}</p>
                 </div>
             </div>
         </div>

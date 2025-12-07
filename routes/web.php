@@ -82,7 +82,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     
 
     Route::resource('campaigns', AdminCampaignController::class);
-    
+    Route::get('campaigns/get-cities/{province_id}', [AdminCampaignController::class, 'getCities'])->name('campaigns.getCities');
 
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
     

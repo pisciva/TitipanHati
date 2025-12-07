@@ -10,7 +10,7 @@
             <h1 class="text-3xl font-semibold text-[#1D1D1D]">Edit Campaign</h1>
             <p class="text-sm text-gray-500 mt-1">Mengubah detail untuk campaign: <span class="font-medium text-gray-700">{{ $campaign->title }}</span></p>
         </div>
-        <a href="{{ route('admin.campaigns.show', $campaign->id) }}" class="text-sm font-medium text-red-600 hover:text-red-700 transition flex items-center">
+        <a href="{{ route('admin.campaigns.show', $campaign->id) }}" class="text-sm font-medium text-[#FF4400] hover:text-[#EB3F00] transition flex items-center">
             <i class="fas fa-eye mr-2"></i> Lihat Detail
         </a>
     </div>
@@ -121,7 +121,7 @@
 
                     {{-- Deadline --}}
                     <div>
-                        <label for="deadline" class="block text-sm font-medium text-gray-700 mb-1">Batas Waktu Pengumpulan</label>
+                        <label for="deadline" class="block text-sm font-medium text-gray-700 mb-1">Batas Waktu Campaign</label>
                         {{-- Format tanggal untuk input type="date" harus YYYY-MM-DD --}}
                         <input type="date" name="deadline" id="deadline" value="{{ old('deadline', $campaign->deadline->format('Y-m-d')) }}" required
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
@@ -150,26 +150,39 @@
             </div>
 
             <!-- Section 3: Location -->
-            <div class="space-y-6">
+                        <div class="space-y-6">
                 <h3 class="text-xl font-semibold text-gray-800">Informasi Lokasi</h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- Province --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
+                    
+                    {{-- 1. Province (Dropdown) --}}
                     <div>
                         <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
-                        <input type="text" name="province" id="province" value="{{ old('province', $campaign->province) }}" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
+                        <select name="province" id="province" required
+                                class="w-full px-4 py-3 border ... transition">
+                            <option value="" disabled selected>Pilih Provinsi</option>
+                            {{-- ... PHP loop untuk provinces ... --}}
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province->id }}" {{ old('province') == $province->id ? 'selected' : '' }}>
+                                    {{ $province->name }}
+                                </option>
+                            @endforeach
+                        </select>
                         @error('province')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
-
-                    {{-- City --}}
+                    
+                    {{-- 2. City/Regency (Dropdown) --}}
                     <div>
                         <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Kota/Kabupaten</label>
-                        <input type="text" name="city" id="city" value="{{ old('city', $campaign->city) }}" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
+                        <select name="city" id="city" required disabled
+                                class="w-full px-4 py-3 border ... transition bg-gray-50 disabled:cursor-not-allowed">
+                            <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                            {{-- Opsi akan diisi oleh JavaScript --}}
+                        </select>
                         @error('city')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
-                </div>
+                    
+                </div> 
             </div>
 
             <!-- Action Button -->
@@ -182,5 +195,64 @@
             </div>
         </form>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const provinceSelect = document.getElementById('province');
+            const citySelect = document.getElementById('city');
+            const oldCityName = "{{ old('city') }}"; 
+            
+            const loadCities = (provinceId, cityToSelectName = null) => {
+                citySelect.innerHTML = '<option value="" disabled selected>Memuat Kota...</option>';
+                citySelect.disabled = true;
+
+                if (provinceId) {
+                    // Panggil route AJAX
+                    const url = `{{ route('admin.campaigns.getCities', '') }}/${provinceId}`; 
+
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            citySelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+                            
+                            data.forEach(city => {
+                                const option = document.createElement('option');
+                                // Simpan nama kota di form
+                                option.value = city.name; 
+                                option.textContent = city.name;
+                                
+                                if (city.name === cityToSelectName) {
+                                    option.selected = true;
+                                }
+                                
+                                citySelect.appendChild(option);
+                            });
+
+                            citySelect.disabled = false;
+                        })
+                        .catch(error => {
+                            citySelect.innerHTML = '<option value="" disabled selected>Gagal memuat kota</option>';
+                            console.error('Error fetching cities:', error);
+                        });
+                }
+            };
+
+            // Event Listener: Ketika Provinsi diubah
+            provinceSelect.addEventListener('change', function() {
+                loadCities(this.value);
+            });
+
+            // Inisialisasi: Jika ada nilai provinsi yang sudah terpilih 
+            const initialProvinceId = provinceSelect.value;
+            if (initialProvinceId) {
+                loadCities(initialProvinceId, oldCityName);
+            }
+        });
+    </script>
 
 @endsection

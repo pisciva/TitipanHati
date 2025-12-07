@@ -37,8 +37,8 @@
 
     <!-- Stats Grid Ringkasan -->
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        
-        {{-- Card 1: Campaign Aktif --}}
+    
+    {{-- Card 1: Campaign Aktif --}}
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
@@ -48,30 +48,46 @@
             </div>
             <div class="flex items-center justify-between">
                 <p class="text-4xl font-bold text-gray-900">{{ $stats['active_campaigns'] ?? 0 }}</p>
-                {{-- Badge Persentase (Placeholder Hijau) --}}
-                <div class="flex items-center text-xs font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full">
-                    <i class="fas fa-arrow-up text-xs mr-1"></i> 
-                    12%
+                
+                {{-- BADGE DINAMIS UNTUK CAMPAIGN AKTIF --}}
+                @php
+                    $change = $stats['active_campaign_change'] ?? 0;
+                    $isPositive = $change >= 0;
+                    $class = $isPositive ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    $icon = $isPositive ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+                @endphp
+                <div class="flex items-center text-xs font-bold px-3 py-1 rounded-full {{ $class }}">
+                    <i class="{{ $icon }} text-xs mr-1"></i> 
+                    {{ abs($change) }}%
                 </div>
+                {{-- AKHIR BADGE DINAMIS --}}
             </div>
         </div>
 
-        {{-- Card 2: Donasi Tersalurkan --}}
+    {{-- Card 2: Donasi Tersalurkan --}}
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
-                    <i class="fas fa-box w-6 h-6 text-gray-800"></i> {{-- Icon lebih gelap --}}
+                    <i class="fas fa-box w-6 h-6 text-gray-800"></i>
                 </div>
                 <h2 class="text-base font-semibold text-[#FF4400]">Donasi Tersalurkan</h2>
             </div>
             <div class="flex items-center justify-between">
-                {{-- Data total donasi (transaksi), ditambahkan '+' untuk visual fidelity --}}
-                <p class="text-4xl font-bold text-gray-900">{{ $stats['total_donations'] ?? 0 }} +</p>
-                {{-- Badge Persentase (Placeholder Merah) --}}
-                <div class="flex items-center text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-full">
-                    <i class="fas fa-arrow-down text-xs mr-1"></i> 
-                    12%
+                <p class="text-4xl font-bold text-gray-900">{{ $stats['total_donations'] ?? 0 }}</p>
+                
+                {{-- BADGE DINAMIS UNTUK DONASI TERSALURKAN --}}
+                @php
+                    $change = $stats['total_donations_change'] ?? 0;
+                    // Kenaikan donasi dianggap positif, penurunan dianggap negatif
+                    $isPositive = $change >= 0;
+                    $class = $isPositive ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
+                    $icon = $isPositive ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
+                @endphp
+                <div class="flex items-center text-xs font-bold px-3 py-1 rounded-full {{ $class }}">
+                    <i class="{{ $icon }} text-xs mr-1"></i> 
+                    {{ abs($change) }}%
                 </div>
+                {{-- AKHIR BADGE DINAMIS --}}
             </div>
         </div>
 
@@ -128,7 +144,7 @@
                     <tbody class="bg-white divide-y divide-gray-100 text-sm">
                         @forelse ($recentDonations as $donation)
                             <tr class="hover:bg-gray-50 transition duration-150 cursor-pointer" onclick="window.location='{{ route('admin.donations.show', $donation->id) }}'">
-                                <td class="px-4 py-3 text-gray-800 font-medium">{{ $donation->user->name ?? 'Pengguna Dihapus' }}</td>
+                                <td class="px-4 py-3 text-gray-800 font-medium">{{ $donation->donor_name ?? 'Pengguna Dihapus' }}</td>
                                 <td class="px-4 py-3 text-gray-600">{{ $donation->campaign->title ?? 'Campaign Dihapus' }}</td>
                                 <td class="px-4 py-3">
                                     @php
@@ -167,7 +183,7 @@
         {{-- Urgent Campaigns (1/3 width) --}}
         <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-semibold text-gray-900 mb-6 flex justify-between items-center">
-                <span>Campaign Mendesak</span>
+                <span>Campaign Segera Berakhir</span>
                 <a href="{{ route('admin.campaigns.index') }}" class="text-sm font-medium text-[#FF4400] hover:text-[#EB3F00] transition">Semua Campaign &rarr;</a>
             </h2>
             
@@ -184,9 +200,9 @@
                                     {{ $campaign->deadline->diffForHumans() }}
                                 </span>
                             </p>
-                            <p class="text-sm font-bold text-gray-900">
+                            <p class="text-sm font-bold text-[#FF4400]">
                                 {{-- Placeholder untuk total barang terkumpul atau target --}}
-                                {{ $campaign->target_goal ?? 'N/A' }} Target
+                                {{ $campaign->target_quantity ?? 'N/A' }} Unit
                             </p>
                         </div>
                     </li>
