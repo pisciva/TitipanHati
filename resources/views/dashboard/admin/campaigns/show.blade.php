@@ -120,7 +120,10 @@
 
                 <div class="flex justify-between items-center border-b pb-2">
                     <span class="text-sm font-medium text-gray-500">Lokasi</span>
-                    <span class="text-sm font-medium text-gray-800">{{ $campaign->city }}, {{ $campaign->province }}</span>
+                    <span class="text-sm font-medium text-gray-800">
+                        {{ \Illuminate\Support\Str::title(strtolower($campaign->city)) }},
+                        {{ \Illuminate\Support\Str::title(strtolower($campaign->province)) }}
+                    </span>
                 </div>
                 
                 <div>

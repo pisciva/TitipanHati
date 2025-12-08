@@ -108,11 +108,17 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($campaigns as $campaign)
                         <tr class="group hover:bg-gray-50 cursor-pointer relative">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <a href="{{ route('admin.campaigns.show', $campaign->id) }}" class="absolute inset-0"></a>
-                                <div class="text-sm font-medium text-gray-900 group-hover:text-[#FF4400] transition">{{ $campaign->title }}</div>
-                                <div class="text-xs text-gray-500">{{ $campaign->city }}, {{ $campaign->province }}</div>
-                            </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{{ route('admin.campaigns.show', $campaign->id) }}" class="absolute inset-0"></a>
+                            
+                            <div class="text-sm font-medium text-gray-900 group-hover:text-[#FF4400] transition">
+                                {{ $campaign->title }}
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                {{ \Illuminate\Support\Str::title(strtolower($campaign->city)) }},
+                                {{ \Illuminate\Support\Str::title(strtolower($campaign->province)) }}
+                            </div>
+                        </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                 {{ $campaign->organization->name ?? 'N/A' }}
                             </td>

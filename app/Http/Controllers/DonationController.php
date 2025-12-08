@@ -131,7 +131,7 @@ class DonationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('donations.history', compact('donations'));
+        return view('dashboard.user.riwayat', compact('donations'));
     }
 
 
