@@ -29,12 +29,12 @@
                             <input type="email" name="email" id="email" value="{{ old('email') }}"
                                 placeholder="Masukkan email kamu"
                                 class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-[#E50000] @enderror">
-                            
+
                             {{-- Backend Error --}}
                             @error('email')
                                 <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
                             @enderror
-                            
+
                             {{-- Frontend Error --}}
                             <p id="emailError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                         </div>
@@ -44,15 +44,14 @@
                             <label for="password" class="block text-sm font-semibold text-[#FF4400] mb-1">
                                 Kata Sandi
                             </label>
-                            <input type="password" name="password" id="password"
-                                placeholder="Masukkan Kata Sandi kamu"
+                            <input type="password" name="password" id="password" placeholder="Masukkan Kata Sandi kamu"
                                 class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('password') border-[#E50000] @enderror">
-                            
+
                             {{-- Backend Error --}}
                             @error('password')
                                 <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
                             @enderror
-                            
+
                             {{-- Frontend Error --}}
                             <p id="passwordError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                         </div>
@@ -130,7 +129,8 @@
             {{-- Content Overlay --}}
             <div class="relative h-full flex flex-col items-center justify-center text-white p-12 rounded-3xl">
                 <div class="flex flex-col gap-2 text-center items-center justify-center italic">
-                    <p class="text-sm ">"Kebaikan sekecil apa pun yang kita berikan, bisa jadi sebesar harapan bagi orang lain!"</p>
+                    <p class="text-sm ">"Kebaikan sekecil apa pun yang kita berikan, bisa jadi sebesar harapan bagi orang
+                        lain!"</p>
                     <img src="/images/logo-titiphanhati-darkmode.svg" alt="">
                 </div>
             </div>
@@ -139,20 +139,20 @@
 
     {{-- JavaScript Validation --}}
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             // Reset semua error message
             const emailError = document.getElementById('emailError');
             const passwordError = document.getElementById('passwordError');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
-            
+
             emailError.classList.add('hidden');
             passwordError.classList.add('hidden');
             emailInput.classList.remove('border-[#E50000]');
             passwordInput.classList.remove('border-[#E50000]');
-            
+
             let isValid = true;
-            
+
             // Validasi Email
             const email = emailInput.value.trim();
             if (email === '') {
@@ -170,7 +170,7 @@
                     isValid = false;
                 }
             }
-            
+
             // Validasi Password
             const password = passwordInput.value;
             if (password === '') {
@@ -184,23 +184,23 @@
                 passwordInput.classList.add('border-[#E50000]');
                 isValid = false;
             }
-            
+
             // Cegah submit jika tidak valid
             if (!isValid) {
                 e.preventDefault();
             }
         });
-        
+
         // Hapus error message saat user mulai mengetik
-        document.getElementById('email').addEventListener('input', function() {
+        document.getElementById('email').addEventListener('input', function () {
             const emailError = document.getElementById('emailError');
             if (!emailError.classList.contains('hidden')) {
                 emailError.classList.add('hidden');
                 this.classList.remove('border-[#E50000]');
             }
         });
-        
-        document.getElementById('password').addEventListener('input', function() {
+
+        document.getElementById('password').addEventListener('input', function () {
             const passwordError = document.getElementById('passwordError');
             if (!passwordError.classList.contains('hidden')) {
                 passwordError.classList.add('hidden');

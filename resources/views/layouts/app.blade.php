@@ -16,11 +16,13 @@
     {{-- Font Awesome for icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <link rel="icon" href="/images/favicon.ico">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
-    @stack('styles')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-50">
@@ -30,16 +32,17 @@
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
                 <div class="flex items-center space-x-2">
-                    <a href="{{ route('home') }}" class="text-2xl font-bold text-[#FF4400]">
-                        TitipanHati
+                    <a href="{{ route('home') }}">
+                        <img src="/images/logo-titiphanhati-lightmode.svg" class="w-40" alt="">
                     </a>
                 </div>
 
                 {{-- Navigation Links (Desktop) --}}
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-[#EB3F00] transition">Beranda</a>
-                    <a href="{{ route('campaigns.index') }}"
-                        class="text-gray-700 hover:text-[#EB3F00] transition">Campaign</a>
+                <div class="flex gap-8">
+                    <a href="{{ route('home') }}" class="hover:text-[#EB3F00] hover:underline">Beranda</a>
+                    <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Campaign</a>
+                    <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Cara Kerja</a>
+                    <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Tentang Kami</a>
                 </div>
 
                 {{-- Auth Buttons --}}

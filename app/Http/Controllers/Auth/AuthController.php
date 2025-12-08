@@ -35,14 +35,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            
+
             $user = Auth::user();
-            
+
 
             if ($user->role === 'admin') {
                 return redirect()->intended('/admin/dashboard');
             }
-            
+
             return redirect()->intended('/dashboard');
         }
 
@@ -76,12 +76,8 @@ class AuthController extends Controller
             'is_verified' => false,
         ]);
 
-
-        Auth::login($user);
-
-        return redirect('/dashboard')->with('success', 'Registrasi berhasil! Silakan lengkapi profil Anda.');
+        return redirect()->route('login')->with('success', 'Akun berhasil dibuat! Silakan login.');
     }
-
 
     public function logout(Request $request)
     {
@@ -103,7 +99,7 @@ class AuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
-            
+
 
             $user = User::where('email', $googleUser->email)->first();
 
