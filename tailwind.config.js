@@ -1,4 +1,3 @@
-
 export default {
     content: [
         "./resources/**/*.blade.php",
@@ -8,7 +7,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                pj: ["PlusJakartaSans", "sans-serif"],
+                pj: ['"Plus Jakarta Sans"', "sans-serif"],
             },
         },
     },

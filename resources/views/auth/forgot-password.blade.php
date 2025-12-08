@@ -1,49 +1,104 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Lupa Password - TitipanHati')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        {{-- Header --}}
-        <div class="text-center">
-            <h2 class="text-3xl font-bold text-gray-900">
-                Lupa Password?
-            </h2>
-            <p class="mt-2 text-sm text-gray-600">
-                Masukkan email Anda dan kami akan mengirimkan link reset password
-            </p>
-        </div>
+    <div class="flex min-h-screen p-6 items-center justify-center bg-white">
+        <div class="w-full max-w-lg space-y-16">
+            {{-- Logo --}}
+            <div class="flex justify-center">
+                <img src="/images/logo-titiphanhati-lightmode.svg" alt="TitipanHati Logo" class="w-40">
+            </div>
 
-        {{-- Form --}}
-        <div class="bg-white shadow-lg rounded-lg p-8">
-            <form method="POST" action="{{ route('password.email') }}" class="space-y-6">
-                @csrf
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        Email
-                    </label>
-                    <input type="email" name="email" id="email" required
-                           value="{{ old('email') }}"
-                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 @error('email') border-red-500 @enderror">
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
+            {{-- Content Container --}}
+            <div class="space-y-8 border border-[#D3D3D3] p-12 rounded-3xl">
+                {{-- Header --}}
+                <div class="text-center">
+                    <h2 class="text-3xl font-bold text-[#1D1D1D] mb-2">Lupa Kata Sandi</h2>
+                    <p class="text-sm text-[#626262]">
+                        Jangan khawatir, kami akan membantu Anda mengatur ulang kata sandi!
+                    </p>
                 </div>
 
-                <button type="submit" 
-                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-                    Kirim Link Reset Password
-                </button>
-            </form>
+                {{-- Form --}}
+                <form method="POST" action="{{ route('password.email') }}" id="forgotPasswordForm" novalidate>
+                    @csrf
 
-            <div class="mt-6 text-center text-sm">
-                <a href="{{ route('login') }}" class="font-medium text-blue-600 hover:text-blue-500">
-                    <i class="fas fa-arrow-left mr-1"></i> Kembali ke login
+                    {{-- Email Field --}}
+                    <div>
+                        <label for="email" class="block text-sm font-semibold text-[#FF4400] mb-1">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
+                            placeholder="Masukkan email kamu"
+                            class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-[#E50000] @enderror">
+                        
+                        {{-- Backend Error --}}
+                        @error('email')
+                            <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
+                        @enderror
+                        
+                        {{-- Frontend Error --}}
+                        <p id="emailError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
+                    </div>
+
+                    {{-- Submit Button --}}
+                    <button type="submit"
+                        class="w-full mt-6 py-3 px-4 bg-[#FF4400] hover:bg-[#DE3B00] text-white font-semibold rounded-full">
+                        Kirim Link Reset Password
+                    </button>
+                </form>
+            </div>
+
+            {{-- Back Link --}}
+            <div class="mt-6">
+                <a href="{{ route('login') }}" class="text-sm text-[#FF4400] font-bold flex gap-2">
+                    <img src="/images/back.svg" class="w-4" alt="">
+                    Kembali
                 </a>
             </div>
         </div>
     </div>
-</div>
+
+    {{-- JavaScript Validation --}}
+    <script>
+        document.getElementById('forgotPasswordForm').addEventListener('submit', function(e) {
+            const emailError = document.getElementById('emailError');
+            const emailInput = document.getElementById('email');
+            
+            emailError.classList.add('hidden');
+            emailInput.classList.remove('border-[#E50000]');
+            
+            let isValid = true;
+            
+            // Validasi Email
+            const email = emailInput.value.trim();
+            if (email === '') {
+                emailError.textContent = 'Email harus diisi';
+                emailError.classList.remove('hidden');
+                emailInput.classList.add('border-[#E50000]');
+                isValid = false;
+            } else {
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailPattern.test(email)) {
+                    emailError.textContent = 'Alamat email tidak valid';
+                    emailError.classList.remove('hidden');
+                    emailInput.classList.add('border-[#E50000]');
+                    isValid = false;
+                }
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+        
+        document.getElementById('email').addEventListener('input', function() {
+            const emailError = document.getElementById('emailError');
+            if (!emailError.classList.contains('hidden')) {
+                emailError.classList.add('hidden');
+                this.classList.remove('border-[#E50000]');
+            }
+        });
+    </script>
 @endsection
