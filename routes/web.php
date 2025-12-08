@@ -94,8 +94,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     // Campaign management
     Route::resource('campaigns', AdminCampaignController::class);
+    Route::get('campaigns/get-cities/{province_id}', [AdminCampaignController::class, 'getCities'])->name('campaigns.getCities');
 
-    // Donations
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
     Route::put('/donations/{id}/status', [AdminDonationController::class, 'updateStatus'])->name('donations.updateStatus');
 

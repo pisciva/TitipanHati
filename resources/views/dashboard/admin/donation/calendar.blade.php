@@ -41,8 +41,8 @@
 
     <!-- Header (Sesuai Konsep Desain) -->
     <div class="mb-6">
-        <h1 class="text-2xl font-semibold text-[#1D1D1D]">Manajemen Donasi</h1>
-        <p class="text-sm text-gray-500">Today is {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+        <h1 class="text-2xl font-semibold text-[#1D1D1D]">Tanggal Penjemputan</h1>
+        <p class="text-sm text-gray-500">Hari ini {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
 
@@ -182,7 +182,7 @@
                                 </p>
                                 <p class="text-sm text-gray-600">
                                     Donasi {{ $donation->items->count() }} Jenis Barang
-                                    <span class="text-xs text-gray-400 ml-2">| Penjemputan: {{ \Carbon\Carbon::parse($donation->pickup_date)->translatedFormat('F d, Y') }}</span>
+                                    <span class="text-s text-gray-500 ml-2">| Penjemputan: {{ \Carbon\Carbon::parse($donation->pickup_date)->translatedFormat('F d, Y') }}</span>
                                 </p>
                             </div>
                         </div>

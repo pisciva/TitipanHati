@@ -91,10 +91,6 @@
         <div class="container mx-auto px-4">
             {{-- Section Header --}}
             <div class="text-center mb-12" data-aos="fade-up">
-                <div class="inline-flex items-center bg-orange-100 rounded-full px-4 py-2 mb-4">
-                    <i class="fas fa-fire text-orange-600 mr-2"></i>
-                    <span class="text-sm font-semibold text-orange-800">Campaign Pilihan</span>
-                </div>
                 <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Campaign Aktif</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">
                     Pilih campaign yang sesuai dengan hati Anda dan mulai berbagi kebaikan hari ini

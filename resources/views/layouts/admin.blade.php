@@ -14,7 +14,13 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    {{-- Konfigurasi Tailwind untuk warna kustom --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <script>
         tailwind.config = {
             theme: {
@@ -42,15 +48,14 @@
           }
       }">
     <div class="flex h-screen">
-        {{-- Sidebar - Diperbarui ke tema Putih/Merah --}}
         <aside :class="sidebarOpen ? 'w-64' : 'w-20'" 
                class="bg-white border-r border-gray-200 text-gray-800 transition-all duration-300 flex flex-col shadow-lg">
             
-            {{-- Logo/Judul Sidebar (DIUBAH: Mengatur posisi tombol dan logo) --}}
+            {{-- Logo/Judul Sidebar --}}
             <div class="p-4 flex-shrink-0 border-b border-gray-200 h-16 flex items-center"
                  :class="sidebarOpen ? 'justify-start space-x-3' : 'justify-center'">
                 
-                {{-- TOMBOL PENUTUP (PANAH KIRI) saat sidebar TERBUKA (di kiri logo) --}}
+                {{-- Tombol Penutup --}}
                 <button @click="toggleSidebar()" 
                         x-show="sidebarOpen"
                         class="p-2 text-primary rounded-full hover:bg-gray-100 transition focus:outline-none -ml-2">
@@ -58,11 +63,12 @@
                 </button>
 
                 {{-- Judul "TitipanHati" saat sidebar TERBUKA --}}
-                <h2 x-show="sidebarOpen" class="text-xl font-extrabold text-gray-900 leading-none">
-                    <span class="text-primary">Titipan</span>Hati
-                </h2>
+                <img x-show="sidebarOpen" 
+                        src="{{ asset('Logo.svg') }}" 
+                        alt="Logo TitipanHati" 
+                        class="h-full max-h-8 w-auto">
                 
-                {{-- TOMBOL PEMBUKA (BURGER BAR) saat sidebar TERTUTUP (center) --}}
+                {{-- Tombol Pembuka Burger Bar --}}
                 <button @click="toggleSidebar()" 
                         x-show="!sidebarOpen"
                         class="p-2 text-primary rounded-full hover:bg-gray-100 transition focus:outline-none">
@@ -165,17 +171,45 @@
 
             {{-- Flash Messages --}}
             @if(session('success'))
-                <div class="m-6">
+                <div class="m-6" 
+                     x-data="{ show: true }" 
+                     x-init="setTimeout(() => show = false, 5000)" 
+                     x-show="show" 
+                     x-transition:leave="transition ease-in duration-500" 
+                     x-transition:leave-start="opacity-100" 
+                     x-transition:leave-end="opacity-0">
                     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl relative shadow-sm">
                         <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
                 </div>
             @endif
 
+            {{-- Notifikasi Error (Merah) --}}
             @if(session('error'))
-                <div class="m-6">
+                <div class="m-6" 
+                     x-data="{ show: true }" 
+                     x-init="setTimeout(() => show = false, 5000)" 
+                     x-show="show" 
+                     x-transition:leave="transition ease-in duration-500" 
+                     x-transition:leave-start="opacity-100" 
+                     x-transition:leave-end="opacity-0">
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative shadow-sm">
                         <span class="block sm:inline">{{ session('error') }}</span>
+                    </div>
+                </div>
+            @endif
+
+            {{-- Notifikasi Berhasil Dihapus (Merah) --}}
+            @if(session('deleted'))
+                <div class="m-6" 
+                     x-data="{ show: true }" 
+                     x-init="setTimeout(() => show = false, 5000)" 
+                     x-show="show" 
+                     x-transition:leave="transition ease-in duration-500" 
+                     x-transition:leave-start="opacity-100" 
+                     x-transition:leave-end="opacity-0">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative shadow-sm">
+                        <span class="block sm:inline">{{ session('deleted') }}</span>
                     </div>
                 </div>
             @endif

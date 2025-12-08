@@ -166,14 +166,14 @@
                                 </div>
                                 <p class="text-sm text-gray-600 mb-3">Status: 
                                     <span class="font-medium text-green-600">{{ ucfirst($donation->status) }}</span> 
-                                    (Oleh: {{ $donation->user->name ?? 'Anonim' }})
+                                    (Oleh: {{ $donation->donor_name ?? 'Anonim' }})
                                 </p>
 
                                 <div class="mt-2 border-t border-gray-100 pt-2">
                                     <p class="text-xs font-medium text-gray-500 mb-1">Barang Donasi:</p>
                                     <ul class="list-disc list-inside text-sm text-gray-700">
                                         @foreach ($donation->items as $item)
-                                            <li>{{ $item->item_name }} (Jumlah: {{ number_format($item->quantity) }} unit)</li>
+                                            <li>{{ $item->item_category }} (Jumlah: {{ number_format($item->quantity) }} unit)</li>
                                         @endforeach
                                     </ul>
                                 </div>

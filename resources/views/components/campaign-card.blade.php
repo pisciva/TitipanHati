@@ -1,11 +1,11 @@
 {{-- Modern Campaign Card Component --}}
 <div
-    class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden transform hover:-translate-y-2">
+    class="group bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden transform hover:-translate-y-1">
     {{-- Banner dengan Overlay Gradient --}}
     <div class="relative h-56 overflow-hidden">
         @if($campaign->banner_url)
             <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="{{ $campaign->title }}"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-10">
         @else
             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                 <i class="fas fa-image text-7xl text-gray-300"></i>
@@ -22,7 +22,7 @@
             {{-- Badge Trending --}}
             @if($campaign->view_count > 1000)
                 <div
-                    class="bg-gradient-to-r from-red-500 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 animate-pulse">
+                    class="bg-red-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1 animate-pulse">
                     <i class="fas fa-fire"></i>
                     <span>Trending</span>
                 </div>
@@ -63,16 +63,6 @@
                 <i class="fas fa-tag mr-1 text-[#FF4400]"></i>
                 {{ ucfirst($campaign->category ?? 'Pakaian') }}
             </div>
-        </div>
-
-        {{-- Quick View Overlay (Tampil saat Hover) --}}
-        <div
-            class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-            <a href="{{ route('campaigns.show', $campaign->id) }}"
-                class="bg-white text-[#FF4400] px-6 py-3 rounded-full font-bold transform -translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 hover:scale-105 flex items-center gap-2 shadow-xl">
-                <i class="fas fa-eye"></i>
-                <span>Lihat Detail</span>
-            </a>
         </div>
     </div>
 
@@ -122,7 +112,7 @@
 
             {{-- Progress Bar dengan Gradient --}}
             <div class="relative w-full bg-gray-100 rounded-full h-3 overflow-hidden shadow-inner">
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FF4400] via-[#FF5722] to-[#FF6B35] rounded-full transition-all duration-1000 ease-out shadow-lg"
+                <div class="absolute inset-0 bg-[#FF4400] rounded-full transition-all duration-1000 ease-out shadow-lg"
                     style="width: {{ min($progress, 100) }}%">
                     {{-- Shimmer Effect --}}
                     <div
@@ -146,9 +136,9 @@
 
         {{-- Action Button --}}
         <a href="{{ route('campaigns.show', $campaign->id) }}"
-            class="block w-full text-center px-6 py-3 bg-gradient-to-r from-[#FF4400] to-[#FF5722] text-white rounded-xl font-bold hover:from-[#DE3B00] hover:to-[#DE3B00] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02] flex items-center justify-center gap-2 group/btn">
+            class="block w-full text-center px-6 py-3 bg-[#FF4400] text-white rounded-xl font-bold hover:from-[#DE3B00] hover:to-[#DE3B00] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.01] flex items-center justify-center gap-2 group/btn">
             <span>Detail Campaign</span>
-            <i class="fas fa-arrow-right text-sm group-hover/btn:translate-x-1 transition-transform duration-300"></i>
+            <i class="fas fa-arrow-right text-sm group-hover/btn:translate-x-1 transition-transform duration-300 mt-1"></i>
         </a>
     </div>
 
