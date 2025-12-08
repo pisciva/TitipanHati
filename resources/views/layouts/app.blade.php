@@ -20,14 +20,15 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+        rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-50">
     {{-- Navbar --}}
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
@@ -42,7 +43,8 @@
                     <a href="{{ route('home') }}" class="hover:text-[#EB3F00] hover:underline">Beranda</a>
                     <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Campaign</a>
                     <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Cara Kerja</a>
-                    <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Tentang Kami</a>
+                    <a href="{{ route('campaigns.index') }}" class="hover:text-[#EB3F00] hover:underline">Tentang
+                        Kami</a>
                 </div>
 
                 {{-- Auth Buttons --}}
@@ -88,7 +90,7 @@
                         </div>
                     @else
                         <a href="{{ route('login') }}"
-                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            class="px-8 py-2 bg-[#FF4400] text-white rounded-full font-semibold hover:bg-blue-700 transition">
                             Sign In
                         </a>
                     @endauth
@@ -113,18 +115,20 @@
 
     {{-- Flash Messages --}}
     @if(session('success'))
-        <div class="container mx-auto px-4 mt-4">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
-            </div>
+        <div id="toast-success"
+            class="fixed bottom-5 right-5 bg-green-500 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in z-[9999]">
+
+            <i class="fa-solid fa-circle-check text-white"></i>
+            <span class="text-sm font-medium">{{ session('success') }}</span>
         </div>
     @endif
 
     @if(session('error'))
-        <div class="container mx-auto px-4 mt-4">
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                <span class="block sm:inline">{{ session('error') }}</span>
-            </div>
+        <div id="toast-error"
+            class="fixed bottom-5 right-5 bg-red-500 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in z-[9999]">
+
+            <i class="fa-solid fa-circle-xmark text-white"></i>
+            <span class="text-sm font-medium">{{ session('error') }}</span>
         </div>
     @endif
 
@@ -180,6 +184,56 @@
     </footer>
 
     @stack('scripts')
+
+    <script>
+        // Auto hide after 3 seconds
+        setTimeout(() => {
+            const success = document.getElementById('toast-success');
+            const error = document.getElementById('toast-error');
+
+            [success, error].forEach(toast => {
+                if (toast) {
+                    toast.classList.add('opacity-0', 'transition', 'duration-500');
+                    setTimeout(() => toast.remove(), 500);
+                }
+            });
+        }, 5000);
+
+        let lastScrollTop = 0;
+        const navbar = document.getElementById("navbar");
+
+        window.addEventListener("scroll", function () {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop > lastScrollTop) {
+                // Scroll ke bawah → sembunyikan navbar
+                navbar.style.transform = "translateY(-120%)";
+            } else {
+                // Scroll ke atas → munculkan navbar
+                navbar.style.transform = "translateY(0)";
+            }
+
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+
+    <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.4s ease-out;
+        }
+    </style>
 </body>
 
 </html>
