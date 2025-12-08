@@ -11,54 +11,56 @@ class CampaignController extends Controller
 
     public function index(Request $request)
     {
-        $query = Campaign::with(['organization', 'categories'])
-            ->where('status', 'aktif');
+        $query = Campaign::with(['organization', 'categories']); // Tambahkan relasi jika perlu
 
-
+        // Search
         if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('organization', function($q) use ($search) {
-                      $q->where('name', 'like', "%{$search}%");
-                  });
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                    ->orWhereHas('organization', function ($orgQuery) use ($searchTerm) {
+                        $orgQuery->where('name', 'like', "%{$searchTerm}%");
+                    });
             });
         }
 
-
+        // Province
         if ($request->filled('province')) {
             $query->where('province', $request->province);
         }
 
-
+        // City
         if ($request->filled('city')) {
-            $query->where('city', $request->city);
+            $query->where('city', 'like', '%' . $request->city . '%');
         }
 
-
-        if ($request->filled('category')) {
-            $query->whereHas('categories', function($q) use ($request) {
-                $q->where('categories.id', $request->category);
-            });
-        }
-
-
-        if ($request->filled('sort')) {
-            if ($request->sort === 'trending') {
+        // Sorting
+        switch ($request->sort) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'trending':
                 $query->orderBy('view_count', 'desc');
-            } elseif ($request->sort === 'newest') {
+                break;
+            case 'deadline_soon':
+                $query->orderBy('deadline', 'asc');
+                break;
+            case 'progress_high':
+                $query->orderByRaw('(collected_quantity * 1.0 / target_quantity) DESC');
+                break;
+            case 'progress_low':
+                $query->orderByRaw('(collected_quantity * 1.0 / target_quantity) ASC');
+                break;
+            case 'newest':
+            default:
                 $query->orderBy('created_at', 'desc');
-            }
-        } else {
-
-            $query->orderBy('created_at', 'desc');
+                break;
         }
 
-        $campaigns = $query->paginate(12);
-        $categories = Category::all();
+        $campaigns = $query->paginate(9); // 9 items per page
+        $campaigns->appends($request->query()); // Untuk pagination dengan query string
 
-        return view('campaigns.index', compact('campaigns', 'categories'));
+        return view('campaigns.index', compact('campaigns'));
     }
 
 
