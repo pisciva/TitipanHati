@@ -13,7 +13,7 @@ class AdminSeeder extends Seeder
     {
 
         $admin = User::create([
-            'email' => 'admin@titipanhati.com',
+            'email' => 'cs@titipanhati.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
             'is_verified' => true,
@@ -33,7 +33,7 @@ class AdminSeeder extends Seeder
         ]);
         
         $this->command->info('✅ Admin seeded successfully!');
-        $this->command->info('📧 Email: admin@titipanhati.com');
+        $this->command->info('📧 Email: cs@titipanhati.com');
         $this->command->info('🔑 Password: admin123');
     }
 }

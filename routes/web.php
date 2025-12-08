@@ -7,32 +7,44 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HelpController; // ← Tambahkan Controller Help
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCampaignController;
 use App\Http\Controllers\Admin\AdminDonationController;
 
 
+// ================================
+// Public Routes
+// ================================
 Route::get('/', [CampaignController::class, 'homepage'])->name('home');
 
-// Campaign Routes
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
 Route::get('/campaigns/{id}', [CampaignController::class, 'show'])->name('campaigns.show');
 
+Route::get('/help', [HelpController::class, 'index'])->name('help.index');
 
+// Contact Form
+Route::post('/contact', [HelpController::class, 'send'])->name('contact.send');
+
+
+// ================================
+// Guest Routes (Login / Register / Reset Password)
+// ================================
 Route::middleware('guest')->group(function () {
-    // Login Routes
+
+    // Login
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
-    
-    // Register Routes
+
+    // Register
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
-    
-    // Google OAuth Routes
+
+    // Google OAuth
     Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
     Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
-    
-    // Password Reset Routes
+
+    // Password Reset
     Route::get('/password/reset', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
     Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
     Route::get('/password/reset/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
@@ -40,20 +52,30 @@ Route::middleware('guest')->group(function () {
 });
 
 
+// Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 
+// ================================
+// User Authenticated Routes
+// ================================
 Route::middleware('auth')->group(function () {
-    // Dashboard
+
+    // Dashboard user
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Help Page (Tambahan)
     
-    // Profile Routes
+
+    // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/profile/password', [ProfileController::class, 'changePassword'])->name('profile.password');
+
+    // Riwayat Donasi User
     Route::get('/profile/riwayat', [ProfileController::class, 'riwayat'])->name('profile.riwayat');
 
-    // Donation Routes
+    // Donasi
     Route::get('/campaigns/{campaign}/donate', [DonationController::class, 'create'])->name('donations.create');
     Route::post('/donations', [DonationController::class, 'store'])->name('donations.store');
     Route::get('/donations/success/{id}', [DonationController::class, 'success'])->name('donations.success');
@@ -62,22 +84,26 @@ Route::middleware('auth')->group(function () {
 });
 
 
+// ================================
+// Admin Routes
+// ================================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    // Admin Dashboard
+
+    // Dashboard admin
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    
-    // Admin Campaign Management
+
+    // Campaign management
     Route::resource('campaigns', AdminCampaignController::class);
-    
-    // Admin Donation Management
+
+    // Donations
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
     Route::put('/donations/{id}/status', [AdminDonationController::class, 'updateStatus'])->name('donations.updateStatus');
-    
-    // Admin Donation Calendar
+
+    // Calendar
     Route::get('/donations/calendar', [AdminDonationController::class, 'calendar'])->name('donations.calendar');
     Route::get('/donations/by-date', [AdminDonationController::class, 'getByDate'])->name('donations.byDate');
-    
-    // Admin Donation Export & Detail
+
+    // Export & Detail
     Route::get('/donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
     Route::get('/donations/{id}', [AdminDonationController::class, 'show'])->name('donations.show');
 });
