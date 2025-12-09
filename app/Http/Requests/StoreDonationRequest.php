@@ -21,6 +21,7 @@ class StoreDonationRequest extends FormRequest
             'pickup_address' => 'required|string|max:500',
             'pickup_province' => 'required|string|max:100',
             'pickup_city' => 'required|string|max:100',
+            'pickup_district' => 'required|string|max:100', // Ditambahkan
             'pickup_postal_code' => 'required|string|max:10',
             'pickup_notes' => 'nullable|string|max:1000',
             'pickup_date' => 'required|date|after:+2 days',
@@ -44,8 +45,9 @@ class StoreDonationRequest extends FormRequest
             'donor_email.required' => 'Email wajib diisi.',
             'donor_email.email' => 'Format email tidak valid.',
             'pickup_address.required' => 'Alamat penjemputan wajib diisi.',
-            'pickup_province.required' => 'Kota wajib diisi.',
-            'pickup_city.required' => 'Kecamatan wajib diisi.',
+            'pickup_province.required' => 'Provinsi wajib diisi.', // Diperbaiki
+            'pickup_city.required' => 'Kota/Kabupaten wajib diisi.', // Diperbaiki
+            'pickup_district.required' => 'Kecamatan wajib diisi.', // Ditambahkan
             'pickup_postal_code.required' => 'Kode pos wajib diisi.',
             'pickup_date.required' => 'Tanggal penjemputan wajib dipilih.',
             'pickup_date.after' => 'Tanggal penjemputan minimal 3 hari dari sekarang.',

@@ -22,7 +22,8 @@ class ProfileController extends Controller
         $user = Auth::user();
         $profile = $user->profile;
 
-        return view('profile.index', compact('user', 'profile'));
+        // Ganti 'profile.index' menjadi 'dashboard.user.profile'
+        return view('dashboard.user.profile', compact('user', 'profile'));
     }
 
 
@@ -38,7 +39,7 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::user();
-        
+
 
         UserProfile::updateOrCreate(
             ['user_id' => $user->id],

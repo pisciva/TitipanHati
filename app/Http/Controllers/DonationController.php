@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDonationRequest;
 use App\Models\Donation;
 use App\Models\DonationItem;
 use App\Models\DonationTracking;
@@ -10,8 +11,9 @@ use App\Models\EmailLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use Indonesia; // ⭐ Tambahan untuk Laravolt Indonesia
+use Indonesia;
 
 class DonationController extends Controller
 {
@@ -20,101 +22,84 @@ class DonationController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * ⭐ BARU: API untuk mendapatkan daftar kota berdasarkan provinsi
-     */
-    public function getCities($provinceId)
+    public function getProvinces($provinceId)
     {
         try {
             $province = Indonesia::findProvince($provinceId, ['cities']);
-            return response()->json($province->cities);
+            $cities = $province->cities->map(fn($city) => ['id' => $city->id, 'name' => $city->name]);
+            return response()->json($cities);
         } catch (\Exception $e) {
+            Log::error('Error loading cities: ' . $e->getMessage());
             return response()->json(['error' => 'Province not found'], 404);
         }
     }
 
-    /**
-     * ⭐ BARU: API untuk mendapatkan daftar kecamatan berdasarkan kota
-     */
-    public function getDistricts($cityId)
+    public function getCities($cityId)
     {
         try {
             $city = Indonesia::findCity($cityId, ['districts']);
-            return response()->json($city->districts);
+            $districts = $city->districts->map(fn($district) => ['id' => $district->id, 'name' => $district->name]);
+            return response()->json($districts);
         } catch (\Exception $e) {
+            Log::error('Error loading districts: ' . $e->getMessage());
             return response()->json(['error' => 'City not found'], 404);
         }
     }
 
     public function create($campaignId)
     {
-        $campaign = Campaign::findOrFail($campaignId);
+        $campaign = Campaign::with('organization')->findOrFail($campaignId);
         $user = Auth::user();
         $profile = $user->profile;
-        
-        // ⭐ Tambahan: Kirim data provinsi ke view
         $provinces = Indonesia::allProvinces();
 
         return view('donations.create', compact('campaign', 'profile', 'provinces'));
     }
 
-    public function store(Request $request)
+    public function store(StoreDonationRequest $request)
     {
-        $request->validate([
-            'campaign_id' => 'required|exists:campaigns,id',
-            'donor_name' => 'required|string|max:255',
-            'donor_phone' => 'required|string|max:20',
-            'donor_email' => 'required|email',
-            'pickup_address' => 'required|string',
-            // ⭐ Perubahan: Terima ID provinsi, kota, dan kecamatan
-            'pickup_province' => 'required|integer',
-            'pickup_city' => 'required|integer',
-            'pickup_district' => 'required|integer',
-            'pickup_postal_code' => 'required|string|max:10',
-            'pickup_date' => 'required|date|after:+2 days', // Min 3 days from now
-            'pickup_time_slot' => 'required|in:09:00-13:00,13:00-17:00',
-            'items' => 'required|array|min:1',
-            'items.*.gender' => 'required|in:Laki-laki (Anak),Perempuan (Anak),Laki-laki (Dewasa),Perempuan (Dewasa)',
-            'items.*.item_category' => 'required|in:Atasan,Bawahan,Other',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.condition' => 'required|in:Baru,Layak pakai,Tidak layak',
-        ]);
+        Log::info('=== DONATION FORM SUBMITTED ===');
+        Log::info('All Request Data:', $request->all());
+
+        $validated = $request->validated();
 
         DB::beginTransaction();
         try {
-            // ⭐ Konversi ID menjadi nama untuk disimpan
-            $provinceName = Indonesia::findProvince($request->pickup_province)->name;
-            $cityName = Indonesia::findCity($request->pickup_city)->name;
-            $districtName = Indonesia::findDistrict($request->pickup_district)->name;
-
+            // Create Donation
             $donation = Donation::create([
                 'user_id' => Auth::id(),
-                'campaign_id' => $request->campaign_id,
-                'donor_name' => $request->donor_name,
-                'donor_phone' => $request->donor_phone,
-                'donor_email' => $request->donor_email,
-                'pickup_address' => $request->pickup_address,
-                // ⭐ Simpan nama, bukan ID
-                'pickup_city' => $cityName,
-                'pickup_district' => $districtName,
-                'pickup_postal_code' => $request->pickup_postal_code,
-                'pickup_notes' => $request->pickup_notes,
-                'pickup_date' => $request->pickup_date,
-                'pickup_time_slot' => $request->pickup_time_slot,
+                'campaign_id' => $validated['campaign_id'],
+                'donor_name' => $validated['donor_name'],
+                'donor_phone' => $validated['donor_phone'],
+                'donor_email' => $validated['donor_email'],
+                'pickup_address' => $validated['pickup_address'],
+                'pickup_province' => $validated['pickup_province'],
+                'pickup_city' => $validated['pickup_city'],
+                'pickup_district' => $validated['pickup_district'],
+                'pickup_postal_code' => $validated['pickup_postal_code'],
+                'pickup_notes' => $validated['pickup_notes'] ?? null,
+                'pickup_date' => $validated['pickup_date'],
+                'pickup_time_slot' => $validated['pickup_time_slot'],
                 'status' => 'menunggu_penjemputan',
             ]);
 
-            foreach ($request->items as $item) {
+            Log::info('Donation created with ID: ' . $donation->id);
+
+            // Create Donation Items
+            foreach ($validated['items'] as $item) {
                 DonationItem::create([
                     'donation_id' => $donation->id,
                     'gender' => $item['gender'],
                     'item_category' => $item['item_category'],
                     'quantity' => $item['quantity'],
                     'condition' => $item['condition'],
-                    'photo_url' => $item['photo_url'] ?? null,
+                    'photo_url' => null,
                 ]);
             }
 
+            Log::info('Donation items created: ' . count($validated['items']));
+
+            // Create Tracking
             DonationTracking::create([
                 'donation_id' => $donation->id,
                 'status' => 'menunggu_penjemputan',
@@ -122,32 +107,57 @@ class DonationController extends Controller
                 'status_changed_at' => now(),
             ]);
 
+            Log::info('Donation tracking created');
+
+            // Create Email Log
             EmailLog::create([
                 'donation_id' => $donation->id,
                 'user_id' => Auth::id(),
-                'email_to' => $request->donor_email,
+                'email_to' => $validated['donor_email'],
                 'email_type' => 'konfirmasi_donasi',
                 'email_content' => 'Email konfirmasi donasi',
                 'is_sent' => false,
             ]);
 
-            DB::commit();
+            Log::info('Email log created');
 
-            return redirect()->route('donations.success', $donation->id)
+            DB::commit();
+            Log::info('=== DONATION SUCCESS ===');
+
+            return redirect()
+                ->route('donations.success', $donation->id)
                 ->with('success', 'Donasi berhasil dibuat!');
 
         } catch (\Exception $e) {
             DB::rollback();
-            return back()->withErrors(['error' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            Log::error('=== DONATION FAILED ===');
+            Log::error('Error Message: ' . $e->getMessage());
+            Log::error('Error Trace: ' . $e->getTraceAsString()); // Tambahkan ini untuk melihat detail error
+
+            // Tangani error constraint database (misalnya, foreign key, unique)
+            if ($e instanceof \Illuminate\Database\QueryException) {
+                Log::error('Database Query Exception: ' . $e->getMessage());
+            }
+
+            // Tangani error validasi model (jika ada)
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                Log::error('Model Validation Exception: ' . $e->getMessage());
+                // Biasanya ini tidak akan terjadi di sini karena validasi sudah dilakukan oleh Request
+            }
+
+            // Kembalikan ke form dengan input dan error
+            return back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat menyimpan donasi. Silakan coba lagi atau hubungi admin jika masalah berlanjut.');
         }
     }
 
     public function success($id)
     {
         $donation = Donation::with(['campaign', 'items'])->findOrFail($id);
-        
+
         if ($donation->user_id !== Auth::id()) {
-            abort(403);
+            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
         }
 
         return view('donations.success', compact('donation'));
@@ -169,9 +179,9 @@ class DonationController extends Controller
             ->findOrFail($id);
 
         if ($donation->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
-            abort(403);
-        }        
-        
-        return view('dashboard.user.donationsHistory', compact('donation'));
+            abort(403, 'Anda tidak memiliki akses ke donasi ini.');
+        }
+
+        return view('dashboard.user.detail', compact('donation'));
     }
 }

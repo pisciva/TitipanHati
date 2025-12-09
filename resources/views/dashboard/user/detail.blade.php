@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Asumsikan Anda memiliki layout utama bernama 'layouts.app' --}}
+@extends('layouts.dash-user') {{-- Asumsikan Anda memiliki layout utama bernama 'layouts.app' --}}
 
 @section('title', 'Detail Donasi Admin')
 

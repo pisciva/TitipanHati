@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dash-user')
 
 @section('content')
 

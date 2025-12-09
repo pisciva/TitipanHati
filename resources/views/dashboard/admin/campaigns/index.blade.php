@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dash-admin')
 
 @section('title', 'Daftar Campaign')
 

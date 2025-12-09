@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.dash-user')
 
 @section('content')
 {{-- Kontainer utama diubah menjadi flex-col di mobile, dan flex-row di layar medium ke atas --}}
@@ -95,19 +95,19 @@
                 {{-- Grid diubah menjadi grid-cols-1 di mobile, dan grid-cols-3 di medium ke atas --}}
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                        <label for="default_province" class="block mb-2 text-sm font-regular text-[#FF4400]">Kota</label>
-                        <input type="text" id="default_province" name="default_province" value="{{ old('default_province', $profile->default_province ?? '') }}"
-                               class="w-full p-3 border rounded-2xl @error('default_province') border-red-500 @enderror">
-                        @error('default_province')
+                        <label for="default_city" class="block mb-2 text-sm font-regular text-[#FF4400]">Kota</label>
+                        <input type="text" id="default_city" name="default_city" value="{{ old('default_city', $profile->default_city ?? '') }}"
+                               class="w-full p-3 border rounded-2xl @error('default_city') border-red-500 @enderror">
+                        @error('default_city')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
                     </div>
 
                     <div>
-                        <label for="default_city" class="block mb-2 text-sm font-regular text-[#FF4400]">Kecamatan</label>
-                        <input type="text" id="default_city" name="default_city" value="{{ old('default_city', $profile->default_city ?? '') }}"
-                               class="w-full p-3 border rounded-2xl @error('default_city') border-red-500 @enderror">
-                        @error('default_city')
+                        <label for="default_district" class="block mb-2 text-sm font-regular text-[#FF4400]">Kecamatan</label>
+                        <input type="text" id="default_district" name="default_district" value="{{ old('default_district', $profile->default_district ?? '') }}"
+                               class="w-full p-3 border rounded-2xl @error('default_district') border-red-500 @enderror">
+                        @error('default_district')
                             <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
                         @enderror
                     </div>

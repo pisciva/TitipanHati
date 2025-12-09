@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dash-admin')
 
 @section('title', 'Edit Campaign: ' . $campaign->title)
 
@@ -208,7 +208,7 @@
 
                 if (provinceId) {
                     // Panggil route AJAX
-                    const url = `{{ route('admin.campaigns.getCities', '') }}/${provinceId}`; 
+                    const url = `{{ route('admin.campaigns.getProvinces', '') }}/${provinceId}`; 
 
                     fetch(url)
                         .then(response => {

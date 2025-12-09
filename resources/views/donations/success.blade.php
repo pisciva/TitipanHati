@@ -18,14 +18,14 @@
             </p>
             <div class="inline-block px-4 py-2 bg-blue-50 rounded-lg">
                 <p class="text-sm text-gray-600">Nomor Donasi</p>
-                <p class="text-xl font-bold text-blue-600">#{{ str_pad($donation->id, 6, '0', STR_PAD_LEFT) }}</p>
+                <p class="text-xl font-bold text-[#FF4400]">#{{ str_pad($donation->id, 6, '0', STR_PAD_LEFT) }}</p>
             </div>
         </div>
 
         {{-- Donation Details --}}
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>
+                <i class="fas fa-clipboard-list text-[#FF4400] mr-2"></i>
                 Detail Donasi
             </h2>
 
@@ -92,7 +92,7 @@
         {{-- Items List --}}
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <i class="fas fa-box text-blue-600 mr-2"></i>
+                <i class="fas fa-box text-[#FF4400] mr-2"></i>
                 Barang Donasi
             </h2>
 
@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <p class="text-2xl font-bold text-blue-600">{{ $item->quantity }}</p>
+                            <p class="text-2xl font-bold text-[#FF4400]">{{ $item->quantity }}</p>
                             <p class="text-xs text-gray-600">item</p>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
             <div class="mt-4 pt-4 border-t">
                 <div class="flex justify-between items-center">
                     <p class="font-semibold text-gray-900">Total Item</p>
-                    <p class="text-2xl font-bold text-blue-600">{{ $donation->totalQuantity() }} item</p>
+                    <p class="text-2xl font-bold text-[#FF4400]">{{ $donation->totalQuantity() }} item</p>
                 </div>
             </div>
         </div>
@@ -131,7 +131,7 @@
         {{-- Status --}}
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                <i class="fas fa-info-circle text-[#FF4400] mr-2"></i>
                 Status Donasi
             </h2>
 
@@ -158,19 +158,19 @@
             </h3>
             <ol class="space-y-2 text-sm text-gray-700">
                 <li class="flex items-start">
-                    <span class="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">1</span>
+                    <span class="flex-shrink-0 w-6 h-6 bg-[#FF4400] text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">1</span>
                     <span>Email konfirmasi telah dikirim ke <strong>{{ $donation->donor_email }}</strong></span>
                 </li>
                 <li class="flex items-start">
-                    <span class="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">2</span>
+                    <span class="flex-shrink-0 w-6 h-6 bg-[#FF4400] text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">2</span>
                     <span>Tim kami akan menghubungi Anda untuk konfirmasi detail penjemputan</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">3</span>
+                    <span class="flex-shrink-0 w-6 h-6 bg-[#FF4400] text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">3</span>
                     <span>Pastikan barang sudah disiapkan pada tanggal dan waktu yang telah ditentukan</span>
                 </li>
                 <li class="flex items-start">
-                    <span class="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">4</span>
+                    <span class="flex-shrink-0 w-6 h-6 bg-[#FF4400] text-white rounded-full flex items-center justify-center text-xs mr-3 mt-0.5">4</span>
                     <span>Anda dapat melacak status donasi melalui halaman riwayat donasi</span>
                 </li>
             </ol>
@@ -179,7 +179,7 @@
         {{-- Action Buttons --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a href="{{ route('donations.history') }}" 
-               class="py-3 px-4 bg-blue-600 text-white text-center font-semibold rounded-lg hover:bg-blue-700 transition-colors">
+               class="py-3 px-4 bg-[#FF4400] text-white text-center font-semibold rounded-lg hover:bg-blue-700 transition-colors">
                 <i class="fas fa-history mr-2"></i>
                 Lihat Riwayat Donasi
             </a>
@@ -199,7 +199,7 @@
         <div class="mt-6 text-center">
             <p class="text-gray-600 mb-3">Ajak teman Anda untuk berdonasi juga!</p>
             <div class="flex justify-center gap-3">
-                <a href="#" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
+                <a href="#" class="w-10 h-10 bg-[#FF4400] text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors">
                     <i class="fab fa-facebook-f"></i>
                 </a>
                 <a href="#" class="w-10 h-10 bg-sky-500 text-white rounded-full flex items-center justify-center hover:bg-sky-600 transition-colors">

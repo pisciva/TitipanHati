@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.dash-admin')
 
 @section('title', 'Ringkasan Dashboard')
 @section('header', '') {{-- Header di layout admin dikosongkan agar tidak berulang dengan konten di bawah --}}

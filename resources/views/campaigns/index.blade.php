@@ -132,40 +132,32 @@
                             </select>
                         </div>
 
-{{-- Province (Dropdown) --}}
-<div>
-    <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">
-        Provinsi <span class="text-red-500">*</span>
-    </label>
-    <select name="province" id="province"
-            class="w-full px-4 py-3 border @error('province') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition">
-        <option value="" disabled selected>Pilih Provinsi</option>
-        @foreach ($provinces as $province)
-            <option value="{{ $province->code }}" {{ old('province') === $province->code ? 'selected' : '' }}>
-                {{ $province->name }}
-            </option>
-        @endforeach
-    </select>
-    @error('province')
-        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
-    @enderror
-</div>
+                        {{-- Province --}}
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-3">
+                                <i class="fas fa-map-marker-alt text-[#FF4400] mr-2"></i>
+                                Provinsi
+                            </label>
+                            <select name="province" id="province" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF4400] transition">
+                                <option value="">Semua Provinsi</option>
+                                @foreach($provinces as $prov)
+                                    <option value="{{ $prov->id }}" {{ request('province') == $prov->id ? 'selected' : '' }}>
+                                        {{ $prov->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 
-{{-- City/Regency (Dropdown) --}}
-<div>
-    <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">
-        Kota/Kabupaten <span class="text-red-500">*</span>
-    </label>
-    <select name="city" id="city" disabled
-            class="w-full px-4 py-3 border @error('city') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition bg-gray-50 disabled:cursor-not-allowed">
-        <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-        {{-- Opsi akan diisi oleh JavaScript --}}
-    </select>
-    @error('city')
-        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
-    @enderror
-</div>
-
+                        {{-- City --}}
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-3">
+                                <i class="fas fa-city text-[#FF4400] mr-2"></i>
+                                Kota / Kabupaten
+                            </label>
+                            <select name="city" id="city" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF4400] transition" disabled>
+                                <option value="">Pilih Provinsi Dahulu</option>
+                            </select>
+                        </div>
 
                         {{-- Deadline Range --}}
                         <div>

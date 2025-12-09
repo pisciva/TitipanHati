@@ -20,7 +20,7 @@ class AdminCampaignController extends Controller
     /**
      * ⭐ API: Mendapatkan daftar kota berdasarkan provinsi
      */
-    public function getCities($province_id)
+    public function getProvinces($province_id)
     {
         try {
             $province = Indonesia::findProvince($province_id, ['cities']);
@@ -33,7 +33,7 @@ class AdminCampaignController extends Controller
     /**
      * ⭐ BARU: API untuk mendapatkan daftar kecamatan berdasarkan kota
      */
-    public function getDistricts($city_id)
+    public function getCities($city_id)
     {
         try {
             $city = Indonesia::findCity($city_id, ['districts']);
