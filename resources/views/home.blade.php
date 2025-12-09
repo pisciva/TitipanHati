@@ -3,9 +3,9 @@
 @section('title', 'TitipanHati - Titipan Kecil, Harapan Besar')
 
 @section('content')
-    {{-- Hero Section - Enhanced Modern Design --}}
+    
     <section class="relative bg-[#FF4400] text-white py-20 lg:py-28 overflow-hidden">
-        {{-- Background Pattern --}}
+
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-0 left-0 w-72 h-72 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
             <div class="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>
@@ -13,7 +13,7 @@
 
         <div class="container mx-auto px-4 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {{-- Left Content --}}
+
                 <div class="text-center lg:text-left" data-aos="fade-right">
                     <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
                         <i class="fas fa-heart text-red-200 mr-2"></i>
@@ -43,7 +43,7 @@
                         </a>
                     </div>
 
-                    {{-- Stats --}}
+
                     <div class="grid grid-cols-3 gap-6 mt-12 max-w-xl mx-auto lg:mx-0">
                         <div class="text-center lg:text-left">
                             <div class="text-3xl font-bold mb-1">{{ number_format($statistics['total_items']) }}+</div>
@@ -60,14 +60,14 @@
                     </div>
                 </div>
 
-                {{-- Right Image --}}
+
                 <div class="hidden lg:block" data-aos="fade-left">
                     <div class="relative">
                         <div class="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-3xl transform rotate-6"></div>
                         <img src="/images/image1.jpg" alt="Donasi Pakaian"
                             class="relative rounded-3xl shadow-2xl w-full h-[500px] object-cover">
 
-                        {{-- Floating Card --}}
+
                         <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl p-6 max-w-xs">
                             <div class="flex items-center mb-2">
                                 <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-3">
@@ -86,10 +86,10 @@
         </div>
     </section>
 
-    {{-- Campaign Section - Modern Card Design --}}
+
     <section id="campaigns" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
-            {{-- Section Header --}}
+
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Campaign Aktif</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">
@@ -97,7 +97,7 @@
                 </p>
             </div>
 
-            {{-- Terbaru --}}
+
             <div class="mb-16" data-aos="fade-up" data-aos-delay="100">
                 <div class="flex items-center justify-between mb-8">
                     <h3 class="text-2xl font-bold text-gray-900 flex items-center">
@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            {{-- Trending --}}
+
             <div data-aos="fade-up" data-aos-delay="200">
                 <div class="flex items-center justify-between mb-8">
                     <h3 class="text-2xl font-bold text-gray-900 flex items-center">
@@ -141,7 +141,7 @@
                 </div>
             </div>
 
-            {{-- CTA Button --}}
+
             <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="300">
                 <a href="{{ route('campaigns.index') }}"
                     class="inline-flex items-center px-8 py-4 bg-[#FF4400] text-white rounded-full font-bold hover:bg-[#DE3B00] transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105">
@@ -152,10 +152,10 @@
         </div>
     </section>
 
-    {{-- Cara Kerja Section - Modern Step Design --}}
+
     <section id="cara-kerja" class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            {{-- Section Header --}}
+
             <div class="text-center mb-16" data-aos="fade-up">
                 <div class="inline-flex items-center bg-blue-100 rounded-full px-4 py-2 mb-4">
                     <i class="fas fa-info-circle text-blue-600 mr-2"></i>
@@ -167,19 +167,19 @@
                 </p>
             </div>
 
-            {{-- Steps --}}
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                {{-- Step 1 --}}
+
                 <div class="relative" data-aos="fade-up" data-aos-delay="100">
                     <div
                         class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                        {{-- Step Number --}}
+
                         <div
                             class="absolute top-3 left-1/2 transform -translate-x-7 w-12 h-12 bg-[#FF4400] text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
                             1
                         </div>
 
-                        {{-- Icon --}}
+
                         <div
                             class="w-20 h-20 bg-blue-500 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-search"></i>
@@ -192,17 +192,17 @@
                     </div>
                 </div>
 
-                {{-- Step 2 --}}
+
                 <div class="relative" data-aos="fade-up" data-aos-delay="200">
                     <div
                         class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                        {{-- Step Number --}}
+
                         <div
                             class="absolute top-3 left-1/2 transform -translate-x-7 w-12 h-12 bg-[#FF4400] text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
                             2
                         </div>
 
-                        {{-- Icon --}}
+
                         <div
                             class="w-20 h-20 bg-green-500 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-edit"></i>
@@ -215,17 +215,17 @@
                     </div>
                 </div>
 
-                {{-- Step 3 --}}
+
                 <div class="relative" data-aos="fade-up" data-aos-delay="300">
                     <div
                         class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group">
-                        {{-- Step Number --}}
+
                         <div
                             class="absolute top-3 left-1/2 transform -translate-x-7 w-12 h-12 bg-[#FF4400] text-white rounded-full flex items-center justify-center font-bold text-xl shadow-lg">
                             3
                         </div>
 
-                        {{-- Icon --}}
+
                         <div
                             class="w-20 h-20 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-3xl mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                             <i class="fas fa-truck"></i>
@@ -239,7 +239,7 @@
                 </div>
             </div>
 
-            {{-- Additional Info --}}
+
             <div class="mt-16 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="400">
                 <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8 border-2 border-blue-100">
                     <div class="flex flex-col md:flex-row items-center gap-6">
@@ -259,11 +259,11 @@
         </div>
     </section>
 
-    {{-- Tentang Kami Section - Enhanced Design --}}
+
     <section id="tentang" class="py-20 bg-gray-50">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-                {{-- Left Content --}}
+
                 <div data-aos="fade-right">
                     <div class="inline-flex items-center bg-purple-100 rounded-full px-4 py-2 mb-4">
                         <i class="fas fa-heart text-purple-600 mr-2"></i>
@@ -279,7 +279,7 @@
                         menyalurkan pakaian layak pakai kepada mereka yang membutuhkan.
                     </p>
 
-                    {{-- Features --}}
+
                     <div class="space-y-4 mb-8">
                         <div
                             class="flex items-start bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -328,13 +328,13 @@
                     </a>
                 </div>
 
-                {{-- Right Image --}}
+
                 <div class="relative" data-aos="fade-left">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl">
                         <img src="/images/image2.jpg" alt="Tentang TitipanHati" class="w-full h-[500px] object-cover">
                     </div>
 
-                    {{-- Decorative Elements --}}
+
                     <div class="absolute -top-6 -right-6 w-24 h-24 bg-yellow-400 rounded-full opacity-20 blur-2xl"></div>
                     <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-purple-400 rounded-full opacity-20 blur-2xl"></div>
                 </div>
@@ -342,10 +342,10 @@
         </div>
     </section>
 
-    {{-- Testimoni Section - Modern Card Carousel --}}
+
     <section class="py-20 bg-white">
         <div class="container mx-auto px-4">
-            {{-- Section Header --}}
+
             <div class="text-center mb-12" data-aos="fade-up">
                 <div class="inline-flex items-center bg-yellow-100 rounded-full px-4 py-2 mb-4">
                     <i class="fas fa-star text-yellow-600 mr-2"></i>
@@ -357,29 +357,29 @@
                 </p>
             </div>
 
-            {{-- Testimonial Cards --}}
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
                 @foreach($testimonials as $index => $testimonial)
                     <div class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-lg p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
                         data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
-                        {{-- Quote Icon --}}
+
                         <div class="text-[#FF4400] mb-4">
                             <i class="fas fa-quote-left text-3xl opacity-50"></i>
                         </div>
 
-                        {{-- Rating --}}
+
                         <div class="flex mb-4">
                             @for($i = 0; $i < $testimonial->rating; $i++)
                                 <i class="fas fa-star text-yellow-400 text-lg"></i>
                             @endfor
                         </div>
 
-                        {{-- Content --}}
+
                         <p class="text-gray-700 mb-6 leading-relaxed">
                             "{{ $testimonial->content }}"
                         </p>
 
-                        {{-- Author --}}
+
                         <div class="flex items-center pt-4 border-t border-gray-200">
                             <img src="{{ asset('storage/' . $testimonial->profile_picture) }}" alt="{{ $testimonial->name }}"
                                 class="w-12 h-12 mr-4 rounded-full">
@@ -395,7 +395,7 @@
     </section>
 
     <section class="py-20 bg-[#FF4400] text-white relative overflow-hidden">
-        {{-- Optional: Background Pattern (Lebih halus) --}}
+
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
             <div class="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
@@ -432,7 +432,7 @@
                     @endguest
                 </div>
 
-                {{-- Trust Indicators --}}
+
                 <div class="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
                     <div class="flex flex-col items-center">
                         <i class="fas fa-shield-alt text-4xl mb-2"></i>
@@ -454,7 +454,7 @@
         </div>
     </section>
 
-    {{-- AOS Animation Library --}}
+
     @push('scripts')
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

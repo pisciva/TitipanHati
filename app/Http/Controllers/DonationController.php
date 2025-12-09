@@ -65,7 +65,6 @@ class DonationController extends Controller
 
         DB::beginTransaction();
         try {
-            // Create Donation
             $donation = Donation::create([
                 'user_id' => Auth::id(),
                 'campaign_id' => $validated['campaign_id'],
@@ -85,7 +84,6 @@ class DonationController extends Controller
 
             Log::info('Donation created with ID: ' . $donation->id);
 
-            // Create Donation Items
             foreach ($validated['items'] as $item) {
                 DonationItem::create([
                     'donation_id' => $donation->id,
@@ -99,7 +97,6 @@ class DonationController extends Controller
 
             Log::info('Donation items created: ' . count($validated['items']));
 
-            // Create Tracking
             DonationTracking::create([
                 'donation_id' => $donation->id,
                 'status' => 'menunggu_penjemputan',
@@ -109,7 +106,6 @@ class DonationController extends Controller
 
             Log::info('Donation tracking created');
 
-            // Create Email Log
             EmailLog::create([
                 'donation_id' => $donation->id,
                 'user_id' => Auth::id(),
@@ -132,20 +128,16 @@ class DonationController extends Controller
             DB::rollback();
             Log::error('=== DONATION FAILED ===');
             Log::error('Error Message: ' . $e->getMessage());
-            Log::error('Error Trace: ' . $e->getTraceAsString()); // Tambahkan ini untuk melihat detail error
+            Log::error('Error Trace: ' . $e->getTraceAsString());
 
-            // Tangani error constraint database (misalnya, foreign key, unique)
             if ($e instanceof \Illuminate\Database\QueryException) {
                 Log::error('Database Query Exception: ' . $e->getMessage());
             }
 
-            // Tangani error validasi model (jika ada)
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 Log::error('Model Validation Exception: ' . $e->getMessage());
-                // Biasanya ini tidak akan terjadi di sini karena validasi sudah dilakukan oleh Request
             }
 
-            // Kembalikan ke form dengan input dan error
             return back()
                 ->withInput()
                 ->with('error', 'Terjadi kesalahan saat menyimpan donasi. Silakan coba lagi atau hubungi admin jika masalah berlanjut.');
@@ -168,7 +160,7 @@ class DonationController extends Controller
         $donations = Donation::with(['campaign', 'items'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(10); // Changed from get() to paginate()
 
         return view('dashboard.user.riwayat', compact('donations'));
     }

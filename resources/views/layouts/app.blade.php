@@ -7,13 +7,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'TitipanHati - Titipan Kecil, Harapan Besar')</title>
 
-    {{-- Tailwind CSS CDN --}}
+
     <script src="https://cdn.tailwindcss.com"></script>
 
-    {{-- Alpine.js for interactivity --}}
+
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-    {{-- Font Awesome for icons --}}
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="icon" href="/images/favicon.ico">
@@ -27,19 +27,19 @@
 </head>
 
 <body class="bg-gray-50">
-    {{-- Navbar --}}
+
     <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300"
         x-data="{ mobileMenu: false, userMenu: false }">
         <div class="container mx-auto px-4 lg:px-6">
             <div class="flex items-center justify-between h-16">
-                {{-- Logo --}}
+
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
                         <img src="/images/logo-titiphanhati-lightmode.svg" class="h-8 md:h-10 w-auto" alt="TitipanHati">
                     </a>
                 </div>
 
-                {{-- Desktop Navigation Links --}}
+
                 <div class="hidden lg:flex items-center gap-8">
                     <a href="{{ route('home') }}"
                         class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
@@ -59,7 +59,7 @@
                     </a>
                 </div>
 
-                {{-- Desktop Auth Buttons --}}
+
                 <div class="hidden lg:flex items-center space-x-4">
                     @auth
                         <div class="relative">
@@ -70,7 +70,7 @@
                                     {{ substr(Auth::user()->profile->full_name ?? Auth::user()->email, 0, 1) }}
                                 </div>
                                 <span
-                                    class="text-gray-700 font-medium">{{ Str::limit(Auth::user()->profile->full_name ?? Auth::user()->email, 15) }}</span>
+                                    class="text-gray-700 font-medium">{{ Auth::user()->profile->full_name ?? Auth::user()->email }}</span>
                                 <i class="fas fa-chevron-down text-sm text-gray-500" :class="{'rotate-180': userMenu}"></i>
                             </button>
 
@@ -121,7 +121,7 @@
                     @endauth
                 </div>
 
-                {{-- Mobile Menu Button --}}
+
                 <button @click="mobileMenu = !mobileMenu"
                     class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                     <div class="w-6 h-5 relative flex flex-col justify-between">
@@ -135,14 +135,14 @@
                 </button>
             </div>
 
-            {{-- Mobile Menu --}}
+
             <div x-show="mobileMenu" x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
                 class="lg:hidden border-t border-gray-100 py-4 space-y-1">
 
-                {{-- Mobile Navigation Links --}}
+
                 <a href="{{ route('home') }}"
                     class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                     <i class="fas fa-home w-6 text-[#FF4400]"></i>
@@ -223,7 +223,7 @@
         </div>
     </nav>
 
-    {{-- Flash Messages --}}
+
     @if(session('success'))
         <div id="toast-success"
             class="fixed bottom-5 right-5 bg-green-500 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in z-[9999] max-w-sm">
@@ -245,17 +245,17 @@
         </div>
     @endif
 
-    {{-- Main Content --}}
+
     <main>
         @yield('content')
     </main>
 
-    {{-- Modern Footer --}}
+
     <footer class="bg-gray-900 text-white mt-20">
         <div class="container mx-auto px-4 py-12 lg:py-16">
-            {{-- Main Footer Content --}}
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-                {{-- Brand Section --}}
+
                 <div class="space-y-4">
                     <div class="flex items-center space-x-2">
                         <img src="/images/logo-titiphanhati-darkmode.svg" class="h-10 w-auto" alt="TitipanHati">
@@ -284,7 +284,7 @@
                     </div>
                 </div>
 
-                {{-- Quick Links --}}
+
                 <div class="ml-20">
                     <h4 class="text-lg font-bold mb-4 text-white">Navigasi</h4>
                     <ul class="space-y-3">
@@ -323,7 +323,7 @@
                     </ul>
                 </div>
 
-                {{-- Support --}}
+
                 <div>
                     <h4 class="text-lg font-bold mb-4 text-white">Bantuan</h4>
                     <ul class="space-y-3">
@@ -362,7 +362,7 @@
                     </ul>
                 </div>
 
-                {{-- Contact --}}
+
                 <div>
                     <h4 class="text-lg font-bold mb-4 text-white">Kontak</h4>
                     <ul class="space-y-3">
@@ -384,7 +384,7 @@
                         </li>
                     </ul>
 
-                    {{-- Newsletter --}}
+
                     <!-- <div class="mt-6">
                         <p class="text-sm text-gray-400 mb-3">Berlangganan Newsletter</p>
                         <div class="flex gap-2">
@@ -398,7 +398,7 @@
                 </div>
             </div>
 
-            {{-- Bottom Footer --}}
+
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <p class="text-gray-400 text-sm text-center md:text-left">
@@ -419,7 +419,7 @@
     @stack('scripts')
 
     <script>
-        // Auto hide toast messages
+
         setTimeout(() => {
             const success = document.getElementById('toast-success');
             const error = document.getElementById('toast-error');
@@ -432,7 +432,7 @@
             });
         }, 5000);
 
-        // Navbar hide on scroll down
+
         let lastScrollTop = 0;
         const navbar = document.getElementById("navbar");
 

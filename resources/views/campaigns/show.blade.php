@@ -4,10 +4,10 @@
 
 @section('content')
     <div class="bg-gray-50 min-h-screen">
-        {{-- Hero Section with Breadcrumb --}}
+
         <section class="bg-[#FF4400] text-white py-8">
             <div class="container mx-auto px-4">
-                {{-- Breadcrumb --}}
+
                 <nav class="flex text-sm" aria-label="Breadcrumb" data-aos="fade-right">
                     <ol class="inline-flex items-center space-x-2">
                         <li class="inline-flex items-center">
@@ -35,15 +35,14 @@
 
         <div class="container mx-auto px-4 py-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {{-- Main Content --}}
+
                 <div class="lg:col-span-2 space-y-6">
-                    {{-- Campaign Banner --}}
+
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up">
                         <div class="relative">
-                            <img src="{{ $campaign->banner_url ?? '/images/default-campaign.jpg' }}"
-                                alt="{{ $campaign->title }}" class="w-full h-[400px] object-cover">
+                            <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="{{ $campaign->title }}" class="w-full h-[400px] object-cover">
 
-                            {{-- Overlay Badge --}}
+
                             <div class="absolute top-4 right-4">
                                 @php
                                     $daysLeft = now()->diffInDays($campaign->deadline, false);
@@ -68,12 +67,12 @@
                         </div>
                     </div>
 
-                    {{-- Campaign Info Card --}}
+
                     <div class="bg-white rounded-2xl shadow-lg p-6 lg:p-8" data-aos="fade-up" data-aos-delay="100">
-                        {{-- Title --}}
+
                         <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">{{ $campaign->title }}</h1>
 
-                        {{-- Meta Info --}}
+
                         <div class="flex flex-wrap items-center gap-4 mb-6 pb-6 border-b border-gray-200">
                             <div class="flex items-center bg-blue-50 rounded-lg px-3 py-2">
                                 <i class="fas fa-building text-blue-600 mr-2"></i>
@@ -91,7 +90,7 @@
                             </div>
                         </div>
 
-                        {{-- Categories --}}
+
                         @if($campaign->categories->count() > 0)
                             <div class="flex flex-wrap gap-2 mb-8">
                                 @foreach($campaign->categories as $category)
@@ -104,7 +103,7 @@
                             </div>
                         @endif
 
-                        {{-- Progress Section --}}
+
                         <div class="bg-gray-50 to-blue-50 rounded-xl p-6 mb-8">
                             <div class="flex justify-between items-center mb-3">
                                 <span class="text-sm font-semibold text-gray-700">Progress Donasi</span>
@@ -132,7 +131,7 @@
                             </div>
                         </div>
 
-                        {{-- Deadline Alert --}}
+
                         @if($daysLeft > 0)
                             <div class="bg-orange-50 to-orange-100 border-l-4 border-orange-500 rounded-lg p-4 mb-8">
                                 <div class="flex items-start">
@@ -162,7 +161,7 @@
                             </div>
                         @endif
 
-                        {{-- Description --}}
+
                         <div>
                             <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
                                 <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -177,7 +176,7 @@
                         </div>
                     </div>
 
-                    {{-- Donation History --}}
+
                     <div class="bg-white rounded-2xl shadow-lg p-6 lg:p-8" data-aos="fade-up" data-aos-delay="200">
                         <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
                             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
@@ -190,10 +189,10 @@
                             <div class="space-y-4">
                                 @foreach($campaign->donations->take(10) as $donation)
                                     <div
-                                        class="flex items-start space-x-4 p-4 bg-gray-50 to-blue-50 rounded-xl hover:shadow-md transition-shadow duration-300">
+                                        class="flex items-start space-x-4 p-4 bg-gray-50 rounded-xl hover:shadow-md transition-shadow duration-300">
                                         <div class="flex-shrink-0">
                                             <div
-                                                class="w-14 h-14 bg-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-md">
+                                                class="w-14 h-14 bg-[#FF4400] rounded-full flex items-center justify-center shadow-md">
                                                 <i class="fas fa-user text-white text-xl"></i>
                                             </div>
                                         </div>
@@ -208,14 +207,23 @@
                                                         {{ $donation->created_at->diffForHumans() }}
                                                     </p>
                                                 </div>
-                                                <span
-                                                    class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200">
-                                                    <i class="fas fa-check-circle mr-1"></i>
-                                                    {{ ucfirst($donation->status) }}
+                                                @php
+                                                    $statusConfig = [
+                                                        'selesai' => ['bg' => 'bg-green-100', 'text' => 'text-green-700', 'border' => 'border-green-200', 'icon' => 'fa-check-circle'],
+                                                        'menunggu_pembayaran' => ['bg' => 'bg-yellow-100', 'text' => 'text-yellow-700', 'border' => 'border-yellow-200', 'icon' => 'fa-clock'],
+                                                        'menunggu_penjemputan' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-700', 'border' => 'border-blue-200', 'icon' => 'fa-truck'],
+                                                        'dalam_perjalanan' => ['bg' => 'bg-purple-100', 'text' => 'text-purple-700', 'border' => 'border-purple-200', 'icon' => 'fa-shipping-fast'],
+                                                        'dibatalkan' => ['bg' => 'bg-red-100', 'text' => 'text-red-700', 'border' => 'border-red-200', 'icon' => 'fa-times-circle'],
+                                                    ];
+                                                    $config = $statusConfig[$donation->status] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-700', 'border' => 'border-gray-200', 'icon' => 'fa-info-circle'];
+                                                @endphp
+                                                <span class="px-3 py-1 {{ $config['bg'] }} {{ $config['text'] }} rounded-full text-xs font-bold border {{ $config['border'] }}">
+                                                    <i class="fas {{ $config['icon'] }} mr-1"></i>
+                                                    {{ str_replace('_', ' ', ucfirst($donation->status)) }}
                                                 </span>
                                             </div>
                                             @if($donation->message)
-                                                <div class="bg-white rounded-lg p-3 mt-2 border-l-4 border-blue-400">
+                                                <div class="bg-white rounded-lg p-3 mt-2 border-l-4 border-[#FF4400]">
                                                     <p class="text-sm text-gray-700 italic">
                                                         "{{ $donation->message }}"
                                                     </p>
@@ -229,7 +237,7 @@
                             @if($campaign->donations->count() > 10)
                                 <div class="mt-6 text-center">
                                     <button
-                                        class="inline-flex items-center px-6 py-3 bg-blue-500 to-blue-600 text-white rounded-full font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                                        class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#FF4400] to-orange-600 text-white rounded-full font-semibold hover:from-[#DE3B00] hover:to-[#FF4400] transition-all duration-300 shadow-lg hover:shadow-xl">
                                         Lihat Semua Donasi
                                         <i class="fas fa-arrow-right ml-2"></i>
                                     </button>
@@ -247,17 +255,17 @@
                     </div>
                 </div>
 
-                {{-- Sidebar --}}
+
                 <div class="lg:col-span-1">
                     <div class="sticky top-10 space-y-6">
-                        {{-- Donation Card --}}
+
                         <div class="bg-white rounded-2xl shadow-lg p-6 border-2 border-gray-100" data-aos="fade-left">
                             <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                                 <i class="fas fa-hand-holding-heart text-[#FF4400] mr-2"></i>
                                 Berdonasi Sekarang
                             </h3>
 
-                            {{-- Quick Stats --}}
+
                             <div class="space-y-3 mb-6 bg-gray-50 rounded-xl p-4">
                                 <div class="flex justify-between items-center py-2">
                                     <span class="text-gray-600 text-sm flex items-center">
@@ -301,7 +309,7 @@
                             @endif
                         </div>
 
-                        {{-- Organization Info --}}
+
                         <div id="organization-info" class="bg-white rounded-2xl shadow-lg p-6 border-2 border-gray-100"
                             data-aos="fade-left" data-aos-delay="100">
                             <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
@@ -332,7 +340,7 @@
                             @endif
                         </div>
 
-                        {{-- Campaign Stats --}}
+
                         <div class="bg-[#FF4400] to-[#DE3B00] rounded-2xl shadow-lg p-6 text-white" data-aos="fade-left"
                             data-aos-delay="200">
                             <h3 class="text-xl font-bold mb-6 flex items-center">
@@ -376,7 +384,7 @@
                 </div>
             </div>
 
-            {{-- Related Campaigns --}}
+
             @php
                 $relatedCampaigns = \App\Models\Campaign::where('status', 'aktif')
                     ->where('id', '!=', $campaign->id)
@@ -406,7 +414,7 @@
         </div>
     </div>
 
-    {{-- AOS Animation Library --}}
+
     @push('scripts')
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

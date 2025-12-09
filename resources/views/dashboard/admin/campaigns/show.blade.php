@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <!-- Header Section and Action Buttons -->
+
     <div class="mb-6 flex justify-between items-center flex-wrap gap-4">
         <div>
             <h1 class="text-3xl font-bold text-gray-900">{{ $campaign->title }}</h1>
@@ -21,7 +21,7 @@
                 <i class="fas fa-edit mr-2"></i> Edit Campaign
             </a>
 
-            {{-- Delete Form (Hanya muncul jika tidak ada donasi) --}}
+
             @if ($campaign->donations->count() == 0)
                 <form action="{{ route('admin.campaigns.destroy', $campaign->id) }}" method="POST" onsubmit="return confirm('PERINGATAN! Campaign akan dihapus secara permanen. Apakah Anda yakin?');">
                     @csrf
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <!-- Success/Error Messages -->
+
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4" role="alert">
             <p>{{ session('success') }}</p>
@@ -54,13 +54,13 @@
         </div>
     @endif
 
-    <!-- Main Content Grid -->
+
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {{-- Left Column: Banner and Details --}}
+
         <div class="lg:col-span-1 space-y-6">
 
-            <!-- Banner Card -->
+
             <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
                 @if ($campaign->banner_url)
                     <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="Banner Campaign" class="w-full h-48 object-cover">
@@ -72,7 +72,7 @@
                 <div class="p-6">
                     <p class="text-sm font-semibold text-gray-700 mb-2">Progress Donasi</p>
                     @php
-                        // Hitung total kuantitas donasi yang sudah terkumpul
+
                         $totalDonatedQuantity = $campaign->donations->flatMap(function ($donation) {
                             return $donation->items->pluck('quantity');
                         })->sum();
@@ -92,7 +92,7 @@
                 </div>
             </div>
 
-            <!-- Detail Information Card -->
+
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 space-y-4">
                 <h3 class="text-xl font-semibold text-gray-800 border-b pb-3">Informasi Campaign</h3>
                 
@@ -139,10 +139,10 @@
             </div>
         </div>
 
-        {{-- Right Column: Description and Donations --}}
+
         <div class="lg:col-span-2 space-y-6">
 
-            <!-- Description Card -->
+
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-3">Deskripsi Lengkap Campaign</h3>
                 <div class="prose max-w-none text-gray-700">
@@ -150,7 +150,7 @@
                 </div>
             </div>
             
-            <!-- Donations List Card -->
+
             <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
                 <h3 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-3">Daftar Donasi Masuk (Total: {{ $campaign->donations->count() }} Donasi)</h3>
                 

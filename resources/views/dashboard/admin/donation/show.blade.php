@@ -5,7 +5,7 @@
 @section('content')
 
 @php
-    // Helper untuk memetakan status ke warna dan ikon
+
     $statusMap = [
         'menunggu_penjemputan' => ['color' => 'bg-yellow-500', 'text' => 'text-yellow-800', 'icon' => 'fas fa-clock', 'display' => 'Menunggu Penjemputan'],
         'dalam_perjalanan' => ['color' => 'bg-blue-500', 'text' => 'text-blue-800', 'icon' => 'fas fa-truck', 'display' => 'Dalam Perjalanan'],
@@ -15,17 +15,17 @@
 
     $currentStatus = $statusMap[strtolower($donation->status)] ?? ['color' => 'bg-gray-500', 'text' => 'text-gray-800', 'icon' => 'fas fa-question-circle', 'display' => 'Tidak Diketahui'];
     
-    // Logika tambahan untuk menentukan warna dinamis untuk kartu Update Status
-    // Kita ambil basis warnanya (misal: 'yellow' dari 'bg-yellow-500')
+
+
     $colorBase = explode('-', $currentStatus['color'])[1] ?? 'gray';
     
-    // Tentukan warna latar, batas, dan teks judul kartu Update Status
+
     $cardBg = "bg-{$colorBase}-50";
     $cardBorder = "border-{$colorBase}-200";
     $cardText = "text-{$colorBase}-700";
 @endphp
 
-<!-- Header Section -->
+
 <div class="mb-6 flex justify-between items-center">
     <div>
         <h1 class="text-3xl font-bold text-gray-900">Detail Donasi {{ $donation->donor_name }}</h1>
@@ -37,7 +37,7 @@
     </a>
 </div>
 
-<!-- Success/Error Messages -->
+
 @if (session('success'))
     <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4" role="alert">
         <p>{{ session('success') }}</p>
@@ -53,13 +53,13 @@
     </div>
 @endif
 
-<!-- Main Content Grid -->
+
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <!-- Column 1 & 2: Donation Info and Items -->
+
     <div class="lg:col-span-2 space-y-6">
 
-        <!-- Card: Informasi Umum Donasi -->
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Informasi Donasi</h2>
             
@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        <!-- Card: Informasi Donatur -->
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Informasi Donatur</h2>
             
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        <!-- Card: Daftar Barang Donasi -->
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Daftar Barang yang Didonasikan ({{ $donation->items->count() }} Jenis)</h2>
             
@@ -143,11 +143,11 @@
 
     </div>
 
-    <!-- Column 3: Status Update and Tracking -->
+
     <div class="lg:col-span-1 space-y-6">
 
-        <!-- Card: Update Status Donasi -->
-        {{-- MENGGUNAKAN WARNA DINAMIS BERDASARKAN STATUS SAAT INI --}}
+
+
         <div class="sticky top-6 {{ $cardBg }} p-6 rounded-2xl shadow-xl border {{ $cardBorder }}">
             <h2 class="text-xl font-bold {{ $cardText }} mb-4 border-b {{ $cardBorder }} pb-2">Perbarui Status Donasi</h2>
             
@@ -189,7 +189,7 @@
             </form>
         </div>
 
-        <!-- Card: Riwayat Status (Tracking) -->
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Riwayat Status</h2>
             

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="flex min-h-screen p-6">
-        {{-- Left Column - Form --}}
+
         <div class="w-1/2 flex items-center justify-center p-8 bg-white">
             <div class="w-full max-w-lg space-y-12">
                 <a href="/">
@@ -17,11 +17,11 @@
                         <h2 class="">Selamat Datang Kembali!</h2>
                     </div>
 
-                    {{-- Login Form --}}
+
                     <form method="POST" action="{{ route('login') }}" class="space-y-4" id="loginForm" novalidate>
                         @csrf
 
-                        {{-- Email --}}
+
                         <div>
                             <label for="email" class="block text-sm font-semibold text-[#FF4400] mb-1">
                                 Email
@@ -30,16 +30,16 @@
                                 placeholder="Masukkan email kamu"
                                 class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('email') border-[#E50000] @enderror">
 
-                            {{-- Backend Error --}}
+
                             @error('email')
                                 <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
                             @enderror
 
-                            {{-- Frontend Error --}}
+
                             <p id="emailError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                         </div>
 
-                        {{-- Password --}}
+
                         <div>
                             <label for="password" class="block text-sm font-semibold text-[#FF4400] mb-1">
                                 Kata Sandi
@@ -47,16 +47,16 @@
                             <input type="password" name="password" id="password" placeholder="Masukkan Kata Sandi kamu"
                                 class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('password') border-[#E50000] @enderror">
 
-                            {{-- Backend Error --}}
+
                             @error('password')
                                 <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
                             @enderror
 
-                            {{-- Frontend Error --}}
+
                             <p id="passwordError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                         </div>
 
-                        {{-- Remember Me & Forgot Password --}}
+
                         <div class="flex items-center justify-between">
                             <a href="{{ route('password.request') }}"
                                 class="text-xs font-semibold text-[#626262] hover:text-[#FF4400] underline">
@@ -71,14 +71,14 @@
                             </div>
                         </div>
 
-                        {{-- Submit Button --}}
+
                         <button type="submit"
                             class="w-full py-3 px-4 bg-[#FF4400] hover:bg-[#DE3B00] text-white font-semibold rounded-full">
                             Sign in
                         </button>
                     </form>
 
-                    {{-- Divider --}}
+
                     <div class="mt-3">
                         <div class="relative">
                             <div class="absolute inset-0 flex items-center">
@@ -89,7 +89,7 @@
                             </div>
                         </div>
 
-                        {{-- Google Login --}}
+
                         <div class="mt-3">
                             <a href="{{ route('auth.google') }}"
                                 class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 transition-colors">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
 
-                {{-- Back Link --}}
+
                 <div class="mt-6 ">
                     <a href="{{ url('/') }}" class="text-sm text-[#FF4400] font-bold flex gap-2">
                         <img src="/images/back.svg" class="w-4" alt="">
@@ -119,14 +119,14 @@
             </div>
         </div>
 
-        {{-- Right Column - Image with Overlay --}}
+
         <div class="w-1/2 relative bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl">
-            {{-- Background Image --}}
+
             <div class="absolute inset-0 bg-cover bg-center rounded-3xl">
                 <img src="/images/right-bg-auth.svg" class="rounded-3xl" alt="">
             </div>
 
-            {{-- Content Overlay --}}
+
             <div class="relative h-full flex flex-col items-center justify-center text-white p-12 rounded-3xl">
                 <div class="flex flex-col gap-2 text-center items-center justify-center italic">
                     <p class="text-sm ">"Kebaikan sekecil apa pun yang kita berikan, bisa jadi sebesar harapan bagi orang
@@ -137,10 +137,10 @@
         </div>
     </div>
 
-    {{-- JavaScript Validation --}}
+
     <script>
         document.getElementById('loginForm').addEventListener('submit', function (e) {
-            // Reset semua error message
+
             const emailError = document.getElementById('emailError');
             const passwordError = document.getElementById('passwordError');
             const emailInput = document.getElementById('email');
@@ -153,7 +153,7 @@
 
             let isValid = true;
 
-            // Validasi Email
+
             const email = emailInput.value.trim();
             if (email === '') {
                 emailError.textContent = 'Email harus diisi';
@@ -161,7 +161,7 @@
                 emailInput.classList.add('border-[#E50000]');
                 isValid = false;
             } else {
-                // Validasi format email
+
                 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailPattern.test(email)) {
                     emailError.textContent = 'Format email tidak valid';
@@ -171,7 +171,7 @@
                 }
             }
 
-            // Validasi Password
+
             const password = passwordInput.value;
             if (password === '') {
                 passwordError.textContent = 'Kata sandi harus diisi';
@@ -185,13 +185,13 @@
                 isValid = false;
             }
 
-            // Cegah submit jika tidak valid
+
             if (!isValid) {
                 e.preventDefault();
             }
         });
 
-        // Hapus error message saat user mulai mengetik
+
         document.getElementById('email').addEventListener('input', function () {
             const emailError = document.getElementById('emailError');
             if (!emailError.classList.contains('hidden')) {

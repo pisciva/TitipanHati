@@ -11,11 +11,11 @@ class CampaignController extends Controller
 {
     public function index(Request $request)
     {
-        // Query dasar campaign aktif dengan relasi
+
         $query = Campaign::with(['organization', 'categories'])
             ->where('status', 'aktif');
 
-        // Filter pencarian
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -25,22 +25,22 @@ class CampaignController extends Controller
             });
         }
 
-        // Filter provinsi
+
         if ($request->filled('province')) {
             $query->where('province', $request->province);
         }
 
-        // Filter kota
+
         if ($request->filled('city')) {
             $query->where('city', $request->city);
         }
 
-        // Filter kategori
+
         if ($request->filled('category')) {
             $query->whereHas('categories', fn($cat) => $cat->where('id', $request->category));
         }
 
-        // Sorting
+
         if ($request->filled('sort')) {
             match ($request->sort) {
                 'trending' => $query->orderBy('view_count', 'desc'),
@@ -51,17 +51,17 @@ class CampaignController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        // Ambil data
+
         $campaigns = $query->paginate(12);
         $categories = Category::all();
 
-        // Ambil daftar provinsi dari package laravolt/indonesia
+
         $provinces = DB::table(config('laravolt.indonesia.table_prefix') . 'provinces')
             ->select('id', 'name')
             ->orderBy('name')
             ->get();
 
-        // Kirim SEMUA data yang dibutuhkan oleh view
+
         return view('campaigns.index', compact('campaigns', 'categories', 'provinces'));
     }
 

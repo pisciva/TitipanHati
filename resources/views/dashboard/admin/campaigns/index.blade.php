@@ -4,28 +4,28 @@
 
 @section('content')
 
-    {{-- 1. START: ALPINE.JS DATA FOR MODAL CONTROL --}}
+
     <div x-data="{ 
         openModal: false, 
         campaignToDelete: null,
         campaignTitle: '',
         
-        // Fungsi untuk membuka modal dan menyimpan ID campaign
+
         confirmDelete(campaignId, title) {
             this.campaignToDelete = campaignId;
             this.campaignTitle = title;
             this.openModal = true;
         },
 
-        // Fungsi untuk menghapus (submit form tersembunyi)
+
         deleteCampaign() {
             if (this.campaignToDelete) {
-                // Submit form yang sesuai dengan ID campaign
+
                 document.getElementById('delete-form-' + this.campaignToDelete).submit();
             }
         }
     }">
-    {{-- 1. END: ALPINE.JS DATA FOR MODAL CONTROL --}}
+
 
     <div class="mb-6 flex justify-between items-center">
         <div>
@@ -41,20 +41,20 @@
     <div class="bg-white p-6 rounded-2xl shadow-lg mb-6 border border-gray-100">
         <form action="{{ route('admin.campaigns.index') }}" method="GET" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
             
-            {{-- 1. Search Field (Lebih Ringkas) --}}
+
             <div class="lg:col-span-1">
                 <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Cari Campaign</label>
                 <input type="text" name="search" id="search" placeholder="Judul..."
                     value="{{ request('search') }}"
-                    {{-- UBAH PY-3 MENJADI PY-2 --}}
+
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 transition">
             </div>
 
-            {{-- 2. Status Filter (Lebih Ringkas) --}}
+
             <div class="lg:col-span-1">
                 <label for="status" class="block text-xs font-medium text-gray-700 mb-1">Status</label>
                 <select name="status" id="status"
-                        {{-- UBAH PY-3 MENJADI PY-2 --}}
+
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 transition">
                     <option value="">Semua</option>
                     <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
@@ -62,23 +62,23 @@
                 </select>
             </div>
 
-            {{-- 3. Date From Filter (Lebih Ringkas) --}}
+
             <div class="lg:col-span-1">
                 <label for="date_from" class="block text-xs font-medium text-gray-700 mb-1">Dari Tanggal</label>
                 <input type="date" name="date_from" id="date_from" value="{{ request('date_from') }}"
-                    {{-- UBAH PY-3 MENJADI PY-2 --}}
+
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 transition">
             </div>
 
-            {{-- 4. Date To Filter (Lebih Ringkas) --}}
+
             <div class="lg:col-span-1">
                 <label for="date_to" class="block text-xs font-medium text-gray-700 mb-1">Sampai Tanggal</label>
                 <input type="date" name="date_to" id="date_to" value="{{ request('date_to') }}"
-                    {{-- UBAH PY-3 MENJADI PY-2 --}}
+
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-red-600 focus:border-red-600 transition">
             </div>
 
-            {{-- 5. Action Buttons --}}
+
             <div class="lg:col-span-1 flex space-x-2 pt-2 md:pt-0">
             <button type="submit" 
                     class="flex-shrink-0 px-4 py-2 bg-[#FF4400] text-white font-semibold rounded-xl text-sm hover:bg-[#EB3F00] transition duration-150 shadow-sm flex items-center">
@@ -139,7 +139,7 @@
                                 </span>
                             </td>
                             
-                            {{-- KOLOM AKSI (Diperbaiki agar selalu memicu pop-up) --}}
+
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative z-10">
                                 <a href="{{ route('admin.campaigns.edit', $campaign->id) }}" class="text-[#FF4400] hover:text-[#EB3F00] mx-2" title="Edit" onclick="event.stopPropagation()">
                                     <i class="fas fa-edit"></i>
@@ -148,7 +148,7 @@
                                     <i class="fas fa-eye"></i> 
                                 </a>
 
-                                {{-- Tombol Hapus Selalu Aktif (Memicu Pop-up) --}}
+
                                 <button type="button" 
                                         @click.stop="confirmDelete({{ $campaign->id }}, '{{ $campaign->title }}')" 
                                         class="text-[#FF4400] hover:text-[#EB3F00] mx-2" 
@@ -157,13 +157,13 @@
                                     <i class="fas fa-trash"></i>
                                 </button>
                                 
-                                {{-- Hidden Form untuk penghapusan aktual --}}
+
                                 <form id="delete-form-{{ $campaign->id }}" action="{{ route('admin.campaigns.destroy', $campaign->id) }}" method="POST" class="hidden">
                                     @csrf
                                     @method('DELETE')
                                 </form>
                             </td>
-                            {{-- END KOLOM AKSI --}}
+
                         </tr>
                     @empty
                         <tr>
@@ -181,7 +181,7 @@
         {{ $campaigns->links() }}
     </div>
 
-    {{-- MODAL KONFIRMASI DELETE (POP UP BARU) --}}
+
     <div x-show="openModal" 
          class="fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full z-50 transition-opacity duration-300 flex items-center justify-center"
          x-transition:enter="ease-out duration-300"
@@ -201,7 +201,7 @@
              x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
              x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             
-            {{-- Icon dan Judul --}}
+
             <div class="sm:flex sm:items-start">
                 <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                     <i class="fas fa-exclamation-triangle text-red-600"></i>
@@ -221,7 +221,7 @@
                 </div>
             </div>
             
-            {{-- Tombol Aksi --}}
+
             <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse">
                 <button @click="deleteCampaign()" type="button"
                         class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
@@ -235,7 +235,7 @@
             
         </div>
     </div>
-    {{-- END: MODAL KONFIRMASI DELETE --}}
+
 
     </div> 
     <script>

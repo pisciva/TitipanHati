@@ -5,14 +5,14 @@
 @section('content')
     <div class="flex min-h-screen p-6 items-center justify-center bg-white">
         <div class="w-full max-w-lg space-y-16">
-            {{-- Logo --}}
+
             <div class="flex justify-center">
                 <img src="/images/logo-titiphanhati-lightmode.svg" alt="TitipanHati Logo">
             </div>
 
-            {{-- Content Container --}}
+
             <div class="space-y-8 border border-[#D3D3D3] p-12 rounded-3xl">
-                {{-- Header --}}
+
                 <div class="text-center">
                     <h2 class="text-3xl font-bold text-[#1D1D1D] mb-2">Atur Ulang Kata Sandi</h2>
                     <p class="text-sm text-[#626262]">
@@ -20,13 +20,13 @@
                     </p>
                 </div>
 
-                {{-- Form --}}
+
                 <form method="POST" action="{{ route('password.update') }}" class="space-y-5" id="resetPasswordForm" novalidate>
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">
                     <input type="hidden" name="email" value="{{ request()->email }}">
 
-                    {{-- Password Field --}}
+
                     <div>
                         <label for="password" class="block text-sm font-semibold text-[#FF4400] mb-1">
                             Kata Sandi Baru
@@ -35,16 +35,16 @@
                             placeholder="Masukkan kata sandi baru"
                             class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent @error('password') border-[#E50000] @enderror">
                         
-                        {{-- Backend Error --}}
+
                         @error('password')
                             <p class="mt-1 text-xs font-medium text-[#E50000]">{{ $message }}</p>
                         @enderror
                         
-                        {{-- Frontend Error --}}
+
                         <p id="passwordError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                     </div>
 
-                    {{-- Confirm Password Field --}}
+
                     <div>
                         <label for="password_confirmation" class="block text-sm font-semibold text-[#FF4400] mb-1">
                             Konfirmasi Kata Sandi
@@ -53,11 +53,11 @@
                             placeholder="Masukkan ulang kata sandi baru"
                             class="w-full px-3 py-3 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         
-                        {{-- Frontend Error --}}
+
                         <p id="confirmPasswordError" class="mt-1 text-xs font-medium text-[#E50000] hidden"></p>
                     </div>
 
-                    {{-- Submit Button --}}
+
                     <button type="submit"
                         class="w-full mt-6 py-3 px-4 bg-[#FF4400] hover:bg-[#DE3B00] text-white font-semibold rounded-full">
                         Atur Ulang Kata Sandi
@@ -65,7 +65,7 @@
                 </form>
             </div>
 
-            {{-- Back Link --}}
+
             <div class="mt-6">
                 <a href="{{ route('login') }}" class="text-sm text-[#FF4400] font-bold flex gap-2">
                     <img src="/images/back.svg" class="w-4" alt="">
@@ -75,7 +75,7 @@
         </div>
     </div>
 
-    {{-- JavaScript Validation --}}
+
     <script>
         document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
             const passwordError = document.getElementById('passwordError');
@@ -90,7 +90,7 @@
             
             let isValid = true;
             
-            // Validasi Password
+
             const password = passwordInput.value;
             if (password === '') {
                 passwordError.textContent = 'Kata sandi harus diisi';
@@ -104,7 +104,7 @@
                 isValid = false;
             }
             
-            // Validasi Confirm Password
+
             const confirmPassword = confirmPasswordInput.value;
             if (confirmPassword === '') {
                 confirmPasswordError.textContent = 'Konfirmasi kata sandi harus diisi';

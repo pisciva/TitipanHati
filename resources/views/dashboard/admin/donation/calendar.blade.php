@@ -4,33 +4,33 @@
 
 @section('content')
 
-    {{-- Setup Carbon untuk logika kalender --}}
+
     @php
-        // Pastikan variabel $year dan $month tersedia dari controller
+
         $month = $month ?? now()->month;
         $year = $year ?? now()->year;
 
-        // Membuat objek Carbon untuk tanggal 1 bulan saat ini
+
         $currentDate = \Carbon\Carbon::createFromDate($year, $month, 1);
         $daysInMonth = $currentDate->daysInMonth;
-        // dayOfWeekIso: 1 (Monday) - 7 (Sunday). Laravel's Carbon starts Monday as 1.
+
         $firstDayOfWeek = $currentDate->dayOfWeekIso; 
         
-        // Menghitung bulan sebelumnya dan bulan berikutnya untuk navigasi
+
         $prevMonth = $currentDate->copy()->subMonth();
         $nextMonth = $currentDate->copy()->addMonth();
 
-        // Nama Hari dalam Bahasa Indonesia (Mengikuti ISO: Senin = 1, Minggu = 7)
+
         $weekDays = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
         $currentDay = 1;
 
-        // Mendapatkan URL base untuk navigasi
+
         $baseUrl = route('admin.donations.calendar');
 
-        // Flatten $donations (yang sudah dikelompokkan oleh controller) untuk list di bawah
+
         $allMonthlyDonations = collect($donations)->flatten()->sortByDesc('pickup_date');
 
-        // Mapping status ke warna untuk indikator kalender
+
         $statusColors = [
             'menunggu_penjemputan' => 'bg-[#F59E0B]', 
             'dalam_perjalanan' => 'bg-[#00B2F3]', 
@@ -39,52 +39,52 @@
         ];
     @endphp
 
-    <!-- Header (Sesuai Konsep Desain) -->
+
     <div class="mb-6">
         <h1 class="text-2xl font-semibold text-[#1D1D1D]">Tanggal Penjemputan</h1>
         <p class="text-sm text-gray-500">Hari ini {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
 
-    <!-- Calendar View Card -->
+
     <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 mb-8">
         
-        <!-- Calendar Navigation -->
+
         <div class="flex justify-between items-center mb-6">
-            {{-- Tombol Bulan Sebelumnya --}}
+
             <a href="{{ $baseUrl }}?year={{ $prevMonth->year }}&month={{ $prevMonth->month }}" 
                class="p-2 text-[#FF4400] hover:bg-gray-100 rounded-full transition">
                 <i class="fas fa-chevron-left"></i>
             </a>
 
-            {{-- Judul Bulan Saat Ini --}}
+
             <h2 class="text-lg font-semibold text-[#FF4400]">
                 {{ $currentDate->translatedFormat('F Y') }}
             </h2>
 
-            {{-- Tombol Bulan Berikutnya --}}
+
             <a href="{{ $baseUrl }}?year={{ $nextMonth->year }}&month={{ $nextMonth->month }}" 
                class="p-2 text-[#FF4400] hover:bg-gray-100 rounded-full transition">
                 <i class="fas fa-chevron-right"></i>
             </a>
         </div>
 
-        <!-- Calendar Grid -->
+
         <div class="grid grid-cols-7 gap-1 text-center">
             
-            {{-- Nama Hari (Senin s.d. Minggu) --}}
+
             @foreach ($weekDays as $dayName)
                 <div class="text-xs font-semibold text-gray-500 py-1">{{ $dayName }}</div>
             @endforeach
-            {{-- Bagian <div>Min</div> yang redundan telah dihapus, karena sudah termasuk dalam $weekDays --}}
 
 
-            {{-- Padding Kosong di Awal Bulan (menggeser ke hari yang benar) --}}
+
+
             @for ($i = 1; $i < $firstDayOfWeek; $i++)
                 <div class="p-1 text-xs text-gray-400 bg-gray-50 h-16 sm:h-20 rounded-lg"></div>
             @endfor
 
-            {{-- Hari-Hari di Bulan Ini --}}
+
             @while ($currentDay <= $daysInMonth)
                 @php
                     $fullDate = \Carbon\Carbon::createFromDate($year, $month, $currentDay);
@@ -97,7 +97,7 @@
                     $weekendClass = $isWeekend ? 'text-red-600' : 'text-gray-900';
                     $activeDateClass = $hasDonations ? 'cursor-pointer' : '';
 
-                    // Jika ada donasi, ambil status pertama (atau status paling urgent) untuk indikator
+
                     $firstDonation = $hasDonations ? $donations[$dateKey]->first() : null;
                     $statusColor = $firstDonation ? $statusColors[strtolower(str_replace(' ', '_', $firstDonation->status))] : '';
                 @endphp
@@ -105,13 +105,13 @@
                 <div class="p-1 h-16 sm:h-20 text-xs rounded-lg flex flex-col items-center transition duration-150 {{ $todayClass }} {{ $activeDateClass }} relative"
                      @if ($hasDonations) onclick="showDonationDetails('{{ $dateKey }}')" @endif>
                     
-                    {{-- Nomor Tanggal --}}
+
                     <span class="w-6 h-6 flex items-center justify-center rounded-full mb-1 
                                  {{ $fullDate->isToday() ? 'bg-red-500 text-white' : $weekendClass }}">
                         {{ $currentDay }}
                     </span>
 
-                    {{-- Indikator Donasi (Sesuai Desain Gambar) --}}
+
                     @if ($hasDonations)
                         <div class="text-xs font-medium text-white px-1 py-0.5 rounded-full mt-1 max-w-full truncate" 
                              style="font-size: 0.6rem; line-height: 0.75rem;">
@@ -127,7 +127,7 @@
                 @endphp
             @endwhile
 
-            {{-- Padding Kosong di Akhir Bulan --}}
+
             @php
                 $endPadding = 7 - (($firstDayOfWeek + $daysInMonth - 1) % 7);
                 if ($endPadding == 7) $endPadding = 0;
@@ -136,11 +136,11 @@
                 <div class="p-1 text-xs text-gray-400 bg-gray-50 h-16 sm:h-20 rounded-lg"></div>
             @endfor
         </div>
-        <!-- End Calendar Grid -->
+
     </div>
 
     
-    <!-- Daftar Seluruh Donasi (Untuk Bulan Ini) -->
+
     <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
         <div class="flex justify-between items-center mb-4 border-b pb-4">
             <h3 class="text-xl font-bold text-gray-800">Daftar Seluruh Donasi Bulan Ini</h3>
@@ -169,14 +169,14 @@
 
                     <div class="p-4 border-l-4 {{ $statusClass }} rounded-xl flex justify-between items-center shadow-sm hover:shadow-md transition duration-150">
                         <div class="flex items-center space-x-4">
-                            {{-- Status Indicator --}}
+
                             <div class="flex flex-col items-start">
                                 <span class="text-sm font-semibold {{ str_contains($statusText, 'Selesai') ? 'text-green-700' : 'text-gray-700' }}">
                                     <i class="fas fa-circle text-xs mr-2 {{ str_contains($statusText, 'Menunggu') ? 'text-yellow-500' : (str_contains($statusText, 'Dalam') ? 'text-blue-500' : (str_contains($statusText, 'Selesai') ? 'text-green-500' : 'text-red-500')) }}"></i>
                                     {{ $statusText }}
                                 </span>
                                 
-                                {{-- Item & Campaign Detail (Simplified) --}}
+
                                 <p class="text-gray-900 font-medium mt-1">
                                     {{ $donation->campaign->title ?? 'Campaign Tidak Diketahui' }}
                                 </p>
@@ -187,7 +187,7 @@
                             </div>
                         </div>
 
-                        {{-- Detail Link --}}
+
                         <a href="{{ route('admin.donations.show', $donation->id) }}" class="flex items-center text-[#FF4400] font-semibold text-sm hover:text-[#EB3F00]">
                             Detail Donasi <i class="fas fa-chevron-right ml-2 text-xs"></i>
                         </a>
@@ -198,7 +198,7 @@
     </div>
 
 
-    <!-- MODAL DETAIL DONASI (Tetap dipertahankan untuk tampilan harian spesifik) -->
+
     <div id="donation-details-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 z-50 flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-95" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <h3 id="modal-title" class="text-xl font-bold mb-4 text-[#1D1D1D] border-b pb-2">Aktivitas Penjemputan Tanggal: </h3>
@@ -214,7 +214,7 @@
 
     @push('scripts')
     <script>
-        // Fungsi untuk menampilkan detail donasi menggunakan AJAX
+
         async function showDonationDetails(date) {
             const modal = document.getElementById('donation-details-modal');
             const modalTitle = document.getElementById('modal-title');
@@ -225,7 +225,7 @@
             modal.classList.remove('hidden');
 
             try {
-                // Menggunakan rute yang sudah dikonfirmasi: admin.donations.byDate
+
                 const response = await fetch(`{{ route('admin.donations.byDate') }}?date=${date}`);
                 
                 if (!response.ok) {

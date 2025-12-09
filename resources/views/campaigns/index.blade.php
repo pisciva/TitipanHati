@@ -6,10 +6,10 @@
 <div class="min-h-screen">
     <div class="container mx-auto px-4 py-8">
         
-        {{-- Hero Section with Search --}}
+
         <div class="relative mb-8 overflow-hidden">
             <div class="bg-[#FF4400] to-[#FF6B35] rounded-3xl shadow-2xl p-8 md:p-12 text-white">
-                {{-- Decorative Elements --}}
+
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
                 <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full -ml-48 -mb-48 blur-3xl"></div>
                 
@@ -22,7 +22,7 @@
                         Jelajahi berbagai campaign donasi dan bantu mereka yang membutuhkan
                     </p>
 
-                    {{-- Real-time Search Bar --}}
+
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400 text-xl"></i>
@@ -42,7 +42,7 @@
                         </div>
                     </div>
 
-                    {{-- Real-time Results Counter --}}
+
                     <div id="searchResultInfo" class="mt-4 text-white/80 text-sm hidden">
                         <i class="fas fa-info-circle mr-1"></i>
                         <span id="resultCount">0</span> campaign ditemukan
@@ -51,10 +51,10 @@
             </div>
         </div>
 
-        {{-- Advanced Filter Modal --}}
+
         <div id="filterModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden animate-slideUp">
-                {{-- Modal Header --}}
+
                 <div class="bg-[#FF4400] to-[#FF6B35] p-6 text-white">
                     <div class="flex items-center justify-between">
                         <h3 class="text-2xl font-bold flex items-center gap-3">
@@ -67,11 +67,11 @@
                     </div>
                 </div>
 
-                {{-- Modal Body --}}
+
                 <form method="GET" action="{{ route('campaigns.index') }}" id="filterForm" class="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         
-                        {{-- Search Input --}}
+
                         <div class="lg:col-span-3">
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-search text-[#FF4400] mr-2"></i>
@@ -85,7 +85,7 @@
                                    class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#FF4400] focus:border-transparent transition">
                         </div>
 
-                        {{-- Status Filter --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-toggle-on text-[#FF4400] mr-2"></i>
@@ -99,7 +99,7 @@
                             </select>
                         </div>
 
-                        {{-- Progress Filter --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-chart-line text-[#FF4400] mr-2"></i>
@@ -115,7 +115,7 @@
                             </select>
                         </div>
 
-                        {{-- Category Filter --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-tags text-[#FF4400] mr-2"></i>
@@ -132,7 +132,7 @@
                             </select>
                         </div>
 
-                        {{-- Province --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-map-marker-alt text-[#FF4400] mr-2"></i>
@@ -148,7 +148,7 @@
                             </select>
                         </div>
 
-                        {{-- City --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-city text-[#FF4400] mr-2"></i>
@@ -159,7 +159,7 @@
                             </select>
                         </div>
 
-                        {{-- Deadline Range --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-calendar-alt text-[#FF4400] mr-2"></i>
@@ -174,7 +174,7 @@
                             </select>
                         </div>
 
-                        {{-- View Count Range --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-eye text-[#FF4400] mr-2"></i>
@@ -188,7 +188,7 @@
                             </select>
                         </div>
 
-                        {{-- Sort --}}
+
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-3">
                                 <i class="fas fa-sort text-[#FF4400] mr-2"></i>
@@ -205,7 +205,7 @@
                         </div>
                     </div>
 
-                    {{-- Modal Footer --}}
+
                     <div class="flex flex-wrap gap-3 mt-8 pt-6 border-t">
                         <button type="submit" class="flex-1 px-8 py-4 bg-[#FF4400] to-[#FF6B35] text-white rounded-xl font-bold hover:shadow-xl transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2">
                             <i class="fas fa-check"></i>
@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        {{-- Active Filters Display --}}
+
         @if(request()->hasAny(['search', 'status', 'progress', 'category', 'province', 'city', 'deadline', 'views', 'sort']))
             <div class="mb-6 bg-white rounded-2xl shadow-lg p-4 border-l-4 border-[#FF4400]">
                 <div class="flex items-center justify-between flex-wrap gap-3">
@@ -273,7 +273,7 @@
             </div>
         @endif
 
-        {{-- Results Info --}}
+
         <div class="mb-6 bg-white rounded-2xl shadow-md p-4 flex items-center justify-between">
             <div>
                 <p class="text-gray-600 flex items-center gap-2">
@@ -292,7 +292,7 @@
             </div>
         </div>
 
-        {{-- Campaign Grid --}}
+
         <div id="campaignsContainer">
             @if($campaigns->count() > 0)
                 <div id="campaignGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -301,7 +301,7 @@
                     @endforeach
                 </div>
 
-                {{-- Pagination --}}
+
                 <div class="mt-8">
                     {{ $campaigns->appends(request()->query())->links() }}
                 </div>
@@ -328,7 +328,7 @@
     </div>
 </div>
 
-{{-- Styles --}}
+
 @push('styles')
 <style>
     @keyframes slideUp {
@@ -354,7 +354,6 @@
         display: flex !important;
     }
 
-    /* Custom scrollbar */
     ::-webkit-scrollbar {
         width: 8px;
     }
@@ -375,11 +374,11 @@
 </style>
 @endpush
 
-{{-- Scripts --}}
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // Real-time Search
+
     let searchTimeout;
     const realtimeSearch = document.getElementById('realtimeSearch');
     const searchResultInfo = document.getElementById('searchResultInfo');
@@ -395,7 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
             resultCount.textContent = '...';
             
             searchTimeout = setTimeout(() => {
-                // Update URL with search param
+
                 const url = new URL(window.location.href);
                 url.searchParams.set('search', searchTerm);
                 window.location.href = url.toString();
@@ -405,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Filter Modal
+
     const filterModal = document.getElementById('filterModal');
     const advancedFilterBtn = document.getElementById('advancedFilterBtn');
     const closeFilterModal = document.getElementById('closeFilterModal');
@@ -430,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Province & City Dropdown
+
     const provinceSelect = document.getElementById('province');
     const citySelect = document.getElementById('city');
     const oldCityName = "{{ request('city') }}";
@@ -485,13 +484,13 @@ document.addEventListener('DOMContentLoaded', function () {
         loadCities(initialProvinceId, oldCityName);
     }
 
-    // Sync modal search with realtime search
+
     const modalSearch = document.getElementById('modalSearch');
     if (realtimeSearch.value) {
         modalSearch.value = realtimeSearch.value;
     }
 
-    // View Toggle (Grid/List)
+
     const gridView = document.getElementById('gridView');
     const listView = document.getElementById('listView');
     const campaignGrid = document.getElementById('campaignGrid');

@@ -11,7 +11,7 @@ class HelpController extends Controller
      */
     public function index()
     {
-        // Return the view for the help page
+
         return view('help.index');
     }
 
@@ -26,8 +26,8 @@ class HelpController extends Controller
             'message' => 'required|string',
         ]);
 
-        // Di sini Anda bisa kirim email, simpan ke DB, dll.
-        // Contoh sederhana: hanya kembalikan pesan sukses
+
+
         return back()->with('success', 'Pesan Anda berhasil dikirim! Terima kasih.');
     }
 }

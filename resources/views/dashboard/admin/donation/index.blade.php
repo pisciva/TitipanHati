@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <!-- Header Section -->
+
     <div class="mb-6 flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-semibold text-[#1D1D1D]">Manajemen Donasi Barang</h1>
@@ -16,7 +16,7 @@
         </a>
     </div>
 
-    <!-- Success/Error Messages -->
+
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4" role="alert">
             <p>{{ session('success') }}</p>
@@ -32,11 +32,11 @@
         </div>
     @endif
 
-    <!-- Filtering and Search Form -->
+
     <div class="bg-white p-6 rounded-2xl shadow-lg mb-6 border border-gray-100">
         <form action="{{ route('admin.donations.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             
-            {{-- Status Filter --}}
+
             <div>
                 <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Filter Status</label>
                 <select name="status" id="status"
@@ -49,7 +49,7 @@
                 </select>
             </div>
 
-            {{-- Campaign Filter --}}
+
             <div>
                 <label for="campaign_id" class="block text-sm font-medium text-gray-700 mb-1">Filter Campaign</label>
                 <select name="campaign_id" id="campaign_id"
@@ -63,7 +63,7 @@
                 </select>
             </div>
 
-            {{-- Date From Filter --}}
+
             <div>
                 <label for="date_from" class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
                 <input type="date" name="date_from" id="date_from"
@@ -71,7 +71,7 @@
                        class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
             </div>
 
-            {{-- Date To Filter --}}
+
             <div>
                 <label for="date_to" class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
                 <input type="date" name="date_to" id="date_to"
@@ -79,7 +79,7 @@
                        class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
             </div>
 
-            {{-- Action Buttons --}}
+
             <div class="col-span-full md:col-span-4 flex space-x-2 mt-2">
                 <button type="submit" 
                         class="flex-shrink-0 px-4 py-2 bg-[#FF4400] text-white font-medium rounded-xl hover:bg-[#EB3F00] transition duration-150">
@@ -97,7 +97,7 @@
         </form>
     </div>
 
-    <!-- Donation List Table -->
+
     <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
@@ -113,7 +113,7 @@
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($donations as $donation)
-                        {{-- Menggunakan trik yang sama agar seluruh baris bisa diklik --}}
+
                         <tr class="group hover:bg-gray-50 cursor-pointer relative">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ route('admin.donations.show', $donation->id) }}" class="absolute inset-0"></a>
@@ -145,9 +145,9 @@
                                     {{ ucfirst(str_replace('_', ' ', $donation->status)) }}
                                 </span>
                             </td>
-                            {{-- Kolom Aksi dengan z-index tinggi agar tombol fungsional --}}
+
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium relative z-10">
-                                {{-- Tombol edit status, mengarah ke halaman show (tempat updateStatus dilakukan) --}}
+
                                 <a href="{{ route('admin.donations.show', $donation->id) }}" 
                                    class="text-[#FF4400] hover:text-[#EB3F00] mx-2" 
                                    title="Update Status" 
@@ -168,7 +168,7 @@
         </div>
     </div>
 
-    <!-- Pagination -->
+
     <div class="mt-6">
         {{ $donations->links() }}
     </div>

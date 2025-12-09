@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-3xl mx-auto">
-        {{-- Success Header --}}
+
         <div class="bg-white rounded-lg shadow-md p-8 text-center mb-6">
             <div class="mb-4">
                 <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full">
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        {{-- Donation Details --}}
+
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-clipboard-list text-[#FF4400] mr-2"></i>
@@ -30,13 +30,11 @@
             </h2>
 
             <div class="space-y-4">
-                {{-- Campaign Info --}}
+
                 <div class="border-b pb-4">
-                    <p class="text-sm text-gray-600 mb-1">Campaign</p>
                     <div class="flex items-center">
-                        <img src="{{ $donation->campaign->banner_url ?? '/images/default-campaign.jpg' }}" 
-                             alt="{{ $donation->campaign->title }}"
-                             class="w-16 h-16 object-cover rounded-lg mr-3">
+                        <img src="{{ asset('storage/' . $donation->campaign->banner_url) }}" alt="{{ $donation->campaign->banner_url }}"
+                             class="w-50 h-16 object-cover rounded-lg mr-3">
                         <div>
                             <p class="font-semibold text-gray-900">{{ $donation->campaign->title }}</p>
                             <p class="text-sm text-gray-600">{{ $donation->campaign->organization->name }}</p>
@@ -44,7 +42,7 @@
                     </div>
                 </div>
 
-                {{-- Donor Info --}}
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-b pb-4">
                     <div>
                         <p class="text-sm text-gray-600 mb-1">Nama Donatur</p>
@@ -60,7 +58,7 @@
                     </div>
                 </div>
 
-                {{-- Pickup Info --}}
+
                 <div class="border-b pb-4">
                     <p class="text-sm text-gray-600 mb-1">Alamat Penjemputan</p>
                     <p class="font-semibold text-gray-900">{{ $donation->pickup_address }}</p>
@@ -74,7 +72,7 @@
                     @endif
                 </div>
 
-                {{-- Pickup Schedule --}}
+
                 <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
                     <p class="text-sm text-gray-600 mb-1">Jadwal Penjemputan</p>
                     <p class="font-bold text-blue-900">
@@ -89,7 +87,7 @@
             </div>
         </div>
 
-        {{-- Items List --}}
+
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-box text-[#FF4400] mr-2"></i>
@@ -128,7 +126,7 @@
             </div>
         </div>
 
-        {{-- Status --}}
+
         <div class="bg-white rounded-lg shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
                 <i class="fas fa-info-circle text-[#FF4400] mr-2"></i>
@@ -150,7 +148,7 @@
             </div>
         </div>
 
-        {{-- Next Steps --}}
+
         <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg p-6 mb-6">
             <h3 class="font-bold text-gray-900 mb-3 flex items-center">
                 <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
@@ -176,7 +174,7 @@
             </ol>
         </div>
 
-        {{-- Action Buttons --}}
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <a href="{{ route('donations.history') }}" 
                class="py-3 px-4 bg-[#FF4400] text-white text-center font-semibold rounded-lg hover:bg-blue-700 transition-colors">
@@ -195,7 +193,7 @@
             </a>
         </div>
 
-        {{-- Social Share --}}
+
         <div class="mt-6 text-center">
             <p class="text-gray-600 mb-3">Ajak teman Anda untuk berdonasi juga!</p>
             <div class="flex justify-center gap-3">

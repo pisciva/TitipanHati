@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <!-- Header Section -->
+
     <div class="mb-6 flex justify-between items-center">
         <div>
             <h1 class="text-3xl font-semibold text-[#1D1D1D]">Edit Campaign</h1>
@@ -15,7 +15,7 @@
         </a>
     </div>
 
-    <!-- Success/Error Messages -->
+
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4" role="alert">
             <p>{{ session('success') }}</p>
@@ -32,18 +32,18 @@
         </div>
     @endif
 
-    <!-- Main Form Card -->
+
     <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
         
         <form action="{{ route('admin.campaigns.update', $campaign->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
             @csrf
-            @method('PATCH') {{-- Menggunakan method PATCH untuk update --}}
+            @method('PATCH')
 
-            <!-- Section 1: Campaign Basics -->
+
             <div class="space-y-6 border-b border-gray-200 pb-6">
                 <h3 class="text-xl font-semibold text-gray-800">Detail Dasar Campaign</h3>
 
-                {{-- Title --}}
+
                 <div>
                     <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Judul Campaign</label>
                     <input type="text" name="title" id="title" value="{{ old('title', $campaign->title) }}" required
@@ -51,7 +51,7 @@
                     @error('title')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Organization ID --}}
+
                 <div>
                     <label for="organization_id" class="block text-sm font-medium text-gray-700 mb-1">Organisasi Pelaksana</label>
                     <select name="organization_id" id="organization_id" required
@@ -66,10 +66,10 @@
                     @error('organization_id')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Categories (Multi-select) --}}
+
                 <div>
                     @php
-                        // Ambil ID kategori yang sudah terpilih untuk Campaign ini
+
                         $selectedCategories = old('categories', $campaign->categories->pluck('id')->toArray());
                     @endphp
                     <label for="categories" class="block text-sm font-medium text-gray-700 mb-1">Kategori (Boleh Pilih Lebih dari Satu)</label>
@@ -86,12 +86,12 @@
                     @error('categories.*')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Current Banner Display and New Banner Upload --}}
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Banner Campaign Saat Ini</label>
                     @if ($campaign->banner_url)
                         <div class="mb-4">
-                            {{-- Asumsi banner disimpan di storage/public --}}
+
                             <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="Banner Campaign" class="w-full h-40 object-cover rounded-xl shadow-md border border-gray-200">
                         </div>
                     @else
@@ -106,12 +106,12 @@
                 </div>
             </div>
 
-            <!-- Section 2: Details & Targets -->
+
             <div class="space-y-6 border-b border-gray-200 pb-6">
                 <h3 class="text-xl font-semibold text-gray-800">Target & Batas Waktu</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- Target Quantity --}}
+
                     <div>
                         <label for="target_quantity" class="block text-sm font-medium text-gray-700 mb-1">Target Jumlah Donasi (Unit Barang)</label>
                         <input type="number" name="target_quantity" id="target_quantity" value="{{ old('target_quantity', $campaign->target_quantity) }}" required min="1"
@@ -119,17 +119,17 @@
                         @error('target_quantity')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
 
-                    {{-- Deadline --}}
+
                     <div>
                         <label for="deadline" class="block text-sm font-medium text-gray-700 mb-1">Batas Waktu Campaign</label>
-                        {{-- Format tanggal untuk input type="date" harus YYYY-MM-DD --}}
+
                         <input type="date" name="deadline" id="deadline" value="{{ old('deadline', $campaign->deadline->format('Y-m-d')) }}" required
                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
                         @error('deadline')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                 </div>
 
-                {{-- Status --}}
+
                 <div>
                     <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status Campaign</label>
                     <select name="status" id="status" required
@@ -140,7 +140,7 @@
                     @error('status')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                 </div>
 
-                {{-- Description --}}
+
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Campaign</label>
                     <textarea name="description" id="description" rows="6" required
@@ -149,19 +149,19 @@
                 </div>
             </div>
 
-            <!-- Section 3: Location -->
+
                         <div class="space-y-6">
                 <h3 class="text-xl font-semibold text-gray-800">Informasi Lokasi</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
                     
-                    {{-- 1. Province (Dropdown) --}}
+
                     <div>
                         <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
                         <select name="province" id="province" required
                                 class="w-full px-4 py-3 border ... transition">
                             <option value="" disabled selected>Pilih Provinsi</option>
-                            {{-- ... PHP loop untuk provinces ... --}}
+
                             @foreach ($provinces as $province)
                                 <option value="{{ $province->code }}" {{ old('province') === $province->code ? 'selected' : '' }}>
                                     {{ $province->name }}
@@ -171,13 +171,13 @@
                         @error('province')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
                     
-                    {{-- 2. City/Regency (Dropdown) --}}
+
                     <div>
                         <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Kota/Kabupaten</label>
                         <select name="city" id="city" required disabled
                                 class="w-full px-4 py-3 border ... transition bg-gray-50 disabled:cursor-not-allowed">
                             <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                            {{-- Opsi akan diisi oleh JavaScript --}}
+
                         </select>
                         @error('city')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
@@ -185,7 +185,7 @@
                 </div> 
             </div>
 
-            <!-- Action Button -->
+
             <div class="pt-6">
                 <button type="submit"
                         class="w-full sm:w-auto px-8 py-3 bg-[#FF4400] text-[#F8FAFC] font-semibold rounded-xl hover:bg-[#EB3F00] transition duration-150 shadow-md flex items-center justify-center">
@@ -207,7 +207,7 @@
                 citySelect.disabled = true;
 
                 if (provinceId) {
-                    // Panggil route AJAX
+
                     const url = `{{ route('admin.campaigns.getProvinces', '') }}/${provinceId}`; 
 
                     fetch(url)
@@ -222,7 +222,7 @@
                             
                             data.forEach(city => {
                                 const option = document.createElement('option');
-                                // Simpan nama kota di form
+
                                 option.value = city.name; 
                                 option.textContent = city.name;
                                 
@@ -242,12 +242,12 @@
                 }
             };
 
-            // Event Listener: Ketika Provinsi diubah
+
             provinceSelect.addEventListener('change', function() {
                 loadCities(this.value);
             });
 
-            // Inisialisasi: Jika ada nilai provinsi yang sudah terpilih 
+
             const initialProvinceId = provinceSelect.value;
             if (initialProvinceId) {
                 loadCities(initialProvinceId, oldCityName);

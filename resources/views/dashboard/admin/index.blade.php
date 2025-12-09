@@ -1,24 +1,24 @@
 @extends('layouts.dash-admin')
 
 @section('title', 'Ringkasan Dashboard')
-@section('header', '') {{-- Header di layout admin dikosongkan agar tidak berulang dengan konten di bawah --}}
+@section('header', '')
 
 @section('content')
 
-    <!-- Header Section -->
+
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Halo, Admin</h1>
-        {{-- Menggunakan Carbon untuk menampilkan tanggal lokal, cocok dengan format gambar --}}
+
         <p class="text-sm text-gray-500 mt-1">Today is {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
-    <!-- Search and Button Bar - BAGIAN INI DIPERBAIKI -->
+
     <div class="mb-10 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
         
-        <!-- Formulir Pencarian (Diperbaiki: Mengarahkan ke daftar Campaign untuk pencarian yang relevan) -->
+
         <form method="GET" action="{{ route('admin.campaigns.index') }}" class="flex-1 w-full sm:w-auto">
             <div class="relative  items-centerjustify-center flex">
-                {{-- Input Pencarian - Tambahkan name="search" dan value lama --}}
+
                 <input type="text" name="search" placeholder="Cari Campaign" 
                        value="{{ request('search') }}" 
                        class="w-full pl-10 pr-4 py-3 border-none bg-gray-200 rounded-xl focus:ring-red-600 focus:border-red-600 text-base transition shadow-none" />
@@ -27,7 +27,7 @@
                 </button>
             </div>
         </form>
-        <!-- Akhir Formulir Pencarian -->
+
         
         <a href="{{ route('admin.campaigns.create') }}" 
            class="w-full sm:w-auto px-6 py-3 bg-[#FF4400] text-white font-semibold rounded-xl hover:bg-[#EB3F00] transition duration-150 shadow-md flex items-center justify-center">
@@ -35,10 +35,10 @@
         </a>
     </div>
 
-    <!-- Stats Grid Ringkasan -->
+
     <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
     
-    {{-- Card 1: Campaign Aktif --}}
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
@@ -49,7 +49,7 @@
             <div class="flex items-center justify-between">
                 <p class="text-4xl font-bold text-gray-900">{{ $stats['active_campaigns'] ?? 0 }}</p>
                 
-                {{-- BADGE DINAMIS UNTUK CAMPAIGN AKTIF --}}
+
                 @php
                     $change = $stats['active_campaign_change'] ?? 0;
                     $isPositive = $change >= 0;
@@ -60,11 +60,11 @@
                     <i class="{{ $icon }} text-xs mr-1"></i> 
                     {{ abs($change) }}%
                 </div>
-                {{-- AKHIR BADGE DINAMIS --}}
+
             </div>
         </div>
 
-    {{-- Card 2: Donasi Tersalurkan --}}
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
@@ -75,10 +75,10 @@
             <div class="flex items-center justify-between">
                 <p class="text-4xl font-bold text-gray-900">{{ $stats['total_donations'] ?? 0 }}</p>
                 
-                {{-- BADGE DINAMIS UNTUK DONASI TERSALURKAN --}}
+
                 @php
                     $change = $stats['total_donations_change'] ?? 0;
-                    // Kenaikan donasi dianggap positif, penurunan dianggap negatif
+
                     $isPositive = $change >= 0;
                     $class = $isPositive ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100';
                     $icon = $isPositive ? 'fas fa-arrow-up' : 'fas fa-arrow-down';
@@ -87,11 +87,11 @@
                     <i class="{{ $icon }} text-xs mr-1"></i> 
                     {{ abs($change) }}%
                 </div>
-                {{-- AKHIR BADGE DINAMIS --}}
+
             </div>
         </div>
 
-        {{-- Card 3: Menunggu Penjemputan --}}
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
@@ -105,7 +105,7 @@
             </div>
         </div>
 
-        {{-- Card 4: Total Barang --}}
+
         <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <div class="flex items-center space-x-3 mb-4">
                 <div class="p-3 rounded-full bg-gray-100">
@@ -121,10 +121,10 @@
 
     </section>
 
-    <!-- Recent Data Section -->
+
     <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        {{-- Recent Donations (2/3 width) --}}
+
         <div class="lg:col-span-2 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-semibold text-gray-900 mb-6 flex justify-between items-center">
                 <span>Donasi Terbaru</span>
@@ -180,7 +180,7 @@
             </div>
         </div>
         
-        {{-- Urgent Campaigns (1/3 width) --}}
+
         <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
             <h2 class="text-xl font-semibold text-gray-900 mb-6 flex justify-between items-center">
                 <span>Campaign Segera Berakhir</span>
@@ -201,7 +201,7 @@
                                 </span>
                             </p>
                             <p class="text-sm font-bold text-[#FF4400]">
-                                {{-- Placeholder untuk total barang terkumpul atau target --}}
+
                                 {{ $campaign->target_quantity ?? 'N/A' }} Unit
                             </p>
                         </div>

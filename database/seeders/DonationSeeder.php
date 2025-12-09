@@ -17,7 +17,7 @@ class DonationSeeder extends Seeder
         $users = User::where('role', 'donatur')->get();
         $campaigns = Campaign::where('status', 'aktif')->get();
 
-        // Helper district
+
         $getDistrict = fn($u) => $u->profile->default_district ?? 'Tidak diketahui';
 
         /*

@@ -4,13 +4,13 @@
 
 @section('content')
 
-    <!-- Header Section -->
+
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Buat Campaign Baru</h1>
         <p class="text-sm text-gray-500 mt-1">Lengkapi detail di bawah untuk meluncurkan campaign pengumpulan donasi baru.</p>
     </div>
 
-    <!-- Success/Error Messages -->
+
     @if (session('success'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4" role="alert">
             <p>{{ session('success') }}</p>
@@ -27,13 +27,13 @@
         </div>
     @endif
 
-    <!-- Main Form Card -->
+
     <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
         
         <form action="{{ route('admin.campaigns.store') }}" method="POST" enctype="multipart/form-data" id="campaignForm" class="space-y-8">
             @csrf
 
-            <!-- Section 1: Campaign Basics -->
+
             <div class="space-y-6 border-b border-gray-200 pb-8">
                 <h3 class="text-xl font-bold text-gray-800 flex items-center">
                     <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
@@ -42,7 +42,7 @@
                     Detail Campaign
                 </h3>
 
-                {{-- Title --}}
+
                 <div>
                     <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
                         Judul Campaign <span class="text-red-500">*</span>
@@ -55,7 +55,7 @@
                     @enderror
                 </div>
 
-                {{-- Organization ID --}}
+
                 <div>
                     <label for="organization_id" class="block text-sm font-semibold text-gray-700 mb-2">
                         Organisasi Pelaksana <span class="text-red-500">*</span>
@@ -74,7 +74,7 @@
                     @enderror
                 </div>
 
-                {{-- Categories (Multi-select) --}}
+
                 <div>
                     <label for="categories" class="block text-sm font-semibold text-gray-700 mb-2">
                         Kategori (Boleh Pilih Lebih dari Satu) <span class="text-red-500">*</span>
@@ -93,7 +93,7 @@
                     @enderror
                 </div>
 
-                {{-- Banner --}}
+
                 <div>
                     <label for="banner" class="block text-sm font-semibold text-gray-700 mb-2">
                         Banner Campaign <span class="text-red-500">*</span>
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <!-- Section 2: Details & Targets -->
+
             <div class="space-y-6 border-b border-gray-200 pb-8">
                 <h3 class="text-xl font-bold text-gray-800 flex items-center">
                     <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -125,7 +125,7 @@
                 </h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {{-- Target Quantity --}}
+
                     <div>
                         <label for="target_quantity" class="block text-sm font-semibold text-gray-700 mb-2">
                             Target Jumlah Donasi (Unit Barang) <span class="text-red-500">*</span>
@@ -138,7 +138,7 @@
                         @enderror
                     </div>
 
-                    {{-- Deadline --}}
+
                     <div>
                         <label for="deadline" class="block text-sm font-semibold text-gray-700 mb-2">
                             Batas Waktu Pengumpulan <span class="text-red-500">*</span>
@@ -151,7 +151,7 @@
                     </div>
                 </div>
 
-                {{-- Description --}}
+
                 <div>
                     <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
                         Deskripsi Campaign <span class="text-red-500">*</span>
@@ -165,7 +165,7 @@
                 </div>
             </div>
 
-            <!-- Section 3: Location -->
+
             <div class="space-y-6">
                 <h3 class="text-xl font-bold text-gray-800 flex items-center">
                     <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
@@ -176,7 +176,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
                     
-                    {{-- Province --}}
+
                     <div>
                         <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">
                             Provinsi <span class="text-red-500">*</span>
@@ -195,7 +195,7 @@
                         @enderror
                     </div>
                     
-                    {{-- City/Regency --}}
+
                     <div>
                         <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">
                             Kota/Kabupaten <span class="text-red-500">*</span>
@@ -212,7 +212,7 @@
                 </div> 
             </div>
 
-            <!-- Action Button -->
+
             <div class="pt-8">
                 <button type="submit"
                         class="w-full sm:w-auto px-8 py-3.5 bg-[#FF4400] text-white font-bold rounded-lg hover:bg-[#DE3B00] transition duration-200 shadow-lg hover:shadow-xl flex items-center justify-center group">
@@ -231,7 +231,7 @@
             const bannerInput = document.getElementById('banner');
             const bannerPreview = document.getElementById('banner-preview');
 
-            // Preview banner
+
             bannerInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {

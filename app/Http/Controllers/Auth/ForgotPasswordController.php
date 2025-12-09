@@ -29,13 +29,13 @@ class ForgotPasswordController extends Controller
             'email.exists' => 'Email tidak terdaftar dalam sistem'
         ]);
 
-        // Generate token
+
         $token = Str::random(64);
 
-        // Hapus token lama jika ada
+
         DB::table('password_resets')->where('email', $request->email)->delete();
 
-        // Simpan token baru (sesuai dengan struktur migration Anda)
+
         DB::table('password_resets')->insert([
             'email' => $request->email,
             'token' => $token, // Token plain (akan di-hash saat verifikasi)
@@ -44,13 +44,13 @@ class ForgotPasswordController extends Controller
             'updated_at' => Carbon::now()
         ]);
 
-        // Kirim email
+
         try {
             Mail::to($request->email)->send(new ResetPasswordMail($token, $request->email));
             
             return back()->with('success', 'Link reset password telah dikirim ke email Anda. Silakan cek inbox atau folder spam.');
         } catch (\Exception $e) {
-            // Log error untuk debugging
+
             \Log::error('Error sending reset password email: ' . $e->getMessage());
             
             return back()->withErrors(['email' => 'Gagal mengirim email. Silakan coba lagi atau hubungi administrator.']);
@@ -79,7 +79,7 @@ class ForgotPasswordController extends Controller
             'password.confirmed' => 'Konfirmasi password tidak cocok'
         ]);
 
-        // Cari token di database
+
         $passwordReset = DB::table('password_resets')
             ->where('email', $request->email)
             ->where('token', $request->token)
@@ -89,13 +89,13 @@ class ForgotPasswordController extends Controller
             return back()->withErrors(['email' => 'Token tidak valid atau email tidak ditemukan. Silakan request reset password baru.']);
         }
 
-        // Cek apakah token sudah kadaluarsa
+
         if (Carbon::parse($passwordReset->expires_at)->isPast()) {
             DB::table('password_resets')->where('email', $request->email)->delete();
             return back()->withErrors(['email' => 'Token sudah kadaluarsa. Silakan request reset password baru.']);
         }
 
-        // Update password user
+
         $user = User::where('email', $request->email)->first();
         
         if (!$user) {
@@ -106,7 +106,7 @@ class ForgotPasswordController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        // Hapus token setelah berhasil reset
+
         DB::table('password_resets')->where('email', $request->email)->delete();
 
         return redirect()->route('login')->with('success', 'Password berhasil direset! Silakan login dengan password baru Anda.');

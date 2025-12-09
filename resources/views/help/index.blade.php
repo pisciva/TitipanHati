@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="bg-gradient-to-b from-blue-50 to-white">
-        {{-- Hero Section --}}
+
         <div class="container mx-auto px-4 py-12 lg:py-16">
             <div class="text-center max-w-3xl mx-auto">
                 <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
@@ -15,7 +15,7 @@
                 </p>
             </div>
 
-            {{-- Quick Navigation --}}
+
             <div class="mt-12 grid grid-cols-2 md:grid-cols-5 gap-4 max-w-5xl mx-auto">
                 <a href="#faq"
                     class="flex flex-col items-center p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
@@ -71,7 +71,7 @@
     </div>
 
     <div class="container mx-auto px-4 py-12 max-w-6xl">
-        {{-- FAQ Section --}}
+
         <section id="faq" class="scroll-mt-20 mb-20">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
@@ -82,7 +82,7 @@
             </div>
 
             <div class="space-y-4" x-data="{ activeIndex: null }">
-                {{-- FAQ 1 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 1 ? null : 1"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -101,7 +101,7 @@
                     </div>
                 </div>
 
-                {{-- FAQ 2 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 2 ? null : 2"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -122,7 +122,7 @@
                     </div>
                 </div>
 
-                {{-- FAQ 3 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 3 ? null : 3"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                {{-- FAQ 4 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 4 ? null : 4"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -163,7 +163,7 @@
                     </div>
                 </div>
 
-                {{-- FAQ 5 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 5 ? null : 5"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -181,7 +181,7 @@
                     </div>
                 </div>
 
-                {{-- FAQ 6 --}}
+
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
                     <button @click="activeIndex = activeIndex === 6 ? null : 6"
                         class="w-full px-6 py-5 text-left flex items-center justify-between hover:bg-gray-50 transition-colors duration-200">
@@ -201,7 +201,7 @@
             </div>
         </section>
 
-        {{-- Syarat & Ketentuan Section --}}
+
         <section id="syarat-ketentuan" class="scroll-mt-20 mb-20">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
@@ -274,7 +274,7 @@
             </div>
         </section>
 
-        {{-- Kebijakan Privasi Section --}}
+
         <section id="kebijakan-privasi" class="scroll-mt-20 mb-20">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-purple-100 rounded-full mb-4">
@@ -362,7 +362,7 @@
             </div>
         </section>
 
-        {{-- Hubungi Kami Section --}}
+
         <section id="hubungi-kami" class="scroll-mt-20 mb-20">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-4">
@@ -373,7 +373,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                {{-- Contact Cards --}}
+
                 <div class="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-lg transition-shadow duration-300">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-envelope text-2xl text-blue-600"></i>
@@ -410,7 +410,7 @@
                 </div>
             </div>
 
-            {{-- Contact Form --}}
+
             <div class="bg-white rounded-xl shadow-md p-8 lg:p-12">
                 <h3 class="text-2xl font-bold text-gray-900 mb-6">Kirim Pesan</h3>
                 <form action="{{ route('contact.send') }}" method="POST" class="space-y-6"> 
@@ -423,7 +423,7 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-transparent"
                             placeholder="Masukkan nama Anda">
                     </div>
-                    {{-- Email --}}
+
                     <div>
                         <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
                             Email
@@ -433,7 +433,7 @@
                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-transparent"
                             placeholder="Masukkan email Anda">
                     </div>
-                    {{-- Pesan --}}
+
                     <div>
                         <label for="message" class="block text-sm font-semibold text-gray-700 mb-2">
                             Pesan

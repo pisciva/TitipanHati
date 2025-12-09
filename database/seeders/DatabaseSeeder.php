@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Seeder aplikasi
+
         $this->call([
             CategorySeeder::class,
             AdminSeeder::class,
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Laravolt\Indonesia\Seeds\CitiesSeeder::class);
         $this->call(\Laravolt\Indonesia\Seeds\DistrictsSeeder::class);
 
-        // Fix Indonesia names langsung di sini
+
         $tables = ['indonesia_provinces', 'indonesia_cities', 'indonesia_districts'];
         foreach ($tables as $table) {
             $rows = DB::table($table)->get();

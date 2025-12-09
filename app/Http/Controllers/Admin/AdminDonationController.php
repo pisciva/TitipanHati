@@ -44,16 +44,16 @@ class AdminDonationController extends Controller
 
 
         if ($request->filled('date_from')) {
-            // Filter berdasarkan tanggal dibuat (created_at)
+
             $query->whereDate('created_at', '>=', $request->date_from);
         }
         if ($request->filled('date_to')) {
-            // Filter berdasarkan tanggal dibuat (created_at)
+
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
-        // PERBAIKAN: Mengganti urutan default dari 'created_at' menjadi 'pickup_date'
-        // untuk memprioritaskan jadwal penjemputan yang akan datang di halaman utama.
+
+
         $donations = $query->orderBy('pickup_date', 'desc')->paginate(20);
         $campaigns = Campaign::all();
 
@@ -142,10 +142,10 @@ class AdminDonationController extends Controller
 
     public function export(Request $request)
     {
-        // 1. Terapkan logika filter yang sama seperti di index
+
         $query = Donation::with(['user', 'campaign', 'items']);
 
-        // Terapkan semua filter dari request
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
@@ -161,7 +161,7 @@ class AdminDonationController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
         
-        // Cek juga filter 'search'
+
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
@@ -172,10 +172,10 @@ class AdminDonationController extends Controller
             });
         }
 
-        // Ambil semua data yang telah difilter (tanpa pagination)
+
         $donations = $query->orderBy('created_at', 'desc')->get();
 
-        // 2. Siapkan data untuk CSV
+
         $filename = 'donasi-barang-export-' . Carbon::now()->format('Ymd_His') . '.csv';
         
         $headers = [
@@ -186,7 +186,7 @@ class AdminDonationController extends Controller
             'Expires' => '0',
         ];
 
-        // Definisikan kolom-kolom CSV
+
         $columns = [
             'ID Donasi',
             'Tgl. Dibuat',
