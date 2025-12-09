@@ -237,7 +237,6 @@
                 <i class="fas fa-times text-white opacity-70 hover:opacity-100"></i>
             </button>
         </div>
-    @endif
 
     {{-- Main Content --}}
     <main>

@@ -1,76 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-full flex">
+{{-- Kontainer utama diubah menjadi flex-col di mobile, dan flex-row di layar medium ke atas --}}
+<div class="w-full flex flex-col md:flex-row">
 
-    <!-- Sidebar kiri -->
-    <div class="w-1/4 border-r min-h-screen p-8 flex flex-col justify-between">
-
-        <!-- Bagian atas -->
-        <div>
-            <div class="flex flex-col items-center mt-10">
-                <!-- Placeholder untuk Foto Profil -->
-                <div class="w-28 h-28 rounded-full bg-gray-200 mb-4 flex items-center justify-center text-gray-400 text-sm">
-                    <!-- Anda bisa menambahkan gambar profil di sini -->
-                    <i class="fa-solid fa-camera text-2xl"></i>
-                </div>
-
-                <h2 class="text-xl font-semibold text-[#1d1d1d]">Halo, {{ Auth::user()->profile?->full_name ?? Auth::user()->name ?? 'Pengguna' }}</h2>
-                <p class="text-gray-500 text-base mt-1">{{ Auth::user()->email }}</p>
-            </div>
-
-        <div class="w-full flex justify-center mt-16">
-            <div class="space-y-4">
-                <!-- Link Baru: Dashboard -->
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
-                    <span class="w-6 flex justify-center">
-                        <i class="fa-solid fa-house text-[20px] leading-none"></i>
-                    </span>
-                    <span>Dashboard</span>
-                </a>
-                
-                <!-- Link Aktif: Profil (tetap aktif karena ini halaman profil) -->
-                <a href="#" class="flex items-center gap-3 text-orange-600 font-semibold text-lg">
-                    <span class="w-6 flex justify-center">
-                        <i class="fa-solid fa-user text-[20px] leading-none"></i>
-                    </span>
-                    <span>Profil</span>
-                </a>
-
-                <!-- Link Non-aktif: Riwayat -->
-                <a href="{{ route('profile.riwayat') }}" class="flex items-center gap-3 text-gray-500 text-lg hover:text-black">
-                    <span class="w-6 flex justify-center">
-                        <i class="fa-solid fa-clock-rotate-left text-[20px] leading-none"></i>
-                    </span>
-                    <span>Riwayat</span>
-                </a>
-            </div>
+    {{-- Lebar diubah: W-full di mobile, W-3/4 di medium ke atas --}}
+    <div class="w-full md:w-full p-4 md:p-10">
+        
+        {{-- Navigasi Mobile (Muncul hanya di mobile) --}}
+        <div class="md:hidden mb-6 border-b pb-4">
+            <h3 class="text-xl font-bold mb-3">Menu Akun</h3>
         </div>
-    </div>
 
-        <!-- Bagian bawah (Logout) -->
-        <div class="mt-10 flex justify-center">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="px-4 py-2 w-40 border border-orange-500 text-orange-500 rounded-2xl hover:bg-orange-50">
-                    Keluar Akun
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Konten kanan -->
-    <div class="w-3/4 p-10">
         {{-- FLASH MESSAGE GLOBAL (Update Profil & Password) --}}
         @if(session('success'))
-            <div id="flash-message" class="fixed bottom-6 right-6 bg-[#E6F9EC] border border-[#A8E4B8] text-[#1D7A41] px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 opacity-0 transition-opacity duration-300">
+            <div id="flash-message" class="fixed bottom-6 right-6 bg-[#E6F9EC] border border-[#A8E4B8] text-[#1D7A41] px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 opacity-0 transition-opacity duration-300 z-50">
 
-                <!-- Icon hijau dalam lingkaran -->
                 <div class="w-6 h-6 rounded-full bg-[#1D7A41] flex items-center justify-center">
                     <i class="fa-solid fa-check text-white text-sm"></i>
                 </div>
 
-                <!-- Text -->
                 <span class="font-medium">
                     {{ session('success') }}
                 </span>
@@ -97,13 +46,11 @@
         {{-- FORM UPDATE PROFIL --}}
         <form action="{{ route('profile.update') }}" method="POST" class="space-y-8">
             @csrf
-            @method('PUT') <!-- Menggunakan metode PUT/PATCH untuk update -->
+            @method('PUT') 
 
-            <!-- Informasi Pribadi -->
-            <div class="border p-6 rounded-xl shadow-sm">
+            <div class="border p-4 md:p-6 rounded-xl shadow-sm">
                 <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Informasi Pribadi</h3>
 
-                <!-- Nama Lengkap -->
                 <div class="mb-4">
                     <label for="full_name" class="block mb-2 text-sm font-regular text-[#FF4400]">Nama Lengkap</label>
                     <input type="text" id="full_name" name="full_name" value="{{ old('full_name', $profile->full_name ?? '') }}"
@@ -114,7 +61,6 @@
                     @enderror
                 </div>
 
-                <!-- Nomor Telepon -->
                 <div class="mb-4">
                     <label for="phone_number" class="block mb-2 text-sm font-regular text-[#FF4400]">Nomor Telepon</label>
                     <input type="text" id="phone_number" name="phone_number" value="{{ old('phone_number', $profile->phone_number ?? '') }}"
@@ -125,7 +71,6 @@
                     @enderror
                 </div>
 
-                <!-- Alamat Email (Non-editable) -->
                 <div>
                     <label class="block mb-2 text-sm font-regular text-[#FF4400]">Alamat Email</label>
                     <input disabled
@@ -134,11 +79,9 @@
                 </div>
             </div>
 
-            <!-- Alamat Default -->
-            <div class="border p-6 rounded-xl shadow-sm">
+            <div class="border p-4 md:p-6 rounded-xl shadow-sm">
                 <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Alamat Default</h3>
 
-                <!-- Alamat Lengkap -->
                 <div class="mb-4">
                     <label for="default_address" class="block mb-2 text-sm font-regular text-[#FF4400]">Alamat Lengkap</label>
                     <input type="text" id="default_address" name="default_address" value="{{ old('default_address', $profile->default_address ?? '') }}"
@@ -149,8 +92,8 @@
                     @enderror
                 </div>
 
-                <div class="grid grid-cols-3 gap-4">
-                    <!-- Kota -->
+                {{-- Grid diubah menjadi grid-cols-1 di mobile, dan grid-cols-3 di medium ke atas --}}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label for="default_city" class="block mb-2 text-sm font-regular text-[#FF4400]">Kota</label>
                         <input type="text" id="default_city" name="default_city" value="{{ old('default_city', $profile->default_city ?? '') }}"
@@ -160,7 +103,6 @@
                         @enderror
                     </div>
 
-                    <!-- Kecamatan -->
                     <div>
                         <label for="default_district" class="block mb-2 text-sm font-regular text-[#FF4400]">Kecamatan</label>
                         <input type="text" id="default_district" name="default_district" value="{{ old('default_district', $profile->default_district ?? '') }}"
@@ -170,7 +112,6 @@
                         @enderror
                     </div>
 
-                    <!-- Kode Pos -->
                     <div>
                         <label for="default_postal_code" class="block mb-2 text-sm font-regular text-[#FF4400]">Kode Pos</label>
                         <input type="text" id="default_postal_code" name="default_postal_code" value="{{ old('default_postal_code', $profile->default_postal_code ?? '') }}"
@@ -188,15 +129,13 @@
             </button>
         </form>
 
-        <!-- Ubah Password -->
         <form action="{{ route('profile.password') }}" method="POST" class="mt-12">
             @csrf
-            @method('PUT') <!-- Menggunakan metode PUT/PATCH untuk update password -->
+            @method('PUT') 
 
-            <div class="border p-6 rounded-xl shadow-sm">
+            <div class="border p-4 md:p-6 rounded-xl shadow-sm">
                 <h3 class="text-xl font-bold mb-6 text-[#1D1D1D]">Ubah Password</h3>
 
-                <!-- Password Lama -->
                 <div class="mb-4">
                     <label for="current_password" class="block mb-2 text-sm font-regular text-[#FF4400]">Password Lama</label>
                     <input type="password" id="current_password" name="current_password"
@@ -207,7 +146,6 @@
                     @enderror
                 </div>
 
-                <!-- Password Baru -->
                 <div class="mb-4">
                     <label for="password" class="block mb-2 text-sm font-regular text-[#FF4400]">Password Baru</label>
                     <input type="password" id="password" name="password"
@@ -218,7 +156,6 @@
                     @enderror
                 </div>
 
-                <!-- Konfirmasi Password Baru -->
                 <div class="mb-4">
                     <label for="password_confirmation" class="block mb-2 text-sm font-regular text-[#FF4400]">Konfirmasi Password Baru</label>
                     <input type="password" id="password_confirmation" name="password_confirmation"
@@ -231,6 +168,16 @@
                 Ubah Password
             </button>
         </form>
+
+        {{-- Tombol Logout Mobile (Muncul hanya di mobile, di bawah konten) --}}
+        <div class="mt-12 md:hidden flex justify-center">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="px-4 py-2 w-40 border border-orange-500 text-orange-500 rounded-2xl hover:bg-orange-50 transition">
+                    Keluar Akun
+                </button>
+            </form>
+        </div>
 
     </div>
 
