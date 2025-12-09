@@ -16,11 +16,21 @@
             <p>{{ session('success') }}</p>
         </div>
     @endif
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4" role="alert">
+            <p class="font-bold">Terjadi Kesalahan Validasi</p>
+            <ul class="mt-2 list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <!-- Main Form Card -->
     <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
         
-        <form action="{{ route('admin.campaigns.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8">
+        <form action="{{ route('admin.campaigns.store') }}" method="POST" enctype="multipart/form-data" id="campaignForm" class="space-y-8">
             @csrf
 
             <!-- Section 1: Campaign Basics -->
@@ -64,13 +74,13 @@
                     @enderror
                 </div>
 
-                {{-- Categories (Multi-select dengan Choices.js style) --}}
+                {{-- Categories (Multi-select) --}}
                 <div>
                     <label for="categories" class="block text-sm font-semibold text-gray-700 mb-2">
                         Kategori (Boleh Pilih Lebih dari Satu) <span class="text-red-500">*</span>
                     </label>
                     <select name="categories[]" id="categories" multiple required
-                            class="w-full px-4 py-3 border @error('categories') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition">
+                            class="w-full px-4 py-3 border @error('categories') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition h-40">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
                                 {{ $category->name }}
@@ -79,9 +89,6 @@
                     </select>
                     <p class="mt-2 text-xs text-gray-500">Gunakan CTRL/CMD untuk memilih beberapa kategori.</p>
                     @error('categories')
-                        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
-                    @enderror
-                    @error('categories.*')
                         <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
@@ -169,7 +176,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
                     
-                    {{-- Province (Dropdown) --}}
+                    {{-- Province --}}
                     <div>
                         <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">
                             Provinsi <span class="text-red-500">*</span>
@@ -188,7 +195,7 @@
                         @enderror
                     </div>
                     
-                    {{-- City/Regency (Dropdown) --}}
+                    {{-- City/Regency --}}
                     <div>
                         <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">
                             Kota/Kabupaten <span class="text-red-500">*</span>
@@ -196,7 +203,6 @@
                         <select name="city" id="city" required disabled
                                 class="w-full px-4 py-3 border @error('city') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition bg-gray-50 disabled:cursor-not-allowed">
                             <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-                            {{-- Opsi akan diisi oleh JavaScript --}}
                         </select>
                         @error('city')
                             <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
@@ -217,133 +223,68 @@
         </form>
     </div>
 
-@endsection
-
-@push('scripts')
-    <!-- Choices.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css">
-    <!-- Choices.js JS -->
-    <script src="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/scripts/choices.min.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- 1. Inisialisasi Choices.js untuk Organisasi, Provinsi, Kota, dan Kategori ---
-            const organizationSelect = document.getElementById('organization_id');
             const provinceSelect = document.getElementById('province');
             const citySelect = document.getElementById('city');
-            const categoriesSelect = document.getElementById('categories');
-
-            // Inisialisasi Choices untuk Organisasi
-            const organizationChoices = new Choices(organizationSelect, {
-                searchEnabled: true,
-                searchPlaceholderValue: 'Cari organisasi...',
-                itemSelectText: 'Pilih',
-                noResultsText: 'Tidak ditemukan',
-                position: 'bottom'
-            });
-
-            // Inisialisasi Choices untuk Provinsi
-            const provinceChoices = new Choices(provinceSelect, {
-                searchEnabled: true,
-                searchPlaceholderValue: 'Cari provinsi...',
-                itemSelectText: 'Pilih',
-                noResultsText: 'Tidak ditemukan',
-                position: 'bottom'
-            });
-
-            // Inisialisasi Choices untuk Kota
-            const cityChoices = new Choices(citySelect, {
-                searchEnabled: true,
-                searchPlaceholderValue: 'Cari kota...',
-                itemSelectText: 'Pilih',
-                noResultsText: 'Tidak ditemukan',
-                position: 'bottom',
-                placeholderValue: 'Pilih Provinsi dulu'
-            });
-
-            // Inisialisasi Choices untuk Kategori (Multi-select)
-            const categoriesChoices = new Choices(categoriesSelect, {
-                removeItemButton: true,
-                searchEnabled: true,
-                searchPlaceholderValue: 'Cari kategori...',
-                itemSelectText: 'Pilih',
-                noResultsText: 'Tidak ditemukan',
-                position: 'bottom',
-                maxItemCount: -1 // Unlimited
-            });
-
-            // --- 2. Logika Load Kota berdasarkan Provinsi ---
             const oldCityName = "{{ old('city') }}";
-
-            const loadCities = (provinceId, cityToSelectName = null) => {
-                citySelect.innerHTML = '<option value="" disabled selected>Memuat Kota...</option>';
-                cityChoices.setChoices([{ value: '', label: 'Memuat Kota...', disabled: true, selected: true }], 'value', 'label', true);
-                citySelect.disabled = true;
-                cityChoices.disable();
-
-                if (provinceId) {
-                    const url = `{{ route('admin.campaigns.getProvinces', '') }}/${provinceId}`;
-
-                    fetch(url)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            const choices = data.map(city => ({ value: city.name, label: city.name }));
-                            cityChoices.setChoices(choices, 'value', 'label', true);
-                            citySelect.disabled = false;
-                            cityChoices.enable();
-
-                            // Jika ada kota lama dari validasi sebelumnya, pilih itu
-                            if (cityToSelectName) {
-                                cityChoices.setChoiceByValue(cityToSelectName);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching cities:', error);
-                            cityChoices.setChoices([{ value: '', label: 'Gagal memuat kota', disabled: true, selected: true }], 'value', 'label', true);
-                        });
-                } else {
-                    cityChoices.setChoices([{ value: '', label: 'Pilih Provinsi dulu', disabled: true, selected: true }], 'value', 'label', true);
-                    citySelect.disabled = true;
-                    cityChoices.disable();
-                }
-            };
-
-            // Event Listener: Ketika Provinsi diubah
-            provinceSelect.addEventListener('change', function() {
-                const selectedProvinceId = this.value;
-                loadCities(selectedProvinceId);
-            });
-
-            // Inisialisasi: Jika ada nilai provinsi yang sudah terpilih (misalnya setelah validasi gagal)
-            const initialProvinceId = provinceSelect.value;
-            if (initialProvinceId) {
-                // Gunakan setTimeout agar Choices.js selesai diinisialisasi
-                setTimeout(() => {
-                    loadCities(initialProvinceId, oldCityName);
-                }, 100);
-            }
-
-            // --- 3. Preview Banner ---
             const bannerInput = document.getElementById('banner');
             const bannerPreview = document.getElementById('banner-preview');
 
+            // Preview banner
             bannerInput.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         bannerPreview.src = event.target.result;
-                    }
+                    };
                     reader.readAsDataURL(file);
                 } else {
                     bannerPreview.src = 'https://placehold.co/120x80?text=Preview';
                 }
             });
+
+            const loadCities = (provinceId, cityToSelectName = null) => {
+                citySelect.innerHTML = '<option value="" disabled selected>Memuat Kota...</option>';
+                citySelect.disabled = true;
+
+                if (provinceId) {
+                    const url = `{{ route('admin.campaigns.getCities', '') }}/${provinceId}`;
+                    fetch(url)
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network error');
+                            return response.json();
+                        })
+                        .then(data => {
+                            citySelect.innerHTML = '<option value="" disabled selected>Pilih Kota/Kabupaten</option>';
+                            data.forEach(city => {
+                                const option = document.createElement('option');
+                                option.value = city.name;
+                                option.textContent = city.name;
+                                if (city.name === cityToSelectName) {
+                                    option.selected = true;
+                                }
+                                citySelect.appendChild(option);
+                            });
+                            citySelect.disabled = false;
+                        })
+                        .catch(error => {
+                            citySelect.innerHTML = '<option value="" disabled selected>Gagal memuat kota</option>';
+                            console.error('Error fetching cities:', error);
+                        });
+                }
+            };
+
+            provinceSelect.addEventListener('change', function() {
+                loadCities(this.value);
+            });
+
+            const initialProvinceId = provinceSelect.value;
+            if (initialProvinceId) {
+                loadCities(initialProvinceId, oldCityName);
+            }
         });
     </script>
-@endpush
+
+@endsection

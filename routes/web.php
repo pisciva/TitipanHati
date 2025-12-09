@@ -7,7 +7,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HelpController; // ← Tambahkan Controller Help
+use App\Http\Controllers\HelpController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCampaignController;
 use App\Http\Controllers\Admin\AdminDonationController;
@@ -64,9 +64,6 @@ Route::middleware('auth')->group(function () {
     // Dashboard user
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Help Page (Tambahan)
-    
-
     // Profile
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -82,11 +79,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-donations', [DonationController::class, 'myDonations'])->name('donations.history');
     Route::get('/donations/{id}', [DonationController::class, 'show'])->name('donations.show');
 
-    // ****** TAMBAHKAN RUTE API UNTUK DONATION CONTROLLER DI SINI ******
     // API untuk mengambil kota berdasarkan provinsi (digunakan di form donasi)
-    Route::get('/api/cities/{provinceId}', [DonationController::class, 'getProvinces'])->name('api.cities'); // Nama fungsi tetap getProvinces
+    Route::get('/api/cities/{provinceId}', [DonationController::class, 'getProvinces'])->name('api.cities');
     // API untuk mengambil kecamatan berdasarkan kota (digunakan di form donasi)
-    Route::get('/api/districts/{cityId}', [DonationController::class, 'getCities'])->name('api.districts'); // Nama fungsi tetap getCities
+    Route::get('/api/districts/{cityId}', [DonationController::class, 'getCities'])->name('api.districts');
 });
 
 
@@ -95,23 +91,21 @@ Route::middleware('auth')->group(function () {
 // ================================
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
-    // Dashboard admin
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+    
 
-    // Campaign management
     Route::resource('campaigns', AdminCampaignController::class);
-    // Perbaiki rute ini: Ubah nama fungsi dan nama rute agar konsisten
-    // Ganti 'getProvinces' dengan 'getCities' dan ubah nama rute
-    Route::get('campaigns/get-cities/{province_id}', [AdminCampaignController::class, 'getProvinces'])->name('campaigns.getCities'); // DIPERBAIKI: Ganti nama rute
+    Route::get('campaigns/get-cities/{province_id}', [AdminCampaignController::class, 'getCities'])->name('campaigns.getCities');
 
     Route::get('/donations', [AdminDonationController::class, 'index'])->name('donations.index');
+    
     Route::put('/donations/{id}/status', [AdminDonationController::class, 'updateStatus'])->name('donations.updateStatus');
+    
 
-    // Calendar
     Route::get('/donations/calendar', [AdminDonationController::class, 'calendar'])->name('donations.calendar');
     Route::get('/donations/by-date', [AdminDonationController::class, 'getByDate'])->name('donations.byDate');
+    
 
-    // Export & Detail
     Route::get('/donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
     Route::get('/donations/{id}', [AdminDonationController::class, 'show'])->name('donations.show');
 });

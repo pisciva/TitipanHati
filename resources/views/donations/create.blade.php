@@ -409,7 +409,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             let itemIndex = 1;
 
-            // ========== INISIALISASI SELECT ELEMENTS ==========
+// ========== INISIALISASI SELECT ELEMENTS ==========
             const provinceSelect = document.getElementById('pickup_province_select');
             const citySelect = document.getElementById('pickup_city_select');
             const districtSelect = document.getElementById('pickup_district_select');
