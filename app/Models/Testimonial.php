@@ -12,6 +12,7 @@ class Testimonial extends Model
         'content',
         'rating',
         'is_active',
+        'profile_picture'
     ];
 
     protected $casts = [

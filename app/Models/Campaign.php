@@ -54,7 +54,20 @@ class Campaign extends Model
 
     public function progressPercentage()
     {
-        if ($this->target_quantity == 0) return 0;
+        if ($this->target_quantity == 0)
+            return 0;
         return min(100, round(($this->collected_quantity / $this->target_quantity) * 100));
+    }
+
+    public function views()
+    {
+        return $this->hasMany(CampaignView::class);
+    }
+
+    public function uniqueViewsCount()
+    {
+        return $this->views()
+            ->distinct('ip_address')
+            ->count('ip_address');
     }
 }

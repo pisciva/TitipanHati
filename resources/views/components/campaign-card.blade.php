@@ -5,7 +5,7 @@
     <div class="relative h-56 overflow-hidden">
         @if($campaign->banner_url)
             <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="{{ $campaign->title }}"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-10">
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
         @else
             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                 <i class="fas fa-image text-7xl text-gray-300"></i>
@@ -95,11 +95,12 @@
         <div class="flex items-center gap-4 mb-4 text-xs text-gray-500">
             <div class="flex items-center gap-1">
                 <i class="fas fa-calendar-alt text-[#FF4400]"></i>
-                <span>{{ \Carbon\Carbon::parse($campaign->end_date)->diffForHumans() }}</span>
+                <span>{{ \Carbon\Carbon::parse($campaign->deadline)->translatedFormat('l, d F Y') }}</span>
             </div>
+
             <div class="flex items-center gap-1">
                 <i class="fas fa-eye text-[#FF4400]"></i>
-                <span>{{ number_format($campaign->view_count) }} views</span>
+                <span>{{ number_format($campaign->view_count) }} dilihat</span>
             </div>
         </div>
 
@@ -138,7 +139,8 @@
         <a href="{{ route('campaigns.show', $campaign->id) }}"
             class="block w-full text-center px-6 py-3 bg-[#FF4400] text-white rounded-xl font-bold hover:from-[#DE3B00] hover:to-[#DE3B00] transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.01] flex items-center justify-center gap-2 group/btn">
             <span>Detail Campaign</span>
-            <i class="fas fa-arrow-right text-sm group-hover/btn:translate-x-1 transition-transform duration-300 mt-1"></i>
+            <i
+                class="fas fa-arrow-right text-sm group-hover/btn:translate-x-1 transition-transform duration-300 mt-1"></i>
         </a>
     </div>
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Testimonial;
+use Illuminate\Support\Facades\Storage;
 
 class TestimonialSeeder extends Seeder
 {
@@ -16,13 +17,15 @@ class TestimonialSeeder extends Seeder
                 'content' => 'TitipanHati memudahkan saya untuk berbagi pakaian layak pakai. Prosesnya cepat, transparan, dan terpercaya. Sangat recommend!',
                 'rating' => 5,
                 'is_active' => true,
+                'profile_picture' => 'testimonials/budi.jpg'
             ],
             [
                 'name' => 'Siti Nurhaliza',
                 'type' => 'donatur',
-                'content' => 'Senang bisa membantu sesama melalui platform ini. Sistem penjemputan sangat membantu. Semoga semakin banyak yang terbantu.',
+                'content' => 'Senang bisa membantu melalui platform ini. Sistem penjemputan sangat membantu. Semoga semakin banyak yang terbantu.',
                 'rating' => 5,
                 'is_active' => true,
+                'profile_picture' => 'testimonials/Siti.jpg'
             ],
             [
                 'name' => 'Ahmad Dahlan',
@@ -30,27 +33,7 @@ class TestimonialSeeder extends Seeder
                 'content' => 'Platform yang luar biasa! Saya bisa pantau langsung kemana donasi saya disalurkan. Transparansi yang sangat baik.',
                 'rating' => 5,
                 'is_active' => true,
-            ],
-            [
-                'name' => 'Yayasan Peduli Anak Indonesia',
-                'type' => 'yayasan',
-                'content' => 'Bantuan pakaian dari TitipanHati sangat bermanfaat bagi anak-anak asuh kami. Terima kasih para donatur yang peduli!',
-                'rating' => 5,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Panti Asuhan Harapan Bangsa',
-                'type' => 'yayasan',
-                'content' => 'Kerja sama yang sangat baik. Proses penyaluran donasi cepat dan terorganisir dengan rapi. Anak-anak sangat senang.',
-                'rating' => 5,
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Rina Wijaya',
-                'type' => 'donatur',
-                'content' => 'Aplikasi yang user-friendly dan memudahkan untuk berbagi. Sistem tracking donasi juga sangat membantu.',
-                'rating' => 4,
-                'is_active' => true,
+                'profile_picture' => 'testimonials/Ahmad.jpg'
             ],
         ];
 

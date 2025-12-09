@@ -64,8 +64,8 @@
                 <div class="hidden lg:block" data-aos="fade-left">
                     <div class="relative">
                         <div class="absolute inset-0 bg-white/20 backdrop-blur-sm rounded-3xl transform rotate-6"></div>
-                        <img src="/images/image1.jpg"
-                            alt="Donasi Pakaian" class="relative rounded-3xl shadow-2xl w-full h-[500px] object-cover">
+                        <img src="/images/image1.jpg" alt="Donasi Pakaian"
+                            class="relative rounded-3xl shadow-2xl w-full h-[500px] object-cover">
 
                         {{-- Floating Card --}}
                         <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-2xl p-6 max-w-xs">
@@ -331,8 +331,7 @@
                 {{-- Right Image --}}
                 <div class="relative" data-aos="fade-left">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        <img src="/images/image2.jpg"
-                            alt="Tentang TitipanHati" class="w-full h-[500px] object-cover">
+                        <img src="/images/image2.jpg" alt="Tentang TitipanHati" class="w-full h-[500px] object-cover">
                     </div>
 
                     {{-- Decorative Elements --}}
@@ -382,10 +381,8 @@
 
                         {{-- Author --}}
                         <div class="flex items-center pt-4 border-t border-gray-200">
-                            <div
-                                class="w-12 h-12 bg-gradient-to-br from-[#FF4400] to-[#FF6B35] rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
-                                {{ substr($testimonial->name, 0, 1) }}
-                            </div>
+                            <img src="{{ asset('storage/' . $testimonial->profile_picture) }}" alt="{{ $testimonial->name }}"
+                                class="w-12 h-12 mr-4 rounded-full">
                             <div>
                                 <h4 class="font-bold text-gray-900">{{ $testimonial->name }}</h4>
                                 <p class="text-sm text-gray-500 capitalize">{{ $testimonial->type }}</p>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->text('content');
             $table->integer('rating')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('profile_picture')->nullable();
             $table->timestamps();
             
             $table->index('is_active');

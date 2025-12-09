@@ -23,9 +23,9 @@
                     <i class="fas fa-map-marker-alt mr-1"></i> Provinsi
                 </label>
                 <select name="province" id="province" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400]">
-                    <option value="">Pilih Provinsi</option>
+                    <option value="">Semua Provinsi</option>
                     @foreach($provinces as $prov)
-                        <option value="{{ $prov->code }}" {{ request('province') === $prov->code ? 'selected' : '' }}>
+                        <option value="{{ $prov->id }}" {{ request('province') == $prov->id ? 'selected' : '' }}>
                             {{ $prov->name }}
                         </option>
                     @endforeach
@@ -38,14 +38,7 @@
                     <i class="fas fa-city mr-1"></i> Kota / Kabupaten
                 </label>
                 <select name="city" id="city" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400]" disabled>
-                    <option value="">Pilih Kota Dulu</option>
-                    @if(request('province'))
-                        @foreach($cities as $kota)
-                            <option value="{{ $kota->name }}" {{ request('city') === $kota->name ? 'selected' : '' }}>
-                                {{ $kota->name }}
-                            </option>
-                        @endforeach
-                    @endif
+                    <option value="">Pilih Provinsi Dulu</option>
                 </select>
             </div>
 
@@ -81,7 +74,18 @@
         <p class="text-gray-600">
             Menampilkan <span class="font-semibold">{{ $campaigns->count() }}</span> dari <span class="font-semibold">{{ $campaigns->total() }}</span> campaign
             @if(request('search') || request('province') || request('city'))
-                untuk "<strong>{{ request('search') ?: $provinces->firstWhere('code', request('province'))->name ?? request('province') ?: request('city') }}</strong>"
+                @php
+                    $filterText = [];
+                    if(request('search')) $filterText[] = request('search');
+                    if(request('province')) {
+                        $selectedProvince = $provinces->firstWhere('id', request('province'));
+                        if($selectedProvince) $filterText[] = $selectedProvince->name;
+                    }
+                    if(request('city')) $filterText[] = request('city');
+                @endphp
+                @if(count($filterText) > 0)
+                    untuk "<strong>{{ implode(', ', $filterText) }}</strong>"
+                @endif
             @endif
         </p>
     </div>
@@ -120,54 +124,64 @@
         document.addEventListener('DOMContentLoaded', function () {
             const provinceSelect = document.getElementById('province');
             const citySelect = document.getElementById('city');
+            const oldCityName = "{{ request('city') }}";
 
-            // Fungsi untuk mengambil data kota berdasarkan kode provinsi
-            async function loadCities(provinceCode) {
-                if (!provinceCode) {
-                    citySelect.innerHTML = '<option value="">Pilih Kota Dulu</option>';
+            // Fungsi untuk mengambil data kota berdasarkan ID provinsi
+            const loadCities = (provinceId, cityToSelectName = null) => {
+                citySelect.innerHTML = '<option value="">Memuat...</option>';
+                citySelect.disabled = true;
+
+                if (!provinceId) {
+                    citySelect.innerHTML = '<option value="">Pilih Provinsi Dulu</option>';
                     citySelect.disabled = true;
                     return;
                 }
 
-                citySelect.innerHTML = '<option value="">Memuat...</option>';
-                citySelect.disabled = true;
+                // Gunakan route yang sama dengan admin
+                const url = `{{ route('admin.campaigns.getCities', '') }}/${provinceId}`;
 
-                try {
-                    const response = await fetch(`/api/cities/${provinceCode}`);
-                    const cities = await response.json();
-
-                    citySelect.innerHTML = '<option value="">Pilih Kota</option>';
-                    cities.forEach(city => {
-                        const option = document.createElement('option');
-                        option.value = city.name; // Gunakan name jika Anda mencari berdasarkan nama di controller
-                        option.textContent = city.name;
-                        if ("{{ request('city') }}" === city.name) {
-                            option.selected = true;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
                         }
-                        citySelect.appendChild(option);
-                    });
+                        return response.json();
+                    })
+                    .then(data => {
+                        citySelect.innerHTML = '<option value="">Semua Kota</option>';
+                        
+                        data.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city.name;
+                            option.textContent = city.name;
+                            
+                            // Pertahankan nilai lama jika ada
+                            if (city.name === cityToSelectName) {
+                                option.selected = true;
+                            }
+                            
+                            citySelect.appendChild(option);
+                        });
 
-                    citySelect.disabled = false;
-                } catch (error) {
-                    console.error('Error fetching cities:', error);
-                    citySelect.innerHTML = '<option value="">Gagal Memuat Kota</option>';
-                    citySelect.disabled = true;
-                }
-            }
+                        citySelect.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching cities:', error);
+                        citySelect.innerHTML = '<option value="">Gagal Memuat Kota</option>';
+                        citySelect.disabled = true;
+                    });
+            };
 
             // Event listener untuk perubahan provinsi
             provinceSelect.addEventListener('change', function () {
-                const selectedProvinceCode = this.value;
-                loadCities(selectedProvinceCode);
+                const selectedProvinceId = this.value;
+                loadCities(selectedProvinceId);
             });
 
             // Load cities on page load if a province is already selected
-            const initialProvince = provinceSelect.value;
-            if (initialProvince) {
-                loadCities(initialProvince);
-            } else {
-                // Jika tidak ada provinsi yang dipilih, nonaktifkan kota
-                citySelect.disabled = true;
+            const initialProvinceId = provinceSelect.value;
+            if (initialProvinceId) {
+                loadCities(initialProvinceId, oldCityName);
             }
         });
     </script>

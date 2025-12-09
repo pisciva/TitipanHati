@@ -354,7 +354,7 @@
                     </ul>
 
                     {{-- Newsletter --}}
-                    <div class="mt-6">
+                    <!-- <div class="mt-6">
                         <p class="text-sm text-gray-400 mb-3">Berlangganan Newsletter</p>
                         <div class="flex gap-2">
                             <input type="email" placeholder="Email Anda" 
@@ -363,7 +363,7 @@
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

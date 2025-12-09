@@ -11,7 +11,7 @@ class CampaignController extends Controller
 
     public function index(Request $request)
     {
-        $query = Campaign::with(['organization', 'categories']); // Tambahkan relasi jika perlu
+        $query = Campaign::with(['organization', 'categories']);
 
         // Search
         if ($request->filled('search')) {
@@ -24,12 +24,19 @@ class CampaignController extends Controller
             });
         }
 
-        // Province
+        // Province - Filter berdasarkan ID provinsi
         if ($request->filled('province')) {
-            $query->where('province', $request->province);
+            $provinceId = $request->province;
+            
+            // Query langsung ke tabel provinces (Laravolt)
+            $province = \DB::table('provinces')->where('id', $provinceId)->first();
+            
+            if ($province) {
+                $query->where('province', $province->name);
+            }
         }
 
-        // City
+        // City - Filter berdasarkan nama kota
         if ($request->filled('city')) {
             $query->where('city', 'like', '%' . $request->city . '%');
         }
@@ -57,10 +64,13 @@ class CampaignController extends Controller
                 break;
         }
 
-        $campaigns = $query->paginate(9); // 9 items per page
-        $campaigns->appends($request->query()); // Untuk pagination dengan query string
+        $campaigns = $query->paginate(9);
+        $campaigns->appends($request->query());
 
-        return view('campaigns.index', compact('campaigns'));
+        // Ambil data provinces dari Laravolt (langsung query DB)
+        $provinces = \DB::table('provinces')->orderBy('name')->get();
+
+        return view('campaigns.index', compact('campaigns', 'provinces'));
     }
 
 
@@ -69,10 +79,27 @@ class CampaignController extends Controller
         $campaign = Campaign::with(['organization', 'categories', 'donations'])
             ->findOrFail($id);
 
-
-        $campaign->increment('view_count');
+        // Increment view count dengan proteksi 24 jam per IP
+        $this->trackView($campaign);
 
         return view('campaigns.show', compact('campaign'));
+    }
+
+    /**
+     * Track campaign view dengan proteksi spam
+     */
+    protected function trackView(Campaign $campaign)
+    {
+        $cacheKey = 'campaign_' . $campaign->id . '_ip_' . request()->ip();
+        
+        // Cek apakah IP ini sudah view dalam 24 jam
+        if (!cache()->has($cacheKey)) {
+            // Increment view count
+            $campaign->increment('view_count');
+            
+            // Lock selama 24 jam
+            cache()->put($cacheKey, true, now()->addDay());
+        }
     }
 
 

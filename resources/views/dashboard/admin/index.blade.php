@@ -17,12 +17,12 @@
         
         <!-- Formulir Pencarian (Diperbaiki: Mengarahkan ke daftar Campaign untuk pencarian yang relevan) -->
         <form method="GET" action="{{ route('admin.campaigns.index') }}" class="flex-1 w-full sm:w-auto">
-            <div class="relative">
+            <div class="relative  items-centerjustify-center flex">
                 {{-- Input Pencarian - Tambahkan name="search" dan value lama --}}
                 <input type="text" name="search" placeholder="Cari Campaign" 
                        value="{{ request('search') }}" 
                        class="w-full pl-10 pr-4 py-3 border-none bg-gray-200 rounded-xl focus:ring-red-600 focus:border-red-600 text-base transition shadow-none" />
-                <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 p-0 m-0 border-none bg-transparent">
+                <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600 p-0 m-0 border-none bg-transparent items-center justify-center flex">
                     <i class="fas fa-search w-4 h-4"></i>
                 </button>
             </div>
