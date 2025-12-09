@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('donation_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('donation_id')->constrained('donations')->onDelete('cascade');
-            $table->enum('gender', ['Anak Laki-laki', 'Anak Perempuan', 'Laki-laki', 'Perempuan']);
+            $table->enum('gender', ['Laki-laki (Anak)', 'Perempuan (Anak)', 'Laki-laki (Dewasa)', 'Perempuan (Dewasa)']);
             $table->enum('item_category', ['Atasan', 'Bawahan', 'Other']);
             $table->integer('quantity');
             $table->enum('condition', ['Baru', 'Layak pakai', 'Tidak layak']);

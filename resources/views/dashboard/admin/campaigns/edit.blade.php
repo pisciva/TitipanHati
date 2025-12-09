@@ -163,7 +163,7 @@
                             <option value="" disabled selected>Pilih Provinsi</option>
                             {{-- ... PHP loop untuk provinces ... --}}
                             @foreach ($provinces as $province)
-                                <option value="{{ $province->id }}" {{ old('province') == $province->id ? 'selected' : '' }}>
+                                <option value="{{ $province->code }}" {{ old('province') === $province->code ? 'selected' : '' }}>
                                     {{ $province->name }}
                                 </option>
                             @endforeach

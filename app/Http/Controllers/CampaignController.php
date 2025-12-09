@@ -15,11 +15,12 @@ class CampaignController extends Controller
     {
         $query = Campaign::with(['organization', 'categories']);
 
-        // Search
+        // Search - Search in title, description, and organization name
         if ($request->filled('search')) {
             $searchTerm = $request->search;
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('title', 'like', "%{$searchTerm}%")
+                    ->orWhere('description', 'like', "%{$searchTerm}%")
                     ->orWhereHas('organization', function ($orgQuery) use ($searchTerm) {
                         $orgQuery->where('name', 'like', "%{$searchTerm}%");
                     });
@@ -55,10 +56,10 @@ class CampaignController extends Controller
                 $query->orderBy('deadline', 'asc');
                 break;
             case 'progress_high':
-                $query->orderByRaw('(collected_quantity * 1.0 / target_quantity) DESC');
+                $query->orderByRaw('(collected_quantity * 1.0 / NULLIF(target_quantity, 1)) DESC');
                 break;
             case 'progress_low':
-                $query->orderByRaw('(collected_quantity * 1.0 / target_quantity) ASC');
+                $query->orderByRaw('(collected_quantity * 1.0 / NULLIF(target_quantity, 1)) ASC');
                 break;
             case 'newest':
             default:
@@ -120,7 +121,7 @@ class CampaignController extends Controller
             \Log::info("Campaign view tracked", [
                 'campaign_id' => $campaign->id,
                 'ip' => $ipAddress,
-                'view_count' => $campaign->view_count + 1
+                'new_view_count' => $campaign->fresh()->view_count
             ]);
         }
     }

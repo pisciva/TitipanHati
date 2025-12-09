@@ -44,7 +44,7 @@ class DonationController extends Controller
             'pickup_date' => 'required|date|after:+2 days', // Min 3 days from now
             'pickup_time_slot' => 'required|in:09:00-13:00,13:00-17:00',
             'items' => 'required|array|min:1',
-            'items.*.gender' => 'required|in:Anak Laki-laki,Anak Perempuan,Laki-laki,Perempuan',
+            'items.*.gender' => 'required|in:Laki-laki (Anak),Perempuan (Anak),Laki-laki (Dewasa),Perempuan (Dewasa)',
             'items.*.item_category' => 'required|in:Atasan,Bawahan,Other',
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.condition' => 'required|in:Baru,Layak pakai,Tidak layak',

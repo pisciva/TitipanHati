@@ -236,7 +236,7 @@
     @endif
 
     @if(session('error'))
-        <div id="toast-error" class="fixed bottom-5 right-5 ...">
+        <div id="toast-error" class="fixed bottom-5 right-5 bg-red-500 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in z-[9999] max-w-sm">
             <i class="fa-solid fa-circle-xmark text-white"></i>
             <span class="text-sm font-medium">{{ session('error') }}</span>
             <button onclick="this.parentElement.remove()" class="ml-auto">

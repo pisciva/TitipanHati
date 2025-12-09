@@ -35,9 +35,10 @@ class DonationSeeder extends Seeder
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
+        
         DonationItem::create([
             'donation_id' => $donation1->id,
-            'gender' => 'Anak Laki-laki',
+            'gender' => 'Laki-laki (Anak)',
             'item_category' => 'Atasan',
             'quantity' => 5,
             'condition' => 'Layak pakai',
@@ -45,7 +46,7 @@ class DonationSeeder extends Seeder
 
         DonationItem::create([
             'donation_id' => $donation1->id,
-            'gender' => 'Anak Laki-laki',
+            'gender' => 'Laki-laki (Anak)',
             'item_category' => 'Bawahan',
             'quantity' => 5,
             'condition' => 'Layak pakai',
@@ -91,7 +92,7 @@ class DonationSeeder extends Seeder
 
         DonationItem::create([
             'donation_id' => $donation2->id,
-            'gender' => 'Anak Perempuan',
+            'gender' => 'Perempuan (Anak)',
             'item_category' => 'Atasan',
             'quantity' => 8,
             'condition' => 'Baru',
@@ -131,7 +132,7 @@ class DonationSeeder extends Seeder
 
         DonationItem::create([
             'donation_id' => $donation3->id,
-            'gender' => 'Laki-laki',
+            'gender' => 'Laki-laki (Dewasa)',
             'item_category' => 'Atasan',
             'quantity' => 10,
             'condition' => 'Layak pakai',
@@ -139,7 +140,7 @@ class DonationSeeder extends Seeder
 
         DonationItem::create([
             'donation_id' => $donation3->id,
-            'gender' => 'Perempuan',
+            'gender' => 'Perempuan (Dewasa)',
             'item_category' => 'Bawahan',
             'quantity' => 8,
             'condition' => 'Layak pakai',
@@ -171,7 +172,7 @@ class DonationSeeder extends Seeder
 
         DonationItem::create([
             'donation_id' => $donation4->id,
-            'gender' => 'Anak Laki-laki',
+            'gender' => 'Laki-laki (Anak)',
             'item_category' => 'Other',
             'quantity' => 15,
             'condition' => 'Baru',

@@ -10,11 +10,10 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-
-            ['name' => 'Anak Laki-laki', 'type' => 'gender'],
-            ['name' => 'Anak Perempuan', 'type' => 'gender'],
-            ['name' => 'Laki-laki', 'type' => 'gender'],
-            ['name' => 'Perempuan', 'type' => 'gender'],
+            ['name' => 'Laki-laki (Anak)', 'type' => 'gender'],
+            ['name' => 'Perempuan (Anak)', 'type' => 'gender'],
+            ['name' => 'Laki-laki (Dewasa)', 'type' => 'gender'],
+            ['name' => 'Perempuan (Dewasa)', 'type' => 'gender'],
             
 
             ['name' => 'Atasan', 'type' => 'item_type'],

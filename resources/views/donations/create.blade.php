@@ -227,10 +227,10 @@
                                     <select name="items[0][gender]" required
                                             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
                                         <option value="">Pilih</option>
-                                        <option value="Anak Laki-laki">Anak Laki-laki</option>
-                                        <option value="Anak Perempuan">Anak Perempuan</option>
-                                        <option value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
+                                        <option value="Laki-laki (Anak)">Anak Laki-laki</option>
+                                        <option value="Perempuan (Anak)">Anak Perempuan</option>
+                                        <option value="Laki-laki (Dewasa)">Laki-laki</option>
+                                        <option value="Perempuan (Dewasa)">Perempuan</option>
                                     </select>
                                 </div>
 
