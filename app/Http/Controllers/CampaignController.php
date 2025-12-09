@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\CampaignView;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CampaignController extends Controller
 {
@@ -29,7 +31,7 @@ class CampaignController extends Controller
             $provinceId = $request->province;
             
             // Query langsung ke tabel provinces (Laravolt)
-            $province = \DB::table('provinces')->where('id', $provinceId)->first();
+            $province = DB::table('indonesia_provinces')->where('id', $provinceId)->first();
             
             if ($province) {
                 $query->where('province', $province->name);
@@ -68,7 +70,7 @@ class CampaignController extends Controller
         $campaigns->appends($request->query());
 
         // Ambil data provinces dari Laravolt (langsung query DB)
-        $provinces = \DB::table('provinces')->orderBy('name')->get();
+        $provinces = DB::table('indonesia_provinces')->orderBy('name')->get();
 
         return view('campaigns.index', compact('campaigns', 'provinces'));
     }
@@ -86,19 +88,40 @@ class CampaignController extends Controller
     }
 
     /**
-     * Track campaign view dengan proteksi spam
+     * Track campaign view dengan proteksi spam menggunakan database
      */
     protected function trackView(Campaign $campaign)
     {
-        $cacheKey = 'campaign_' . $campaign->id . '_ip_' . request()->ip();
-        
-        // Cek apakah IP ini sudah view dalam 24 jam
-        if (!cache()->has($cacheKey)) {
-            // Increment view count
+        $ipAddress = request()->ip();
+        $userAgent = request()->userAgent();
+        $userId = auth()->id();
+
+        // Cek apakah IP ini sudah view dalam 24 jam terakhir
+        $recentView = CampaignView::where('campaign_id', $campaign->id)
+            ->where('ip_address', $ipAddress)
+            ->where('viewed_at', '>', now()->subDay())
+            ->first();
+
+        // Jika belum ada view dalam 24 jam, catat view baru
+        if (!$recentView) {
+            // Simpan record view
+            CampaignView::create([
+                'campaign_id' => $campaign->id,
+                'ip_address' => $ipAddress,
+                'user_agent' => $userAgent,
+                'user_id' => $userId,
+                'viewed_at' => now(),
+            ]);
+
+            // Increment view_count di campaign
             $campaign->increment('view_count');
-            
-            // Lock selama 24 jam
-            cache()->put($cacheKey, true, now()->addDay());
+
+            // Optional: Log untuk debugging
+            \Log::info("Campaign view tracked", [
+                'campaign_id' => $campaign->id,
+                'ip' => $ipAddress,
+                'view_count' => $campaign->view_count + 1
+            ]);
         }
     }
 
@@ -116,9 +139,9 @@ class CampaignController extends Controller
             ->get();
 
         $statistics = [
-            'total_items' => \DB::table('donation_items')->sum('quantity'),
+            'total_items' => DB::table('donation_items')->sum('quantity'),
             'active_campaigns' => Campaign::where('status', 'aktif')->count(),
-            'total_organizations' => \DB::table('organizations')->where('is_verified', true)->count(),
+            'total_organizations' => DB::table('organizations')->where('is_verified', true)->count(),
         ];
 
         $testimonials = \App\Models\Testimonial::where('is_active', true)

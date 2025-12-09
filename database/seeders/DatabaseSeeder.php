@@ -3,11 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // Seeder aplikasi
         $this->call([
             CategorySeeder::class,
             AdminSeeder::class,
@@ -17,12 +20,20 @@ class DatabaseSeeder extends Seeder
             TestimonialSeeder::class,
             DonationSeeder::class,
         ]);
-        
-        $this->command->info('');
-        $this->command->info('🎉 ALL SEEDERS COMPLETED!');
-        $this->command->info('');
-        $this->command->info('Login Credentials:');
-        $this->command->info('📧 Admin: cs@titipanhati.com | Password: admin123');
-        $this->command->info('📧 Users: budi@example.com (and others) | Password: password123');
+
+        $this->call(\Laravolt\Indonesia\Seeds\ProvincesSeeder::class);
+        $this->call(\Laravolt\Indonesia\Seeds\CitiesSeeder::class);
+        $this->call(\Laravolt\Indonesia\Seeds\DistrictsSeeder::class);
+
+        // Fix Indonesia names langsung di sini
+        $tables = ['indonesia_provinces', 'indonesia_cities', 'indonesia_districts'];
+        foreach ($tables as $table) {
+            $rows = DB::table($table)->get();
+            foreach ($rows as $row) {
+                DB::table($table)->where('id', $row->id)->update([
+                    'name' => Str::title(strtolower($row->name))
+                ]);
+            }
+        }
     }
 }

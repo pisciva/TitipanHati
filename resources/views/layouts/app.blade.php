@@ -28,7 +28,8 @@
 
 <body class="bg-gray-50">
     {{-- Navbar --}}
-    <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300" x-data="{ mobileMenu: false, userMenu: false }">
+    <nav id="navbar" class="bg-white shadow-md sticky top-0 z-50 transition-all duration-300"
+        x-data="{ mobileMenu: false, userMenu: false }">
         <div class="container mx-auto px-4 lg:px-6">
             <div class="flex items-center justify-between h-16">
                 {{-- Logo --}}
@@ -40,16 +41,20 @@
 
                 {{-- Desktop Navigation Links --}}
                 <div class="hidden lg:flex items-center gap-8">
-                    <a href="{{ route('home') }}" class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
+                    <a href="{{ route('home') }}"
+                        class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
                         Beranda
                     </a>
-                    <a href="{{ route('campaigns.index') }}" class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
+                    <a href="{{ route('campaigns.index') }}"
+                        class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
                         Campaign
                     </a>
-                    <a href="#cara-kerja" class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
+                    <a href="#cara-kerja"
+                        class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
                         Cara Kerja
                     </a>
-                    <a href="#tentang" class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
+                    <a href="#tentang"
+                        class="text-gray-700 hover:text-[#FF4400] font-medium transition-colors duration-200">
                         Tentang Kami
                     </a>
                 </div>
@@ -60,20 +65,19 @@
                         <div class="relative">
                             <button @click="userMenu = !userMenu" @click.away="userMenu = false"
                                 class="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                                <div class="w-8 h-8 rounded-full bg-[#FF4400] flex items-center justify-center text-white font-semibold">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-[#FF4400] flex items-center justify-center text-white font-semibold">
                                     {{ substr(Auth::user()->profile->full_name ?? Auth::user()->email, 0, 1) }}
                                 </div>
-                                <span class="text-gray-700 font-medium">{{ Str::limit(Auth::user()->profile->full_name ?? Auth::user()->email, 15) }}</span>
+                                <span
+                                    class="text-gray-700 font-medium">{{ Str::limit(Auth::user()->profile->full_name ?? Auth::user()->email, 15) }}</span>
                                 <i class="fas fa-chevron-down text-sm text-gray-500" :class="{'rotate-180': userMenu}"></i>
                             </button>
 
-                            <div x-show="userMenu" 
-                                x-transition:enter="transition ease-out duration-200"
-                                x-transition:enter-start="opacity-0 scale-95"
-                                x-transition:enter-end="opacity-100 scale-100"
+                            <div x-show="userMenu" x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                                 x-transition:leave="transition ease-in duration-150"
-                                x-transition:leave-start="opacity-100 scale-100"
-                                x-transition:leave-end="opacity-0 scale-95"
+                                x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                                 class="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2">
                                 @if(Auth::user()->role === 'admin')
                                     <a href="{{ route('admin.dashboard') }}"
@@ -82,7 +86,7 @@
                                         <span class="font-medium">Admin Dashboard</span>
                                     </a>
                                 @else
-                                    <a href="{{ route('dashboard') }}" 
+                                    <a href="{{ route('dashboard') }}"
                                         class="flex items-center px-4 py-2.5 text-gray-700 hover:bg-gray-50 transition-colors duration-200">
                                         <i class="fas fa-home w-5 mr-3 text-[#FF4400]"></i>
                                         <span class="font-medium">Dashboard</span>
@@ -118,42 +122,44 @@
                 </div>
 
                 {{-- Mobile Menu Button --}}
-                <button @click="mobileMenu = !mobileMenu" class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                <button @click="mobileMenu = !mobileMenu"
+                    class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200">
                     <div class="w-6 h-5 relative flex flex-col justify-between">
-                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300" 
-                              :class="{'rotate-45 translate-y-2': mobileMenu}"></span>
-                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300" 
-                              :class="{'opacity-0': mobileMenu}"></span>
-                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300" 
-                              :class="{'-rotate-45 -translate-y-2': mobileMenu}"></span>
+                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300"
+                            :class="{'rotate-45 translate-y-2': mobileMenu}"></span>
+                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300"
+                            :class="{'opacity-0': mobileMenu}"></span>
+                        <span class="w-full h-0.5 bg-gray-600 rounded-full transition-all duration-300"
+                            :class="{'-rotate-45 -translate-y-2': mobileMenu}"></span>
                     </div>
                 </button>
             </div>
 
             {{-- Mobile Menu --}}
-            <div x-show="mobileMenu" 
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 -translate-y-2"
-                 x-transition:enter-end="opacity-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 -translate-y-2"
-                 class="lg:hidden border-t border-gray-100 py-4 space-y-1">
-                
+            <div x-show="mobileMenu" x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+                class="lg:hidden border-t border-gray-100 py-4 space-y-1">
+
                 {{-- Mobile Navigation Links --}}
-                <a href="{{ route('home') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <a href="{{ route('home') }}"
+                    class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                     <i class="fas fa-home w-6 text-[#FF4400]"></i>
                     <span class="ml-3 font-medium">Beranda</span>
                 </a>
-                <a href="{{ route('campaigns.index') }}" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <a href="{{ route('campaigns.index') }}"
+                    class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                     <i class="fas fa-hand-holding-heart w-6 text-[#FF4400]"></i>
                     <span class="ml-3 font-medium">Campaign</span>
                 </a>
-                <a href="#cara-kerja" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <a href="#cara-kerja"
+                    class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                     <i class="fas fa-info-circle w-6 text-[#FF4400]"></i>
                     <span class="ml-3 font-medium">Cara Kerja</span>
                 </a>
-                <a href="#tentang" class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <a href="#tentang"
+                    class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                     <i class="fas fa-users w-6 text-[#FF4400]"></i>
                     <span class="ml-3 font-medium">Tentang Kami</span>
                 </a>
@@ -161,7 +167,8 @@
                 @auth
                     <div class="border-t border-gray-100 mt-4 pt-4">
                         <div class="flex items-center px-4 py-3 mb-2">
-                            <div class="w-10 h-10 rounded-full bg-[#FF4400] flex items-center justify-center text-white font-semibold text-lg">
+                            <div
+                                class="w-10 h-10 rounded-full bg-[#FF4400] flex items-center justify-center text-white font-semibold text-lg">
                                 {{ substr(Auth::user()->profile->full_name ?? Auth::user()->email, 0, 1) }}
                             </div>
                             <div class="ml-3">
@@ -177,7 +184,7 @@
                                 <span class="ml-3 font-medium">Admin Dashboard</span>
                             </a>
                         @else
-                            <a href="{{ route('dashboard') }}" 
+                            <a href="{{ route('dashboard') }}"
                                 class="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200">
                                 <i class="fas fa-home w-6 text-[#FF4400]"></i>
                                 <span class="ml-3 font-medium">Dashboard</span>
@@ -193,7 +200,7 @@
                                 <span class="ml-3 font-medium">Riwayat Donasi</span>
                             </a>
                         @endif
-                        
+
                         <form method="POST" action="{{ route('logout') }}" class="mt-2">
                             @csrf
                             <button type="submit"
@@ -229,14 +236,14 @@
     @endif
 
     @if(session('error'))
-        <div id="toast-error"
-            class="fixed bottom-5 right-5 bg-red-500 text-white px-5 py-3 rounded-lg shadow-lg flex items-center gap-3 animate-fade-in z-[9999] max-w-sm">
+        <div id="toast-error" class="fixed bottom-5 right-5 ...">
             <i class="fa-solid fa-circle-xmark text-white"></i>
             <span class="text-sm font-medium">{{ session('error') }}</span>
             <button onclick="this.parentElement.remove()" class="ml-auto">
                 <i class="fas fa-times text-white opacity-70 hover:opacity-100"></i>
             </button>
         </div>
+    @endif
 
     {{-- Main Content --}}
     <main>
@@ -254,19 +261,24 @@
                         <img src="/images/logo-titiphanhati-darkmode.svg" class="h-10 w-auto" alt="TitipanHati">
                     </div>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        Platform donasi yang menghubungkan kebaikan hati dengan harapan. Bersama membangun masa depan yang lebih baik.
+                        Platform donasi yang menghubungkan kebaikan hati dengan harapan. Bersama membangun masa depan
+                        yang lebih baik.
                     </p>
                     <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
                             <i class="fab fa-facebook-f text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
                             <i class="fab fa-instagram text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
                             <i class="fab fa-twitter text-sm"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-gray-800 hover:bg-[#FF4400] flex items-center justify-center transition-all duration-300 hover:scale-105">
                             <i class="fab fa-linkedin-in text-sm"></i>
                         </a>
                     </div>
@@ -277,26 +289,34 @@
                     <h4 class="text-lg font-bold mb-4 text-white">Navigasi</h4>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('home') }}" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('home') }}"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Beranda
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('campaigns.index') }}" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('campaigns.index') }}"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Campaign
                             </a>
                         </li>
                         <li>
-                            <a href="#cara-kerja" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="#cara-kerja"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Cara Kerja
                             </a>
                         </li>
                         <li>
-                            <a href="#tentang" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="#tentang"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Tentang Kami
                             </a>
                         </li>
@@ -308,26 +328,34 @@
                     <h4 class="text-lg font-bold mb-4 text-white">Bantuan</h4>
                     <ul class="space-y-3">
                         <li>
-                            <a href="{{ route('help.index') }}#faq" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('help.index') }}#faq"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 FAQ
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('help.index') }}#syarat-ketentuan" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('help.index') }}#syarat-ketentuan"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Syarat & Ketentuan
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('help.index') }}#kebijakan-privasi" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('help.index') }}#kebijakan-privasi"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Kebijakan Privasi
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('help.index') }}#hubungi-kami" class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
-                                <i class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
+                            <a href="{{ route('help.index') }}#hubungi-kami"
+                                class="text-gray-400 hover:text-[#FF4400] transition-colors duration-200 flex items-center group">
+                                <i
+                                    class="fas fa-chevron-right text-xs mr-2 group-hover:translate-x-[1px] transition-transform duration-200"></i>
                                 Hubungi Kami
                             </a>
                         </li>
@@ -338,12 +366,16 @@
                 <div>
                     <h4 class="text-lg font-bold mb-4 text-white">Kontak</h4>
                     <ul class="space-y-3">
-                        <li class="flex items-start space-x-3 text-gray-400 hover:text-[#FF4400] transition-colors duration-200 group">
-                            <i class="fas fa-envelope w-4 mt-1 text-[#FF4400] group-hover:scale-110 transition-transform duration-200"></i>
+                        <li
+                            class="flex items-start space-x-3 text-gray-400 hover:text-[#FF4400] transition-colors duration-200 group">
+                            <i
+                                class="fas fa-envelope w-4 mt-1 text-[#FF4400] group-hover:scale-110 transition-transform duration-200"></i>
                             <a href="mailto:cs@titipanhati.com" class="text-sm">cs@titipanhati.com</a>
                         </li>
-                        <li class="flex items-start space-x-3 text-gray-400 hover:text-[#FF4400] transition-colors duration-200 group">
-                            <i class="fab fa-whatsapp w-4 mt-1 text-[#FF4400] group-hover:scale-110 transition-transform duration-200"></i>
+                        <li
+                            class="flex items-start space-x-3 text-gray-400 hover:text-[#FF4400] transition-colors duration-200 group">
+                            <i
+                                class="fab fa-whatsapp w-4 mt-1 text-[#FF4400] group-hover:scale-110 transition-transform duration-200"></i>
                             <a href="https://wa.me/6285155110751" class="text-sm">+62 851-5511-0751</a>
                         </li>
                         <li class="flex items-start space-x-3 text-gray-400 group">
@@ -370,7 +402,8 @@
             <div class="border-t border-gray-800 mt-12 pt-8">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <p class="text-gray-400 text-sm text-center md:text-left">
-                        &copy; {{ date('Y') }} <span class="text-[#FF4400] font-semibold">TitipanHati</span>. All rights reserved.
+                        &copy; {{ date('Y') }} <span class="text-[#FF4400] font-semibold">TitipanHati</span>. All rights
+                        reserved.
                     </p>
                     <div class="flex items-center space-x-4 text-sm text-gray-400">
                         <span class="flex items-center">
@@ -422,6 +455,7 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -431,7 +465,7 @@
         .animate-fade-in {
             animation: fade-in 0.4s ease-out;
         }
-        
+
         html {
             scroll-behavior: smooth;
         }

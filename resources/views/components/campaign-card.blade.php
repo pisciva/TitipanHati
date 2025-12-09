@@ -43,7 +43,7 @@
 
             @if($progress >= 100)
                 <div
-                    class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+                    class="bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
                     <i class="fas fa-check-circle"></i>
                     <span>Target Tercapai</span>
                 </div>
@@ -95,7 +95,8 @@
         <div class="flex items-center gap-4 mb-4 text-xs text-gray-500">
             <div class="flex items-center gap-1">
                 <i class="fas fa-calendar-alt text-[#FF4400]"></i>
-                <span>{{ \Carbon\Carbon::parse($campaign->deadline)->translatedFormat('l, d F Y') }}</span>
+                <span class="flex gap-1">Berakhir pada:
+                    <p class="font-bold">{{ \Carbon\Carbon::parse($campaign->deadline)->translatedFormat('l, d F Y') }}</p></span>
             </div>
 
             <div class="flex items-center gap-1">
