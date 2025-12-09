@@ -65,7 +65,7 @@
                     <p class="text-sm text-gray-600 mb-1">Alamat Penjemputan</p>
                     <p class="font-semibold text-gray-900">{{ $donation->pickup_address }}</p>
                     <p class="text-gray-700">
-                        {{ $donation->pickup_district }}, {{ $donation->pickup_city }} - {{ $donation->pickup_postal_code }}
+                        {{ $donation->pickup_city }}, {{ $donation->pickup_province }} - {{ $donation->pickup_postal_code }}
                     </p>
                     @if($donation->pickup_notes)
                         <p class="text-sm text-gray-600 mt-2">

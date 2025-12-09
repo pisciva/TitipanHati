@@ -73,8 +73,8 @@ class UserSeeder extends Seeder
                 'full_name' => $userData['full_name'],
                 'phone_number' => $userData['phone'],
                 'default_address' => $userData['address'],
-                'default_city' => $userData['city'],
-                'default_district' => $userData['district'],
+                'default_province' => $userData['city'],
+                'default_city' => $userData['district'],
                 'default_postal_code' => $userData['postal'],
             ]);
         }

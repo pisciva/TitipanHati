@@ -171,7 +171,7 @@
                                 Deskripsi Campaign
                             </h2>
                             <div
-                                class="prose max-w-none text-gray-700 leading-relaxed whitespace-pre-line bg-gray-50 rounded-xl p-6">
+                                class="prose max-w-none text-gray-700 bg-gray-50 rounded-xl p-6">
                                 {{ $campaign->description }}
                             </div>
                         </div>

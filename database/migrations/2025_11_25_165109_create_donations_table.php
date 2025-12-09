@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('donor_phone', 20);
             $table->string('donor_email');
             $table->text('pickup_address');
+            $table->string('pickup_province', 100);
             $table->string('pickup_city', 100);
             $table->string('pickup_district', 100);
             $table->string('pickup_postal_code', 10);

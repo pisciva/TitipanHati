@@ -73,8 +73,8 @@
                             <p class="mt-2"><span class="font-medium text-gray-800">Kode Pos:</span> {{ $donation->pickup_postal_code }}</p>
                         </div>
                         <div>
-                            <p><span class="font-medium text-gray-800">Kota/Kabupaten:</span> {{ $donation->pickup_city }}</p>
-                            <p class="mt-2"><span class="font-medium text-gray-800">Kecamatan:</span> {{ $donation->pickup_district }}</p>
+                            <p><span class="font-medium text-gray-800">Kota/Kabupaten:</span> {{ $donation->pickup_province }}</p>
+                            <p class="mt-2"><span class="font-medium text-gray-800">Kecamatan:</span> {{ $donation->pickup_city }}</p>
                         </div>
                     </div>
                     <p class="mt-4 text-sm text-gray-600">

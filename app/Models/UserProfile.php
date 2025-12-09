@@ -11,8 +11,8 @@ class UserProfile extends Model
         'full_name',
         'phone_number',
         'default_address',
+        'default_province',
         'default_city',
-        'default_district',
         'default_postal_code',
         'default_notes',
     ];

@@ -32,8 +32,8 @@ class ProfileController extends Controller
             'full_name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
             'default_address' => 'nullable|string',
+            'default_province' => 'nullable|string|max:100',
             'default_city' => 'nullable|string|max:100',
-            'default_district' => 'nullable|string|max:100',
             'default_postal_code' => 'nullable|string|max:10',
         ]);
 
@@ -46,8 +46,8 @@ class ProfileController extends Controller
                 'full_name',
                 'phone_number',
                 'default_address',
+                'default_province',
                 'default_city',
-                'default_district',
                 'default_postal_code',
                 'default_notes'
             ])

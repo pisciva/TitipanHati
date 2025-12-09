@@ -26,8 +26,8 @@ class AdminSeeder extends Seeder
             'full_name' => 'Admin TitipanHati',
             'phone_number' => '081234567890',
             'default_address' => 'Jl. Sudirman No. 1',
-            'default_city' => 'Jakarta',
-            'default_district' => 'Jakarta Pusat',
+            'default_province' => 'Jakarta',
+            'default_city' => 'Jakarta Pusat',
             'default_postal_code' => '10110',
             'default_notes' => 'Dekat stasiun MRT',
         ]);

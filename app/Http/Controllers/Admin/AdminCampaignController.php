@@ -8,7 +8,7 @@ use App\Models\Organization;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Indonesia; // ⭐ Ditambahkan: Facade Laravolt/Indonesia
+use Indonesia;
 
 class AdminCampaignController extends Controller
 {
@@ -17,17 +17,30 @@ class AdminCampaignController extends Controller
         $this->middleware(['auth', 'admin']);
     }
 
-    // ⭐ Dihapus: private function getLocations()
-
-    // ⭐ Tambah: Metode untuk merespons permintaan AJAX Kota/Kabupaten
+    /**
+     * ⭐ API: Mendapatkan daftar kota berdasarkan provinsi
+     */
     public function getCities($province_id)
     {
-        // Mencari Provinsi berdasarkan ID dan memuat relasi cities
-        // ID yang dikirim dari frontend adalah ID unik Laravolt
-        $province = Indonesia::findProvince($province_id, ['cities']);
-        
-        // Mengembalikan collection cities sebagai JSON
-        return response()->json($province->cities);
+        try {
+            $province = Indonesia::findProvince($province_id, ['cities']);
+            return response()->json($province->cities);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Province not found'], 404);
+        }
+    }
+
+    /**
+     * ⭐ BARU: API untuk mendapatkan daftar kecamatan berdasarkan kota
+     */
+    public function getDistricts($city_id)
+    {
+        try {
+            $city = Indonesia::findCity($city_id, ['districts']);
+            return response()->json($city->districts);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'City not found'], 404);
+        }
     }
 
     public function index(Request $request)
@@ -56,19 +69,14 @@ class AdminCampaignController extends Controller
         return view('dashboard.admin.campaigns.index', compact('campaigns'));
     }
 
-
     public function create()
     {
         $organizations = Organization::where('is_verified', true)->get();
         $categories = Category::all();
+        $provinces = Indonesia::allProvinces();
 
-        // ⭐ Perbaikan: Mengambil semua Provinsi menggunakan Laravolt
-        $provinces = Indonesia::allProvinces(); 
-
-        // Tidak perlu lagi mengirim 'locations'
         return view('dashboard.admin.campaigns.create', compact('organizations', 'categories', 'provinces'));
     }
-
 
     public function store(Request $request)
     {
@@ -77,45 +85,36 @@ class AdminCampaignController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'banner' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            // ⭐ Perubahan: Province harus berupa ID (integer) dari Laravolt
-            'province' => 'required|integer|min:1', 
-            'city' => 'required|string|max:100', // City tetap Nama Kota
+            'province' => 'required|string',
+            'city' => 'required|string|max:100',
             'target_quantity' => 'required|integer|min:1',
             'deadline' => 'required|date|after:today',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
         ]);
 
-
         $bannerUrl = null;
         if ($request->hasFile('banner')) {
             $bannerUrl = $request->file('banner')->store('campaigns', 'public');
         }
-
-        // ⭐ Perbaikan: Ambil Nama Provinsi dari ID untuk disimpan di Model Campaign
-        $provinceName = Indonesia::findProvince($request->province)->name;
-
 
         $campaign = Campaign::create([
             'organization_id' => $request->organization_id,
             'title' => $request->title,
             'description' => $request->description,
             'banner_url' => $bannerUrl,
-            // Simpan Nama Provinsi
-            'province' => $provinceName, 
+            'province' => $request->province,
             'city' => $request->city,
             'target_quantity' => $request->target_quantity,
             'deadline' => $request->deadline,
             'status' => 'aktif',
         ]);
 
-
         $campaign->categories()->attach($request->categories);
 
         return redirect()->route('admin.campaigns.index')
             ->with('success', 'Campaign berhasil dibuat!');
     }
-
 
     public function show($id)
     {
@@ -125,20 +124,15 @@ class AdminCampaignController extends Controller
         return view('dashboard.admin.campaigns.show', compact('campaign'));
     }
 
-
     public function edit($id)
     {
         $campaign = Campaign::with('categories')->findOrFail($id);
         $organizations = Organization::where('is_verified', true)->get();
         $categories = Category::all();
-
-        // ⭐ Perbaikan: Mengambil semua Provinsi menggunakan Laravolt
         $provinces = Indonesia::allProvinces();
 
-        // Tidak perlu lagi mengirim 'locations'
         return view('dashboard.admin.campaigns.edit', compact('campaign', 'organizations', 'categories', 'provinces'));
     }
-
 
     public function update(Request $request, $id)
     {
@@ -149,8 +143,7 @@ class AdminCampaignController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'banner' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            // ⭐ Perubahan: Province harus berupa ID (integer) dari Laravolt
-            'province' => 'required|integer|min:1', 
+            'province' => 'required|string',
             'city' => 'required|string|max:100',
             'target_quantity' => 'required|integer|min:1',
             'deadline' => 'required|date',
@@ -159,29 +152,23 @@ class AdminCampaignController extends Controller
             'categories.*' => 'exists:categories,id',
         ]);
 
-
         if ($request->hasFile('banner')) {
-
             if ($campaign->banner_url) {
                 Storage::disk('public')->delete($campaign->banner_url);
             }
             $campaign->banner_url = $request->file('banner')->store('campaigns', 'public');
         }
 
-        // ⭐ Perbaikan: Ambil Nama Provinsi dari ID untuk disimpan di Model Campaign
-        $provinceName = Indonesia::findProvince($request->province)->name;
-
         $campaign->update([
             'organization_id' => $request->organization_id,
             'title' => $request->title,
             'description' => $request->description,
-            'province' => $provinceName, // Simpan Nama Provinsi
+            'province' => $request->province,
             'city' => $request->city,
             'target_quantity' => $request->target_quantity,
             'deadline' => $request->deadline,
             'status' => $request->status,
         ]);
-
 
         $campaign->categories()->sync($request->categories);
 
@@ -189,16 +176,13 @@ class AdminCampaignController extends Controller
             ->with('success', 'Campaign berhasil diupdate!');
     }
 
-
     public function destroy($id)
     {
         $campaign = Campaign::findOrFail($id);
 
-
         if ($campaign->donations()->count() > 0) {
             return back()->with(['error' => 'Campaign tidak dapat dihapus karena sudah ada donasi.']);
         }
-
 
         if ($campaign->banner_url) {
             Storage::disk('public')->delete($campaign->banner_url);

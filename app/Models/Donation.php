@@ -13,6 +13,7 @@ class Donation extends Model
         'donor_phone',
         'donor_email',
         'pickup_address',
+        'pickup_province',
         'pickup_city',
         'pickup_district',
         'pickup_postal_code',
