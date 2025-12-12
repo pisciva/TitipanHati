@@ -9,13 +9,13 @@
     $statusMap = [
         'menunggu_penjemputan' => ['color' => 'bg-yellow-500', 'text' => 'text-yellow-800', 'icon' => 'fas fa-clock', 'display' => 'Menunggu Penjemputan'],
         'dalam_perjalanan' => ['color' => 'bg-blue-500', 'text' => 'text-blue-800', 'icon' => 'fas fa-truck', 'display' => 'Dalam Perjalanan'],
-        'selesai' => ['color' => 'bg-green-500', 'text' => 'text-green-800', 'icon' => 'fas fa-check-circle', 'display' => 'Selesai'],
+        'selesai' => ['color' => 'bg-green-500', 'text' => 'text-green-800', 'icon' => 'fas fa-check-circle', 'display' => 'Selesai (Barang Diterima)'],
         'dibatalkan' => ['color' => 'bg-red-500', 'text' => 'text-red-800', 'icon' => 'fas fa-times-circle', 'display' => 'Dibatalkan'],
     ];
 
-    $currentStatus = $statusMap[strtolower($donation->status)] ?? ['color' => 'bg-gray-500', 'text' => 'text-gray-800', 'icon' => 'fas fa-question-circle', 'display' => 'Tidak Diketahui'];
+    $currentStatusValue = strtolower($donation->status);
+    $currentStatus = $statusMap[$currentStatusValue] ?? ['color' => 'bg-gray-500', 'text' => 'text-gray-800', 'icon' => 'fas fa-question-circle', 'display' => 'Tidak Diketahui'];
     
-
 
     $colorBase = explode('-', $currentStatus['color'])[1] ?? 'gray';
     
@@ -132,7 +132,7 @@
 
 
 
-        <div class="sticky top-6 {{ $cardBg }} p-6 rounded-2xl shadow-xl border {{ $cardBorder }}">
+        <div class="{{ $cardBg }} p-6 rounded-2xl shadow-xl border {{ $cardBorder }}">
             <h2 class="text-xl font-bold {{ $cardText }} mb-4 border-b {{ $cardBorder }} pb-2">Perbarui Status Donasi</h2>
             
             <div class="flex items-center mb-4">
@@ -152,10 +152,18 @@
                     <select name="status" id="status" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
                         <option value="">Pilih Status</option>
-                        <option value="menunggu_penjemputan" {{ $donation->status === 'menunggu_penjemputan' ? 'selected' : '' }}>Menunggu Penjemputan</option>
-                        <option value="dalam_perjalanan" {{ $donation->status === 'dalam_perjalanan' ? 'selected' : '' }}>Dalam Perjalanan</option>
-                        <option value="selesai" {{ $donation->status === 'selesai' ? 'selected' : '' }}>Selesai (Barang Diterima)</option>
-                        <option value="dibatalkan" {{ $donation->status === 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                        @if ($currentStatusValue !== 'menunggu_penjemputan')
+                            <option value="menunggu_penjemputan">Menunggu Penjemputan</option>
+                        @endif
+                        @if ($currentStatusValue !== 'dalam_perjalanan')
+                            <option value="dalam_perjalanan">Dalam Perjalanan</option>
+                        @endif
+                        @if ($currentStatusValue !== 'selesai')
+                            <option value="selesai">Selesai (Barang Diterima)</option>
+                        @endif
+                        @if ($currentStatusValue !== 'dibatalkan')
+                            <option value="dibatalkan">Dibatalkan</option>
+                        @endif
                     </select>
                 </div>
 
@@ -181,6 +189,7 @@
                 @forelse ($donation->tracking->sortByDesc('status_changed_at') as $track)
                     @php
                         $trackStatus = $statusMap[strtolower($track->status)] ?? ['text' => 'text-gray-800', 'display' => 'Unknown'];
+                        $isSystemNote = str_starts_with(strtolower($track->notes ?? ''), 'status diubah dari');
                     @endphp
                     <li class="mb-4 ml-6">
                         <span class="absolute flex items-center justify-center w-6 h-6 rounded-full -left-3 ring-8 ring-white {{ $trackStatus['color'] }} text-white">
@@ -192,9 +201,16 @@
                         <time class="block mb-2 text-xs font-normal leading-none text-gray-500">
                             {{ \Carbon\Carbon::parse($track->status_changed_at)->translatedFormat('d M Y, H:i') }}
                         </time>
-                        <p class="text-sm font-normal text-gray-700">
-                            {{ $track->notes }}
-                        </p>
+                        @if (!empty($track->notes) && !$isSystemNote)
+                            <p class="text-sm font-normal text-gray-700">
+                                {{ $track->notes }}
+                            </p>
+                        @elseif ($isSystemNote)
+                        @else
+                             <p class="text-sm font-normal text-gray-500 italic">
+                                 Tidak ada catatan.
+                             </p>
+                        @endif
                     </li>
                 @empty
                     <p class="text-gray-500 ml-6">Belum ada riwayat pelacakan.</p>
