@@ -76,19 +76,71 @@
 
 
                 <div>
-                    <label for="categories" class="block text-sm font-semibold text-gray-700 mb-2">
-                        Kategori (Boleh Pilih Lebih dari Satu) <span class="text-red-500">*</span>
-                    </label>
-                    <select name="categories[]" id="categories" multiple required
-                            class="w-full px-4 py-3 border @error('categories') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition h-40">
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ in_array($category->id, old('categories', [])) ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <p class="mt-2 text-xs text-gray-500">Gunakan CTRL/CMD untuk memilih beberapa kategori.</p>
+                    @php
+                        // Perbaikan: Halaman 'create' tidak memiliki variabel $campaign, 
+                        // jadi kita hanya menggunakan data 'old' atau array kosong.
+                        $selectedCategories = old('categories', []);
+
+
+                        // --- ASUMSI PENGELOMPOKAN KATEGORI BERDASARKAN ID (HARAP SESUAIKAN ID INI) ---
+                        // ID Kategori Jenis Kelamin/Usia
+                        $genderAgeCategoryIds = [1, 2, 3, 4]; // Ganti dengan ID kategori yang sebenarnya
+                        // ID Kategori Pakaian
+                        $apparelCategoryIds = [5, 6, 7]; // Ganti dengan ID kategori yang sebenarnya
+
+
+                        // Filter kategori berdasarkan ID
+                        $genderAgeCategories = $categories->whereIn('id', $genderAgeCategoryIds);
+                        $apparelCategories = $categories->whereIn('id', $apparelCategoryIds);
+                    @endphp
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin dan Usia <span class="text-red-500">*</span></label>
+
+                    {{-- SECTION 1: Kategori Jenis Kelamin/Usia --}}
+                    <div class="mb-4 p-4 border border-gray-200 rounded-xl">
+                        <div class="space-y-2">
+                            @foreach ($genderAgeCategories as $category)
+                                <div class="flex items-center">
+                                    {{-- HAPUS ATRIBUT required DI SINI --}}
+                                    <input id="category-{{ $category->id }}" name="categories[]" type="checkbox" value="{{ $category->id }}" 
+                                        class="h-4 w-4 border-gray-300 rounded transition 
+                                            focus:ring-[#FF4400] focus:border-[#FF4400] 
+                                            checked:bg-[#FF4400] checked:border-[#FF4400] checked:text-white"
+                                        {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-700">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pakaian <span class="text-red-500">*</span></label>
+
+                    {{-- SECTION 2: Kategori Pakaian --}}
+                    <div class="mb-4 p-4 border border-gray-200 rounded-xl">
+                        <div class="space-y-2">
+                            @foreach ($apparelCategories as $category)
+                                <div class="flex items-center">
+                                    {{-- HAPUS ATRIBUT required DI SINI --}}
+                                    <input id="category-{{ $category->id }}" name="categories[]" type="checkbox" value="{{ $category->id }}" 
+                                        class="h-4 w-4 border-gray-300 rounded transition 
+                                            focus:ring-[#FF4400] focus:border-[#FF4400] 
+                                            checked:bg-[#FF4400] checked:border-[#FF4400] checked:text-white"
+                                        {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-700">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    {{-- VALIDASI HARUS DITANGANI DI CONTROLLER (Server Side) dengan rule 'categories' => 'required' --}}
                     @error('categories')
+                        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
+                    @enderror
+                    @error('categories.*')
                         <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
                     @enderror
                 </div>
@@ -104,7 +156,7 @@
                                  class="w-32 h-20 object-cover rounded-lg border border-gray-300">
                         </div>
                         <div class="flex-1">
-                            <input type="file" name="banner" id="banner" accept="image/*"
+                            <input type="file" name="banner" id="banner" accept="image/*" required
                                    class="w-full px-4 py-3 border @error('banner') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#FF4400] file:text-white hover:file:bg-[#DE3B00]">
                         </div>
                     </div>
@@ -141,7 +193,7 @@
 
                     <div>
                         <label for="deadline" class="block text-sm font-semibold text-gray-700 mb-2">
-                            Batas Waktu Pengumpulan <span class="text-red-500">*</span>
+                            Batas Waktu Campaign <span class="text-red-500">*</span>
                         </label>
                         <input type="date" name="deadline" id="deadline" value="{{ old('deadline') }}" required
                                class="w-full px-4 py-3 border @error('deadline') border-red-500 @enderror border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF4400] focus:border-[#FF4400] transition">

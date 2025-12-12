@@ -11,6 +11,7 @@ use App\Http\Controllers\HelpController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminCampaignController;
 use App\Http\Controllers\Admin\AdminDonationController;
+use App\Http\Controllers\Admin\AdminOrganizationController; 
 
 Route::get('/', [CampaignController::class, 'homepage'])->name('home');
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
@@ -58,4 +59,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/donations/by-date', [AdminDonationController::class, 'getByDate'])->name('donations.byDate');
     Route::get('/donations/export', [AdminDonationController::class, 'export'])->name('donations.export');
     Route::get('/donations/{id}', [AdminDonationController::class, 'show'])->name('donations.show');
+    Route::resource('organizations', AdminOrganizationController::class);
+    Route::put('organizations/{organization}/verify', [AdminOrganizationController::class, 'verify'])->name('organizations.verify');
 });

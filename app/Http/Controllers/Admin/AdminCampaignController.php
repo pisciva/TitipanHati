@@ -8,7 +8,7 @@ use App\Models\Organization;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Indonesia; // ⭐ Ditambahkan: Facade Laravolt/Indonesia
+use Indonesia; 
 
 class AdminCampaignController extends Controller
 {
@@ -79,7 +79,7 @@ class AdminCampaignController extends Controller
             'banner' => 'required|image|mimes:jpeg,png,jpg|max:2048',
 
             'province' => 'required|integer|min:1', 
-            'city' => 'required|string|max:100', // City tetap Nama Kota
+            'city' => 'required|string|max:100',
             'target_quantity' => 'required|integer|min:1',
             'deadline' => 'required|date|after:today',
             'categories' => 'required|array|min:1',
@@ -175,7 +175,7 @@ class AdminCampaignController extends Controller
             'organization_id' => $request->organization_id,
             'title' => $request->title,
             'description' => $request->description,
-            'province' => $provinceName, // Simpan Nama Provinsi
+            'province' => $provinceName, 
             'city' => $request->city,
             'target_quantity' => $request->target_quantity,
             'deadline' => $request->deadline,
@@ -186,7 +186,7 @@ class AdminCampaignController extends Controller
         $campaign->categories()->sync($request->categories);
 
         return redirect()->route('admin.campaigns.index')
-            ->with('success', 'Campaign berhasil diupdate!');
+            ->with('success', 'Campaign berhasil diperbarui!');
     }
 
 

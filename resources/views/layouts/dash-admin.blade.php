@@ -79,6 +79,13 @@
                     <span x-show="sidebarOpen" class="ml-3 font-medium">Campaign</span>
                 </a>
 
+                <a href="{{ route('admin.organizations.index') }}"
+                    class="flex items-center mt-1 px-3 py-3 rounded-xl transition
+                {{ request()->routeIs('admin.organizations.*') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-building w-6 text-center"></i> 
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Organisasi</span>
+                </a>
+
                 <a href="{{ route('admin.donations.index') }}"
                     class="flex items-center mt-1 px-3 py-3 rounded-xl transition 
                    {{ request()->routeIs('admin.donations.index') || request()->routeIs('admin.donations.show') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">

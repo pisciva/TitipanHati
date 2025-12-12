@@ -9,7 +9,7 @@
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Halo, Admin</h1>
 
-        <p class="text-sm text-gray-500 mt-1">Today is {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+        <p class="text-sm text-gray-500 mt-1">Hari ini {{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
 

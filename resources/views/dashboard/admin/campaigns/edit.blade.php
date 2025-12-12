@@ -69,21 +69,68 @@
 
                 <div>
                     @php
-
+                        // Perbaikan: Ambil dari old() jika ada error, jika tidak, ambil dari data campaign.
                         $selectedCategories = old('categories', $campaign->categories->pluck('id')->toArray());
+
+
+                        // --- ASUMSI PENGELOMPOKAN KATEGORI BERDASARKAN ID (HARAP SESUAIKAN ID INI) ---
+                        $genderAgeCategoryIds = [1, 2, 3, 4];
+                        $apparelCategoryIds = [5, 6, 7]; 
+
+
+                        // Filter kategori berdasarkan ID
+                        $genderAgeCategories = $categories->whereIn('id', $genderAgeCategoryIds);
+                        $apparelCategories = $categories->whereIn('id', $apparelCategoryIds);
                     @endphp
-                    <label for="categories" class="block text-sm font-medium text-gray-700 mb-1">Kategori (Boleh Pilih Lebih dari Satu)</label>
-                    <select name="categories[]" id="categories" multiple required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition h-40">
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <p class="mt-1 text-xs text-gray-500">Gunakan CTRL/CMD untuk memilih beberapa kategori.</p>
-                    @error('categories')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
-                    @error('categories.*')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin dan Usia <span class="text-red-500">*</span></label>
+
+                    {{-- SECTION 1: Kategori Jenis Kelamin/Usia --}}
+                    <div class="mb-4 p-4 border border-gray-200 rounded-xl">
+                        <div class="space-y-2">
+                            @foreach ($genderAgeCategories as $category)
+                                <div class="flex items-center">
+                                    {{-- HAPUS ATRIBUT required --}}
+                                    <input id="category-{{ $category->id }}" name="categories[]" type="checkbox" value="{{ $category->id }}" 
+                                        class="h-4 w-4 border-gray-300 rounded transition 
+                                            focus:ring-[#FF4400] focus:border-[#FF4400] 
+                                            checked:bg-[#FF4400] checked:border-[#FF4400] checked:text-white"
+                                        {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-700">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pakaian <span class="text-red-500">*</span></label>
+
+                    {{-- SECTION 2: Kategori Pakaian --}}
+                    <div class="mb-4 p-4 border border-gray-200 rounded-xl">
+                        <div class="space-y-2">
+                            @foreach ($apparelCategories as $category)
+                                <div class="flex items-center">
+                                    {{-- HAPUS ATRIBUT required --}}
+                                    <input id="category-{{ $category->id }}" name="categories[]" type="checkbox" value="{{ $category->id }}" 
+                                        class="h-4 w-4 border-gray-300 rounded transition 
+                                            focus:ring-[#FF4400] focus:border-[#FF4400] 
+                                            checked:bg-[#FF4400] checked:border-[#FF4400] checked:text-white"
+                                        {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                                    <label for="category-{{ $category->id }}" class="ml-3 text-sm font-medium text-gray-700">
+                                        {{ $category->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    @error('categories')
+                        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
+                    @enderror
+                    @error('categories.*')
+                        <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
+                    @enderror
                 </div>
 
 
@@ -150,7 +197,7 @@
             </div>
 
 
-                        <div class="space-y-6">
+            <div class="space-y-6">
                 <h3 class="text-xl font-semibold text-gray-800">Informasi Lokasi</h3>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6"> 
@@ -159,11 +206,11 @@
                     <div>
                         <label for="province" class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
                         <select name="province" id="province" required
-                                class="w-full px-4 py-3 border ... transition">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition">
                             <option value="" disabled selected>Pilih Provinsi</option>
 
                             @foreach ($provinces as $province)
-                                <option value="{{ $province->code }}" {{ old('province') === $province->code ? 'selected' : '' }}>
+                                <option value="{{ $province->code }}" {{ old('province', $campaign->province_code) === $province->code ? 'selected' : '' }}>
                                     {{ $province->name }}
                                 </option>
                             @endforeach
@@ -175,9 +222,15 @@
                     <div>
                         <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Kota/Kabupaten</label>
                         <select name="city" id="city" required disabled
-                                class="w-full px-4 py-3 border ... transition bg-gray-50 disabled:cursor-not-allowed">
-                            <option value="" disabled selected>Pilih Kota/Kabupaten</option>
-
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-red-600 focus:border-red-600 transition bg-gray-50 disabled:cursor-not-allowed">
+                            {{-- Pilihan kota akan diisi oleh JavaScript --}}
+                            @if (old('city') || $campaign->city_name)
+                                <option value="{{ old('city', $campaign->city_name) }}" selected>
+                                    {{ old('city', $campaign->city_name) }}
+                                </option>
+                            @else
+                                <option value="" disabled selected>Pilih Kota/Kabupaten</option>
+                            @endif
                         </select>
                         @error('city')<p class="mt-1 text-xs text-red-600">{{ $message }}</p>@enderror
                     </div>
@@ -200,7 +253,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const provinceSelect = document.getElementById('province');
             const citySelect = document.getElementById('city');
-            const oldCityName = "{{ old('city') }}"; 
+            // Gunakan nilai dari old() atau data campaign jika tidak ada old()
+            const initialCityName = "{{ old('city') ?: $campaign->city_name }}"; 
             
             const loadCities = (provinceId, cityToSelectName = null) => {
                 citySelect.innerHTML = '<option value="" disabled selected>Memuat Kota...</option>';
@@ -208,7 +262,7 @@
 
                 if (provinceId) {
 
-                    const url = `{{ route('admin.campaigns.getProvinces', '') }}/${provinceId}`; 
+                    const url = `{{ route('admin.campaigns.getCities', '') }}/${provinceId}`; 
 
                     fetch(url)
                         .then(response => {
@@ -250,7 +304,7 @@
 
             const initialProvinceId = provinceSelect.value;
             if (initialProvinceId) {
-                loadCities(initialProvinceId, oldCityName);
+                loadCities(initialProvinceId, initialCityName);
             }
         });
     </script>
