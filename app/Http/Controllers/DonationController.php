@@ -160,7 +160,7 @@ class DonationController extends Controller
         $donations = Donation::with(['campaign', 'items'])
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
-            ->paginate(10); // Changed from get() to paginate()
+            ->paginate(10);
 
         return view('dashboard.user.riwayat', compact('donations'));
     }

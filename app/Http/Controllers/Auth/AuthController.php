@@ -112,7 +112,7 @@ class AuthController extends Controller
 
                 $user = User::create([
                     'email' => $googleUser->email,
-                    'password' => Hash::make(uniqid()), // Random password
+                    'password' => Hash::make(uniqid()),
                     'google_id' => $googleUser->id,
                     'role' => 'donatur',
                     'is_verified' => true,
@@ -123,7 +123,7 @@ class AuthController extends Controller
                 UserProfile::create([
                     'user_id' => $user->id,
                     'full_name' => $googleUser->name,
-                    'phone_number' => '', // Will be filled later
+                    'phone_number' => '',
                 ]);
             }
 

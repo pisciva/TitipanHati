@@ -38,7 +38,7 @@ class ForgotPasswordController extends Controller
 
         DB::table('password_resets')->insert([
             'email' => $request->email,
-            'token' => $token, // Token plain (akan di-hash saat verifikasi)
+            'token' => $token,
             'expires_at' => Carbon::now()->addMinutes(30),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

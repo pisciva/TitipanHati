@@ -24,7 +24,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addMonths(2),
                 'status' => 'aktif',
                 'view_count' => 1250,
-                'categories' => [1, 2, 5, 6], // Anak Laki-laki, Anak Perempuan, Atasan, Bawahan
+                'categories' => [1, 2, 5, 6],
             ],
             [
                 'organization_id' => 2,
@@ -38,7 +38,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addMonth(1),
                 'status' => 'aktif',
                 'view_count' => 890,
-                'categories' => [1, 2, 5, 7], // Anak Laki-laki, Anak Perempuan, Atasan, Other
+                'categories' => [1, 2, 5, 7],
             ],
             [
                 'organization_id' => 3,
@@ -52,7 +52,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addMonths(3),
                 'status' => 'aktif',
                 'view_count' => 2100,
-                'categories' => [1, 2, 3, 4, 5, 6], // Semua gender, Atasan, Bawahan
+                'categories' => [1, 2, 3, 4, 5, 6],
             ],
             [
                 'organization_id' => 4,
@@ -66,7 +66,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addWeeks(3),
                 'status' => 'aktif',
                 'view_count' => 567,
-                'categories' => [1, 2, 5, 6, 7], // Anak, semua kategori
+                'categories' => [1, 2, 5, 6, 7],
             ],
             [
                 'organization_id' => 5,
@@ -80,7 +80,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addWeeks(2),
                 'status' => 'aktif',
                 'view_count' => 3400,
-                'categories' => [1, 2, 3, 4, 5, 6, 7], // Semua kategori
+                'categories' => [1, 2, 3, 4, 5, 6, 7],
             ],
             [
                 'organization_id' => 1,
@@ -94,7 +94,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->addMonth(1)->addWeeks(2),
                 'status' => 'aktif',
                 'view_count' => 720,
-                'categories' => [1, 2, 5, 6], // Anak, Atasan, Bawahan
+                'categories' => [1, 2, 5, 6],
             ],
             [
                 'organization_id' => 3,
@@ -108,7 +108,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->subWeeks(1),
                 'status' => 'selesai',
                 'view_count' => 450,
-                'categories' => [3, 4, 5, 6], // Dewasa, Atasan, Bawahan
+                'categories' => [3, 4, 5, 6],
             ],
             [
                 'organization_id' => 2,
@@ -122,7 +122,7 @@ class CampaignSeeder extends Seeder
                 'deadline' => Carbon::now()->subMonths(1),
                 'status' => 'selesai',
                 'view_count' => 890,
-                'categories' => [1, 2, 3, 4, 7], // Semua gender, Other
+                'categories' => [1, 2, 3, 4, 7],
             ],
         ];
 

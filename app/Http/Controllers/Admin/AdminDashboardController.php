@@ -7,7 +7,7 @@ use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\Organization;
 use Illuminate\Http\Request;
-use Carbon\Carbon; // Import Carbon untuk manipulasi tanggal
+use Carbon\Carbon;
 
 class AdminDashboardController extends Controller
 {
@@ -26,7 +26,7 @@ class AdminDashboardController extends Controller
 
 
         $cmActiveCampaigns = Campaign::where('status', 'aktif')->count();
-        $cmTotalDonations = Donation::where('status', 'selesai')->count(); // Asumsi: Donasi Tersalurkan = status 'selesai'
+        $cmTotalDonations = Donation::where('status', 'selesai')->count(); 
 
 
         
@@ -46,7 +46,7 @@ class AdminDashboardController extends Controller
 
         $activeChange = ($lmActiveCampaigns > 0) 
             ? (($cmActiveCampaigns - $lmActiveCampaigns) / $lmActiveCampaigns) * 100 
-            : ($cmActiveCampaigns > 0 ? 100 : 0); // Jika sebelumnya 0 dan sekarang ada, anggap naik 100%
+            : ($cmActiveCampaigns > 0 ? 100 : 0);
 
 
         $donationChange = ($lmTotalDonations > 0) 

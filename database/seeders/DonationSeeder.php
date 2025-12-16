@@ -20,11 +20,7 @@ class DonationSeeder extends Seeder
 
         $getDistrict = fn($u) => $u->profile->default_district ?? 'Tidak diketahui';
 
-        /*
-        |--------------------------------------------------------------------------
-        | DONATION 1
-        |--------------------------------------------------------------------------
-        */
+        // DONATION 1
         $donation1 = Donation::create([
             'user_id'           => $users[0]->id,
             'campaign_id'       => $campaigns[0]->id,
@@ -80,12 +76,7 @@ class DonationSeeder extends Seeder
             'status_changed_at'  => Carbon::now()->subDays(3),
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | DONATION 2
-        |--------------------------------------------------------------------------
-        */
+        // DONATION 2
         $donation2 = Donation::create([
             'user_id'           => $users[1]->id,
             'campaign_id'       => $campaigns[1]->id,
