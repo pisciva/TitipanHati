@@ -20,7 +20,6 @@ class DonationSeeder extends Seeder
 
         $getDistrict = fn($u) => $u->profile->default_district ?? 'Tidak diketahui';
 
-        // DONATION 1
         $donation1 = Donation::create([
             'user_id'           => $users[0]->id,
             'campaign_id'       => $campaigns[0]->id,
@@ -43,7 +42,7 @@ class DonationSeeder extends Seeder
             'donation_id'    => $donation1->id,
             'gender'         => 'Laki-laki (Anak)',
             'item_category'  => 'Atasan',
-            'quantity'       => 5,
+            'quantity'       => 30,
             'condition'      => 'Layak pakai',
         ]);
 
@@ -51,7 +50,7 @@ class DonationSeeder extends Seeder
             'donation_id'    => $donation1->id,
             'gender'         => 'Laki-laki (Anak)',
             'item_category'  => 'Bawahan',
-            'quantity'       => 5,
+            'quantity'       => 20,
             'condition'      => 'Layak pakai',
         ]);
 
@@ -76,7 +75,6 @@ class DonationSeeder extends Seeder
             'status_changed_at'  => Carbon::now()->subDays(3),
         ]);
 
-        // DONATION 2
         $donation2 = Donation::create([
             'user_id'           => $users[1]->id,
             'campaign_id'       => $campaigns[1]->id,
@@ -98,7 +96,7 @@ class DonationSeeder extends Seeder
             'donation_id'    => $donation2->id,
             'gender'         => 'Perempuan (Anak)',
             'item_category'  => 'Atasan',
-            'quantity'       => 8,
+            'quantity'       => 87,
             'condition'      => 'Baru',
         ]);
 
@@ -116,12 +114,6 @@ class DonationSeeder extends Seeder
             'status_changed_at'  => Carbon::now()->subDays(1),
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | DONATION 3
-        |--------------------------------------------------------------------------
-        */
         $donation3 = Donation::create([
             'user_id'           => $users[2]->id,
             'campaign_id'       => $campaigns[2]->id,
@@ -144,7 +136,7 @@ class DonationSeeder extends Seeder
             'donation_id'    => $donation3->id,
             'gender'         => 'Laki-laki (Dewasa)',
             'item_category'  => 'Atasan',
-            'quantity'       => 10,
+            'quantity'       => 65,
             'condition'      => 'Layak pakai',
         ]);
 
@@ -152,7 +144,7 @@ class DonationSeeder extends Seeder
             'donation_id'    => $donation3->id,
             'gender'         => 'Perempuan (Dewasa)',
             'item_category'  => 'Bawahan',
-            'quantity'       => 8,
+            'quantity'       => 45,
             'condition'      => 'Layak pakai',
         ]);
 
@@ -163,12 +155,6 @@ class DonationSeeder extends Seeder
             'status_changed_at'  => Carbon::now(),
         ]);
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | DONATION 4
-        |--------------------------------------------------------------------------
-        */
         $donation4 = Donation::create([
             'user_id'           => $users[3]->id,
             'campaign_id'       => $campaigns[3]->id,
@@ -200,6 +186,86 @@ class DonationSeeder extends Seeder
             'notes'              => 'Donasi berhasil dibuat',
             'status_changed_at'  => Carbon::now()->subDays(2),
         ]);
+
+        $donation5 = Donation::create([
+            'user_id'           => $users[4]->id,
+            'campaign_id'       => $campaigns[4]->id,
+            'donor_name'        => $users[4]->profile->full_name,
+            'donor_phone'       => $users[4]->profile->phone_number,
+            'donor_email'       => $users[4]->email,
+            'pickup_address'    => $users[4]->profile->default_address,
+            'pickup_province'   => $users[4]->profile->default_province,
+            'pickup_city'       => $users[4]->profile->default_city,
+            'pickup_district'   => $getDistrict($users[4]),
+            'pickup_postal_code'=> $users[4]->profile->default_postal_code,
+            'pickup_date'       => Carbon::tomorrow(),
+            'pickup_time_slot'  => '13:00-17:00',
+            'status'            => 'menunggu_penjemputan',
+            'created_at'        => Carbon::now()->subDays(2),
+        ]);
+
+        DonationItem::create([
+            'donation_id'    => $donation5->id,
+            'gender'         => 'Laki-laki (Anak)',
+            'item_category'  => 'Other',
+            'quantity'       => 15,
+            'condition'      => 'Baru',
+        ]);
+
+        DonationItem::create([
+            'donation_id'    => $donation5->id,
+            'gender'         => 'Laki-laki (Dewasa)',
+            'item_category'  => 'Atasan',
+            'quantity'       => 80,
+            'condition'      => 'Baru',
+        ]);
+
+        DonationTracking::create([
+            'donation_id'        => $donation5->id,
+            'status'             => 'menunggu_penjemputan',
+            'notes'              => 'Donasi berhasil dibuat',
+            'status_changed_at'  => Carbon::now()->subDays(2),
+        ]);
+
+        // $donation6 = Donation::create([
+        //     'user_id'           => $users[5]->id,
+        //     'campaign_id'       => $campaigns[5]->id,
+        //     'donor_name'        => $users[5]->profile->full_name,
+        //     'donor_phone'       => $users[5]->profile->phone_number,
+        //     'donor_email'       => $users[5]->email,
+        //     'pickup_address'    => $users[5]->profile->default_address,
+        //     'pickup_province'   => $users[5]->profile->default_province,
+        //     'pickup_city'       => $users[5]->profile->default_city,
+        //     'pickup_district'   => $getDistrict($users[5]),
+        //     'pickup_postal_code'=> $users[5]->profile->default_postal_code,
+        //     'pickup_date'       => Carbon::tomorrow(),
+        //     'pickup_time_slot'  => '13:00-17:00',
+        //     'status'            => 'menunggu_penjemputan',
+        //     'created_at'        => Carbon::now()->subDays(2),
+        // ]);
+
+        // DonationItem::create([
+        //     'donation_id'    => $donation6->id,
+        //     'gender'         => 'Laki-laki (Anak)',
+        //     'item_category'  => 'Other',
+        //     'quantity'       => 150,
+        //     'condition'      => 'Baru',
+        // ]);
+
+        // DonationItem::create([
+        //     'donation_id'    => $donation6->id,
+        //     'gender'         => 'Laki-laki (Dewasa)',
+        //     'item_category'  => 'Atasan',
+        //     'quantity'       => 50,
+        //     'condition'      => 'Baru',
+        // ]);
+
+        // DonationTracking::create([
+        //     'donation_id'        => $donation6->id,
+        //     'status'             => 'menunggu_penjemputan',
+        //     'notes'              => 'Donasi berhasil dibuat',
+        //     'status_changed_at'  => Carbon::now()->subDays(2),
+        // ]);
 
         $this->command->info('✅ Donations seeded successfully!');
     }

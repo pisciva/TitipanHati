@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Campaign;
-use App\Models\Category;
 use Carbon\Carbon;
 
 class CampaignSeeder extends Seeder
@@ -14,13 +13,13 @@ class CampaignSeeder extends Seeder
         $campaigns = [
             [
                 'organization_id' => 1,
-                'title' => 'Pakaian Sekolah untuk Anak Pedalaman',
-                'description' => 'Campaign untuk mengumpulkan pakaian sekolah (seragam, sepatu, tas) bagi anak-anak di daerah pedalaman Papua. Target 200 set pakaian lengkap untuk tahun ajaran baru.',
+                'title' => 'Seragam Sekolah untuk Anak Papua',
+                'description' => 'Penggalangan pakaian seragam sekolah, sepatu, dan tas bagi anak-anak di wilayah Papua Pegunungan yang mengalami keterbatasan akses pendidikan. Bantuan difokuskan untuk siswa SD–SMP menjelang tahun ajaran baru.',
                 'banner_url' => 'campaigns/image1.jpg',
                 'province' => 'DKI Jakarta',
                 'city' => 'Jakarta Selatan',
                 'target_quantity' => 200,
-                'collected_quantity' => 145,
+                'collected_quantity' => 50,
                 'deadline' => Carbon::now()->addMonths(2),
                 'status' => 'aktif',
                 'view_count' => 1250,
@@ -28,8 +27,8 @@ class CampaignSeeder extends Seeder
             ],
             [
                 'organization_id' => 2,
-                'title' => 'Pakaian Hangat untuk Musim Hujan',
-                'description' => 'Mengumpulkan jaket, sweater, dan pakaian hangat untuk anak-anak panti asuhan menghadapi musim hujan. Kondisi pakaian harus layak pakai dan bersih.',
+                'title' => 'Pakaian Hangat untuk Pengungsi Semeru',
+                'description' => 'Mengumpulkan jaket, sweater, dan selimut layak pakai untuk pengungsi erupsi Gunung Semeru di Jawa Timur. Bantuan ditujukan bagi anak-anak dan lansia yang tinggal di posko pengungsian.',
                 'banner_url' => 'campaigns/image2.jpg',
                 'province' => 'Jawa Timur',
                 'city' => 'Surabaya',
@@ -42,13 +41,13 @@ class CampaignSeeder extends Seeder
             ],
             [
                 'organization_id' => 3,
-                'title' => 'Baju Lebaran untuk Keluarga Prasejahtera',
-                'description' => 'Program tahunan menyediakan pakaian baru dan layak pakai untuk keluarga prasejahtera menyambut hari raya. Target 300 pcs untuk 50 keluarga.',
+                'title' => 'Baju Lebaran untuk Warga Pedalaman',
+                'description' => 'Program berbagi pakaian layak pakai untuk keluarga prasejahtera di kawasan padat penduduk Kota Bandung menjelang Hari Raya Idulfitri. Bantuan diprioritaskan untuk anak-anak dan ibu rumah tangga.',
                 'banner_url' => 'campaigns/image3.jpg',
                 'province' => 'Jawa Barat',
                 'city' => 'Bandung',
                 'target_quantity' => 300,
-                'collected_quantity' => 178,
+                'collected_quantity' => 110,
                 'deadline' => Carbon::now()->addMonths(3),
                 'status' => 'aktif',
                 'view_count' => 2100,
@@ -56,37 +55,23 @@ class CampaignSeeder extends Seeder
             ],
             [
                 'organization_id' => 4,
-                'title' => 'Pakaian Bayi dan Balita',
-                'description' => 'Mengumpulkan pakaian bayi dan balita (0-5 tahun) untuk keluarga tidak mampu. Prioritas pakaian dalam kondisi baik dan bersih.',
-                'banner_url' => 'campaigns/image1.jpg',
+                'title' => 'Pakaian Bayi untuk Korban Banjir',
+                'description' => 'Penggalangan pakaian bayi dan balita (usia 0–5 tahun) bagi keluarga yang terdampak banjir musiman di wilayah Semarang. Pakaian diharapkan dalam kondisi bersih dan layak pakai.',
+                'banner_url' => 'campaigns/image4.jpg',
                 'province' => 'Jawa Tengah',
                 'city' => 'Semarang',
                 'target_quantity' => 250,
-                'collected_quantity' => 230,
+                'collected_quantity' => 15,
                 'deadline' => Carbon::now()->addWeeks(3),
                 'status' => 'aktif',
                 'view_count' => 567,
                 'categories' => [1, 2, 5, 6, 7],
             ],
             [
-                'organization_id' => 5,
-                'title' => 'Pakaian untuk Korban Bencana Alam',
-                'description' => 'Campaign darurat untuk mengumpulkan pakaian bagi korban banjir di Yogyakarta. Dibutuhkan segera untuk 100 keluarga yang kehilangan tempat tinggal.',
-                'banner_url' => 'campaigns/image2.jpg',
-                'province' => 'DI Yogyakarta',
-                'city' => 'Yogyakarta',
-                'target_quantity' => 400,
-                'collected_quantity' => 356,
-                'deadline' => Carbon::now()->addWeeks(2),
-                'status' => 'aktif',
-                'view_count' => 3400,
-                'categories' => [1, 2, 3, 4, 5, 6, 7],
-            ],
-            [
                 'organization_id' => 1,
-                'title' => 'Seragam Olahraga Sekolah',
-                'description' => 'Mengumpulkan pakaian olahraga (kaos, celana training, sepatu) untuk siswa SD di daerah tertinggal.',
-                'banner_url' => 'campaigns/image3.jpg',
+                'title' => 'Seragam Olahraga Sekolah 3T',
+                'description' => 'Mengumpulkan pakaian olahraga dan sepatu untuk siswa sekolah dasar di wilayah tertinggal, terdepan, dan terluar (3T) guna mendukung kegiatan belajar dan kesehatan anak.',
+                'banner_url' => 'campaigns/image5.jpg',
                 'province' => 'DKI Jakarta',
                 'city' => 'Jakarta Timur',
                 'target_quantity' => 180,
@@ -97,24 +82,10 @@ class CampaignSeeder extends Seeder
                 'categories' => [1, 2, 5, 6],
             ],
             [
-                'organization_id' => 3,
-                'title' => 'Pakaian Kerja untuk Pelatihan Vokasi',
-                'description' => 'Campaign untuk mendukung program pelatihan kerja dengan menyediakan pakaian kerja (kemeja, celana panjang) bagi peserta dari keluarga kurang mampu.',
-                'banner_url' => 'campaigns/image1.jpg',
-                'province' => 'Jawa Barat',
-                'city' => 'Bekasi',
-                'target_quantity' => 120,
-                'collected_quantity' => 120,
-                'deadline' => Carbon::now()->subWeeks(1),
-                'status' => 'selesai',
-                'view_count' => 450,
-                'categories' => [3, 4, 5, 6],
-            ],
-            [
                 'organization_id' => 2,
-                'title' => 'Pakaian Muslim untuk Pondok Pesantren',
-                'description' => 'Mengumpulkan pakaian muslim (sarung, peci, mukena, jilbab) untuk santri di pondok pesantren yang membutuhkan.',
-                'banner_url' => 'campaigns/image2.jpg',
+                'title' => 'Pakaian Muslim untuk Santri',
+                'description' => 'Mengumpulkan sarung, mukena, peci, dan jilbab untuk santri pondok pesantren di Malang yang berasal dari keluarga kurang mampu.',
+                'banner_url' => 'campaigns/image6.jpg',
                 'province' => 'Jawa Timur',
                 'city' => 'Malang',
                 'target_quantity' => 200,
@@ -129,13 +100,11 @@ class CampaignSeeder extends Seeder
         foreach ($campaigns as $campaignData) {
             $categories = $campaignData['categories'];
             unset($campaignData['categories']);
-            
-            $campaign = Campaign::create($campaignData);
-            
 
+            $campaign = Campaign::create($campaignData);
             $campaign->categories()->attach($categories);
         }
-        
+
         $this->command->info('✅ Campaigns seeded successfully!');
     }
 }
