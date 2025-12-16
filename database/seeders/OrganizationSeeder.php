@@ -16,6 +16,7 @@ class OrganizationSeeder extends Seeder
                 'contact_email' => 'info@pedulianak.org',
                 'contact_phone' => '0211234567',
                 'address' => 'Jl. Gatot Subroto No. 88, Jakarta Selatan',
+                'logo_url' => 'organization/logo_organisasi1.png',
                 'is_verified' => true,
             ],
             [
@@ -24,6 +25,7 @@ class OrganizationSeeder extends Seeder
                 'contact_email' => 'contact@harapanbangsa.org',
                 'contact_phone' => '0311234567',
                 'address' => 'Jl. Ahmad Yani No. 234, Surabaya',
+                'logo_url' => 'organization/logo_organisasi2.png',
                 'is_verified' => true,
             ],
             [
@@ -32,6 +34,7 @@ class OrganizationSeeder extends Seeder
                 'contact_email' => 'berbagi@bandung.com',
                 'contact_phone' => '0221234567',
                 'address' => 'Jl. Dago No. 45, Bandung',
+                'logo_url' => 'organization/logo_organisasi3.png',
                 'is_verified' => true,
             ],
             [
@@ -40,6 +43,7 @@ class OrganizationSeeder extends Seeder
                 'contact_email' => 'info@cahayaharapan.org',
                 'contact_phone' => '0241234567',
                 'address' => 'Jl. Pemuda No. 67, Semarang',
+                'logo_url' => 'organization/logo_organisasi4.png',
                 'is_verified' => true,
             ],
             [
@@ -48,6 +52,7 @@ class OrganizationSeeder extends Seeder
                 'contact_email' => 'contact@rumahyatim-jogja.org',
                 'contact_phone' => '0274123456',
                 'address' => 'Jl. Kaliurang KM 5, Yogyakarta',
+                'logo_url' => 'organization/logo_organisasi5.png',
                 'is_verified' => true,
             ],
         ];

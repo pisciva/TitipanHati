@@ -18,12 +18,12 @@
                         <i class="fas fa-hand-holding-heart"></i>
                         Temukan Campaign
                     </h1>
-                    <p class="text-white/90 text-lg mb-8 max-w-2xl">
+                    <p class="text-white/90 text-lg max-w-2xl">
                         Jelajahi berbagai campaign donasi dan bantu mereka yang membutuhkan
                     </p>
 
 
-                    <div class="relative">
+                    <!-- <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
                             <i class="fas fa-search text-gray-400 text-xl"></i>
                         </div>
@@ -40,7 +40,7 @@
                                 <span class="hidden md:inline">Filter</span>
                             </button>
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <div id="searchResultInfo" class="mt-4 text-white/80 text-sm hidden">
@@ -52,7 +52,7 @@
         </div>
 
 
-        <div id="filterModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <!-- <div id="filterModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-3xl shadow-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden animate-slideUp">
 
                 <div class="bg-[#FF4400] to-[#FF6B35] p-6 text-white">
@@ -218,8 +218,7 @@
                     </div>
                 </form>
             </div>
-        </div>
-
+        </div> -->
 
         @if(request()->hasAny(['search', 'status', 'progress', 'category', 'province', 'city', 'deadline', 'views', 'sort']))
             <div class="mb-6 bg-white rounded-2xl shadow-lg p-4 border-l-4 border-[#FF4400]">
@@ -323,8 +322,24 @@
                     </div>
                 </div>
             @endif
-        </div>
 
+            @if($finishedCampaigns->count())
+                <div class="mt-16">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                        Campaign Telah Selesai
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 opacity-80">
+                        @foreach($finishedCampaigns as $campaign)
+                            @include('components.campaign-card', [
+                                'campaign' => $campaign,
+                                'isFinished' => true
+                            ])
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+        </div>
     </div>
 </div>
 

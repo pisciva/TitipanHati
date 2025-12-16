@@ -30,7 +30,7 @@
         </div>
     @endif
     
-    <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 mb-8 space-y-8"> 
+    <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 mb-8 space-y-8"> 
 
         <div class="flex flex-col lg:flex-row lg:items-center justify-between border-b pb-6 space-y-4 lg:space-y-0">
             <div class="flex items-center space-x-6">

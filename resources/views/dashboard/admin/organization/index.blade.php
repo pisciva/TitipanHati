@@ -3,11 +3,10 @@
 @section('title', 'Manajemen Organisasi')
 
 @section('content')
-
     <div class="mb-6">
         <div class="flex justify-between items-center">
-            <h1 class="text-2xl font-semibold text-[#1D1D1D]">Daftar Organisasi</h1>
-            <a href="{{ route('admin.organizations.create') }}" class="bg-[#FF4400] text-white px-4 py-2 rounded-lg hover:bg-[#EB3F00] transition duration-150 flex items-center shadow-md">
+            <h1 class="text-3xl font-semibold text-[#1D1D1D]">Daftar Organisasi</h1>
+            <a href="{{ route('admin.organizations.create') }}" class="px-5 py-2.5 bg-[#FF4400] text-white font-semibold rounded-xl hover:bg-[#EB3F00] transition duration-150 shadow-md flex items-center">
                 <i class="fas fa-plus mr-2"></i> Tambah Organisasi
             </a>
         </div>
@@ -68,9 +67,7 @@
                                 <a href="{{ route('admin.organizations.show', $organization->id) }}" class="absolute inset-0 z-10"></a> 
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-full object-cover border" 
-                                             src="{{ $organization->logo_url ? Storage::url($organization->logo_url) : asset('path/to/default/logo.png') }}" 
-                                             alt="{{ $organization->name }} Logo">
+                                        <img class="h-10 w-10 rounded-full object-cover border" src="{{ asset('storage/' . $organization->logo_url) }}" alt="{{ $organization->name }}">
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-semibold text-gray-900 group-hover:text-[#FF4400] transition">{{ $organization->name }}</div>
@@ -92,11 +89,11 @@
                             
                             <td class="px-6 py-4 whitespace-nowrap text-left">
                                 @if ($organization->is_verified)
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full flex items-center justify-center bg-green-100 text-green-800">
                                         <i class="fas fa-check-circle mr-1"></i> Terverifikasi
                                     </span>
                                 @else
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full flex items-center justify-center bg-yellow-100 text-yellow-800">
                                         <i class="fas fa-clock mr-1"></i> Pending
                                     </span>
                                 @endif

@@ -11,60 +11,69 @@ class CampaignController extends Controller
 {
     public function index(Request $request)
     {
-
         $query = Campaign::with(['organization', 'categories'])
             ->where('status', 'aktif');
-
 
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('organization', fn($org) => $org->where('name', 'like', "%{$search}%"));
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas(
+                        'organization',
+                        fn($org) =>
+                        $org->where('name', 'like', "%{$search}%")
+                    );
             });
         }
-
 
         if ($request->filled('province')) {
             $query->where('province', $request->province);
         }
 
-
         if ($request->filled('city')) {
             $query->where('city', $request->city);
         }
 
-
         if ($request->filled('category')) {
-            $query->whereHas('categories', fn($cat) => $cat->where('id', $request->category));
+            $query->whereHas(
+                'categories',
+                fn($cat) =>
+                $cat->where('id', $request->category)
+            );
         }
-
 
         if ($request->filled('sort')) {
             match ($request->sort) {
                 'trending' => $query->orderBy('view_count', 'desc'),
-                'newest'   => $query->orderBy('created_at', 'desc'),
-                default    => $query->orderBy('created_at', 'desc'),
+                'newest' => $query->orderBy('created_at', 'desc'),
+                default => $query->orderBy('created_at', 'desc'),
             };
         } else {
             $query->orderBy('created_at', 'desc');
         }
 
-
         $campaigns = $query->paginate(12);
-        $categories = Category::all();
 
+        $finishedCampaigns = Campaign::with(['organization', 'categories'])
+            ->where('status', 'selesai')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $categories = Category::all();
 
         $provinces = DB::table(config('laravolt.indonesia.table_prefix') . 'provinces')
             ->select('id', 'name')
             ->orderBy('name')
             ->get();
 
-
-        return view('campaigns.index', compact('campaigns', 'categories', 'provinces'));
+        return view('campaigns.index', compact(
+            'campaigns',
+            'finishedCampaigns',
+            'categories',
+            'provinces'
+        ));
     }
-
     public function show($id)
     {
         $campaign = Campaign::with(['organization', 'categories', 'donations'])

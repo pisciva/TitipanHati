@@ -3,8 +3,6 @@
 @section('title', 'Buat Campaign Baru')
 
 @section('content')
-
-
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-900">Buat Campaign Baru</h1>
         <p class="text-sm text-gray-500 mt-1">Lengkapi detail di bawah untuk meluncurkan campaign pengumpulan donasi baru.</p>
@@ -28,8 +26,7 @@
     @endif
 
 
-    <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
-        
+    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
         <form action="{{ route('admin.campaigns.store') }}" method="POST" enctype="multipart/form-data" id="campaignForm" class="space-y-8">
             @csrf
 
@@ -44,7 +41,7 @@
 
 
                 <div>
-                    <label for="title" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="title" class="block text-sm font-semibold text-[#FF4400] mb-2">
                         Judul Campaign <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="title" id="title" value="{{ old('title') }}" required
@@ -57,7 +54,7 @@
 
 
                 <div>
-                    <label for="organization_id" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="organization_id" class="block text-sm font-semibold text-[#FF4400] mb-2">
                         Organisasi Pelaksana <span class="text-red-500">*</span>
                     </label>
                     <select name="organization_id" id="organization_id" required
@@ -77,31 +74,19 @@
 
                 <div>
                     @php
-                        // Perbaikan: Halaman 'create' tidak memiliki variabel $campaign, 
-                        // jadi kita hanya menggunakan data 'old' atau array kosong.
                         $selectedCategories = old('categories', []);
-
-
-                        // --- ASUMSI PENGELOMPOKAN KATEGORI BERDASARKAN ID (HARAP SESUAIKAN ID INI) ---
-                        // ID Kategori Jenis Kelamin/Usia
-                        $genderAgeCategoryIds = [1, 2, 3, 4]; // Ganti dengan ID kategori yang sebenarnya
-                        // ID Kategori Pakaian
-                        $apparelCategoryIds = [5, 6, 7]; // Ganti dengan ID kategori yang sebenarnya
-
-
-                        // Filter kategori berdasarkan ID
+                        $genderAgeCategoryIds = [1, 2, 3, 4];
+                        $apparelCategoryIds = [5, 6, 7];
                         $genderAgeCategories = $categories->whereIn('id', $genderAgeCategoryIds);
                         $apparelCategories = $categories->whereIn('id', $apparelCategoryIds);
                     @endphp
 
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Kelamin dan Usia <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-semibold text-[#FF4400] mb-2">Jenis Kelamin dan Usia <span class="text-red-500">*</span></label>
 
-                    {{-- SECTION 1: Kategori Jenis Kelamin/Usia --}}
                     <div class="mb-4 p-4 border border-gray-200 rounded-xl">
                         <div class="space-y-2">
                             @foreach ($genderAgeCategories as $category)
                                 <div class="flex items-center">
-                                    {{-- HAPUS ATRIBUT required DI SINI --}}
                                     <input id="category-{{ $category->id }}" name="categories[]" type="checkbox" value="{{ $category->id }}" 
                                         class="h-4 w-4 border-gray-300 rounded transition 
                                             focus:ring-[#FF4400] focus:border-[#FF4400] 
@@ -115,7 +100,7 @@
                         </div>
                     </div>
 
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Pakaian <span class="text-red-500">*</span></label>
+                    <label class="block text-sm font-semibold text-[#FF4400] mb-2">Jenis Pakaian <span class="text-red-500">*</span></label>
 
                     {{-- SECTION 2: Kategori Pakaian --}}
                     <div class="mb-4 p-4 border border-gray-200 rounded-xl">
@@ -147,7 +132,7 @@
 
 
                 <div>
-                    <label for="banner" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="banner" class="block text-sm font-semibold text-[#FF4400] mb-2">
                         Banner Campaign <span class="text-red-500">*</span>
                     </label>
                     <div class="flex items-center space-x-4">
@@ -179,7 +164,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                     <div>
-                        <label for="target_quantity" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="target_quantity" class="block text-sm font-semibold text-[#FF4400] mb-2">
                             Target Jumlah Donasi (Unit Barang) <span class="text-red-500">*</span>
                         </label>
                         <input type="number" name="target_quantity" id="target_quantity" value="{{ old('target_quantity') }}" required min="1"
@@ -192,7 +177,7 @@
 
 
                     <div>
-                        <label for="deadline" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="deadline" class="block text-sm font-semibold text-[#FF4400] mb-2">
                             Batas Waktu Campaign <span class="text-red-500">*</span>
                         </label>
                         <input type="date" name="deadline" id="deadline" value="{{ old('deadline') }}" required
@@ -205,7 +190,7 @@
 
 
                 <div>
-                    <label for="description" class="block text-sm font-semibold text-gray-700 mb-2">
+                    <label for="description" class="block text-sm font-semibold text-[#FF4400] mb-2">
                         Deskripsi Campaign <span class="text-red-500">*</span>
                     </label>
                     <textarea name="description" id="description" rows="5" required
@@ -230,7 +215,7 @@
                     
 
                     <div>
-                        <label for="province" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="province" class="block text-sm font-semibold text-[#FF4400] mb-2">
                             Provinsi <span class="text-red-500">*</span>
                         </label>
                         <select name="province" id="province" required
@@ -249,7 +234,7 @@
                     
 
                     <div>
-                        <label for="city" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="city" class="block text-sm font-semibold text-[#FF4400] mb-2">
                             Kota/Kabupaten <span class="text-red-500">*</span>
                         </label>
                         <select name="city" id="city" required disabled

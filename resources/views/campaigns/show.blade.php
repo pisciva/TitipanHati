@@ -40,7 +40,8 @@
 
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden" data-aos="fade-up">
                         <div class="relative">
-                            <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="{{ $campaign->title }}" class="w-full h-[400px] object-cover">
+                            <img src="{{ asset('storage/' . $campaign->banner_url) }}" alt="{{ $campaign->title }}"
+                                class="w-full h-[400px] object-cover">
 
 
                             <div class="absolute top-4 right-4">
@@ -120,12 +121,14 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="text-center p-3 bg-white rounded-lg">
                                     <div class="text-2xl font-bold text-[#FF4400]">
-                                        {{ number_format($campaign->collected_quantity) }}</div>
+                                        {{ number_format($campaign->collected_quantity) }}
+                                    </div>
                                     <div class="text-xs text-gray-600 mt-1">Item Terkumpul</div>
                                 </div>
                                 <div class="text-center p-3 bg-white rounded-lg">
                                     <div class="text-2xl font-bold text-gray-900">
-                                        {{ number_format($campaign->target_quantity) }}</div>
+                                        {{ number_format($campaign->target_quantity) }}
+                                    </div>
                                     <div class="text-xs text-gray-600 mt-1">Target Item</div>
                                 </div>
                             </div>
@@ -169,8 +172,7 @@
                                 </div>
                                 Deskripsi Campaign
                             </h2>
-                            <div
-                                class="prose max-w-none text-gray-700 bg-gray-50 rounded-xl p-6">
+                            <div class="prose max-w-none text-gray-700 bg-gray-50 rounded-xl p-6">
                                 {{ $campaign->description }}
                             </div>
                         </div>
@@ -217,7 +219,8 @@
                                                     ];
                                                     $config = $statusConfig[$donation->status] ?? ['bg' => 'bg-gray-100', 'text' => 'text-gray-700', 'border' => 'border-gray-200', 'icon' => 'fa-info-circle'];
                                                 @endphp
-                                                <span class="px-3 py-1 {{ $config['bg'] }} {{ $config['text'] }} rounded-full text-xs font-bold border {{ $config['border'] }}">
+                                                <span
+                                                    class="px-3 py-1 {{ $config['bg'] }} {{ $config['text'] }} rounded-full text-xs font-bold border {{ $config['border'] }}">
                                                     <i class="fas {{ $config['icon'] }} mr-1"></i>
                                                     {{ str_replace('_', ' ', ucfirst($donation->status)) }}
                                                 </span>
@@ -314,24 +317,32 @@
                             data-aos="fade-left" data-aos-delay="100">
                             <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
                                 <i class="fas fa-building text-blue-600 mr-2"></i>
-                                Tentang Yayasan
+                                Tentang Organisasi
                             </h3>
 
-                            <div class="flex items-center mb-6 p-4 bg-blue-50 to-blue-100 rounded-xl">
+                            <div class="flex items-center mb-6 p-4 bg-blue-50 rounded-2xl">
                                 <div
-                                    class="w-16 h-16 bg-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 shadow-md flex-shrink-0">
-                                    <i class="fas fa-building text-white text-2xl"></i>
+                                    class="w-16 h-16 rounded-full flex mr-4">
+                                    <img src="{{ asset('storage/' . $campaign->organization->logo_url) }}"
+                                        alt="{{ $campaign->organization->name }}"
+                                        class="w-full h-full object-cover rounded-full">
                                 </div>
+
                                 <div>
-                                    <h4 class="font-bold text-gray-900 text-lg">{{ $campaign->organization->name }}</h4>
+                                    <h4 class="font-bold text-gray-900 text-lg leading-tight">
+                                        {{ $campaign->organization->name }}
+                                    </h4>
+
                                     @if($campaign->organization->is_verified)
                                         <span
-                                            class="inline-flex items-center text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full mt-1">
-                                            <i class="fas fa-check-circle mr-1"></i>Terverifikasi
+                                            class="inline-flex items-center gap-1 text-xs font-semibold text-green-700 bg-green-100 px-2 py-1 rounded-full mt-1">
+                                            <i class="fas fa-check-circle"></i>
+                                            Terverifikasi
                                         </span>
                                     @endif
                                 </div>
                             </div>
+
 
                             @if($campaign->organization->description)
                                 <p class="text-sm text-gray-600 leading-relaxed bg-gray-50 rounded-lg p-4">

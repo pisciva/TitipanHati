@@ -11,6 +11,8 @@
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <link rel="icon" href="/images/favicon.ico">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
@@ -79,18 +81,19 @@
                     <span x-show="sidebarOpen" class="ml-3 font-medium">Campaign</span>
                 </a>
 
-                <a href="{{ route('admin.organizations.index') }}"
-                    class="flex items-center mt-1 px-3 py-3 rounded-xl transition
-                {{ request()->routeIs('admin.organizations.*') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
-                    <i class="fas fa-building w-6 text-center"></i> 
-                    <span x-show="sidebarOpen" class="ml-3 font-medium">Organisasi</span>
-                </a>
 
                 <a href="{{ route('admin.donations.index') }}"
                     class="flex items-center mt-1 px-3 py-3 rounded-xl transition 
-                   {{ request()->routeIs('admin.donations.index') || request()->routeIs('admin.donations.show') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                {{ request()->routeIs('admin.donations.index') || request()->routeIs('admin.donations.show') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
                     <i class="fas fa-box w-6 text-center"></i>
                     <span x-show="sidebarOpen" class="ml-3 font-medium">Donasi</span>
+                </a>
+
+                <a href="{{ route('admin.organizations.index') }}"
+                    class="flex items-center mt-1 px-3 py-3 rounded-xl transition
+                {{ request()->routeIs('admin.organizations.*') ? 'bg-primary text-white shadow-md' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <i class="fas fa-building w-6 text-center"></i>
+                    <span x-show="sidebarOpen" class="ml-3 font-medium">Organisasi</span>
                 </a>
 
                 <a href="{{ route('admin.donations.calendar') }}"
